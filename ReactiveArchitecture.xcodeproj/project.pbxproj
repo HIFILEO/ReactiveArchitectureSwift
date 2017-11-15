@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		852655311FBBAA340049C0C2 /* NowPlayingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852655301FBBAA340049C0C2 /* NowPlayingTableViewController.swift */; };
 		85DC740C1FBA87CD00BACD4D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DC740B1FBA87CD00BACD4D /* AppDelegate.swift */; };
 		85DC740E1FBA87CD00BACD4D /* NowPlayingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DC740D1FBA87CD00BACD4D /* NowPlayingViewController.swift */; };
 		85DC74111FBA87CD00BACD4D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85DC740F1FBA87CD00BACD4D /* Main.storyboard */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		852655301FBBAA340049C0C2 /* NowPlayingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingTableViewController.swift; sourceTree = "<group>"; };
 		85DC74081FBA87CD00BACD4D /* ReactiveArchitecture.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReactiveArchitecture.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		85DC740B1FBA87CD00BACD4D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		85DC740D1FBA87CD00BACD4D /* NowPlayingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingViewController.swift; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 			isa = PBXGroup;
 			children = (
 				85DC740D1FBA87CD00BACD4D /* NowPlayingViewController.swift */,
+				852655301FBBAA340049C0C2 /* NowPlayingTableViewController.swift */,
 			);
 			path = viewcontroller;
 			sourceTree = "<group>";
@@ -345,6 +348,7 @@
 			files = (
 				85DC740E1FBA87CD00BACD4D /* NowPlayingViewController.swift in Sources */,
 				85DC740C1FBA87CD00BACD4D /* AppDelegate.swift in Sources */,
+				852655311FBBAA340049C0C2 /* NowPlayingTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
