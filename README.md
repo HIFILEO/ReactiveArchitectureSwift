@@ -1,6 +1,6 @@
 # 'Reactive' Architecture Example
 This app is nothing more than an example of how to architect a mobile application to best use
-[Reactive](https://github.com/ReactiveX/RxAndroid) style programming. This is very close to
+[Reactive](https://github.com/ReactiveX/RxSwift) style programming. This is very close to
 a MVVM (Model View ViewModel) application. This is a port from
 the original [MVVMReactive](https://github.com/HIFILEO/ReactiveArchitecture)
 
@@ -41,10 +41,10 @@ Please review all documentation in **docs/**. The following summaries describe t
 
 | Name                                                                                          | Summary                                                     |
 | :--------------------------------------------------------------------------------------------:|:------------------------------------------------------------|
-| [AUTHORS.md](https://github.com/HIFILEO/ReactiveArchitecture/blob/master/doc/AUTHORS.md)                | History of past and present contributors                    |
-| [BUILDS.md](https://github.com/HIFILEO/ReactiveArchitecture/blob/master/doc/BUILDS.md)                  | Description of official builds                              |
-| [DEPENDENCIES.md](https://github.com/HIFILEO/ReactiveArchitecture/blob/master/doc/DEPENDENCIES.md)      | How to generate a list of all major third party dependencies|
-| [STYLE.md](https://github.com/HIFILEO/ReactiveArchitecture/blob/master/doc/STYLE.md)                    | Description of Code Style and Static Analysis tools         |
+| [AUTHORS.md](https://github.com/HIFILEO/ReactiveArchitectureSwift/blob/master/doc/AUTHORS.md)                | History of past and present contributors                    |
+| [BUILDS.md](https://github.com/HIFILEO/ReactiveArchitectureSwift/blob/master/doc/BUILDS.md)                  | Description of official builds                              |
+| [DEPENDENCIES.md](https://github.com/HIFILEO/ReactiveArchitectureSwift/blob/master/doc/DEPENDENCIES.md)      | How to generate a list of all major third party dependencies|
+| [STYLE.md](https://github.com/HIFILEO/ReactiveArchitectureSwift/blob/master/doc/STYLE.md)                    | Description of Code Style and Static Analysis tools         |
 
 ### Build Types and Flavors
 
@@ -55,22 +55,8 @@ not an app for the google play store. There are no flavors.
 
 This project supports the following type of tests:
 
-1. Java Unit Test
-2. Robolectric(There are none - and that was intentional to show how you can test without this when you use MVVM)
-3. Contract Test (Testing API end point / Restful API contracts)
-4. Espresso UI Test (Written from engineering perspective)
+TBD
 
-To run all unit tests:
-
-./gradlew testDebugUnitTest
-
-To run all contract tests:
-
-./gradlew contractTest '-Pcontract=true'
-
-To run all espresso tests:
-
-./gradlew connectedDebugAndroidTest
 
 ### Standards
 
@@ -78,18 +64,12 @@ There are style standards in this app as examples of how to maintain clean code.
 
 #### Checkstyle
 
-To run all checkstyle:
-./gradlew checkstyle
+TBD
 
-#### Lint
-
-To run all lint:
-./gradlew lintDebug
 
 #### Run All
 
-The following command works for API emulator version 25.
-./gradlew checkstyle lintDebug jacocoTestReport contractTest -Pcontract=true connectedDebugAndroidTest
+The following command works for
 
 ## Resources
 
