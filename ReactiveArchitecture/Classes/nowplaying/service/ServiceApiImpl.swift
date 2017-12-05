@@ -13,7 +13,9 @@ import AlamofireObjectMapper
 import ObjectMapper
 
 class ServiceApiImpl: ServiceApi {
+    private let nowPlayingUrl = "/now_playing"
     private var baseUrl: String
+    private var fullUrl: String
     
     /**
      Constructor.
@@ -22,11 +24,12 @@ class ServiceApiImpl: ServiceApi {
      */
     init(baseUrl: String) {
         self.baseUrl = baseUrl;
+        self.fullUrl = baseUrl + nowPlayingUrl
     }
     
     func nowPlaying(apiKey: String, query: Dictionary<String, Int>) -> Observable<ServiceResponse> {
         //setup base url
-        var urlComps = URLComponents(string: baseUrl)!
+        var urlComps = URLComponents(string: fullUrl)!
         
         //create query items
         var queryItemArray = Array<URLQueryItem>()
