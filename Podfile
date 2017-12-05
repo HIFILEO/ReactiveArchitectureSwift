@@ -24,6 +24,11 @@ target 'ReactiveArchitecture' do
 
   target 'ReactiveArchitectureTests' do
     inherit! :search_paths
+    # Pods from project (Yes this is needed)
+    pod 'Alamofire', '~> 4.5.1'
+    pod 'RxAlamofire'
+    pod 'AlamofireObjectMapper', '~> 5.0'
+    
     # Pods for testing
     pod 'RxBlocking', '~> 4.0'
     pod 'RxTest', '~> 4.0'
