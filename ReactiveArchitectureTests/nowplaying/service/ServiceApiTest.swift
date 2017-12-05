@@ -10,35 +10,53 @@ import XCTest
 @testable import ReactiveArchitecture
 import RxTest
 import RxSwift
+import RxBlocking
 
 class ServiceApiTest: XCTestCase {
     let API_TOKEN:String = "6efc30f1fdcbe7425ab08503f07e2762"
     var serviceApi:ServiceApi?
-    var disposeBag = DisposeBag()
-    var testScheduler:TestScheduler?
 
     override func setUp() {
         super.setUp()
         self.serviceApi = ServiceApiImpl(baseUrl: "https://api.themoviedb.org/3/movie")
-        self.testScheduler = TestScheduler(initialClock: 0)
-        self.disposeBag = DisposeBag()
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    func testNowPlaying() {
+        //
+        //Arrange
+        //
+        var mapToSend:Dictionary<String, Int> = [String: Int]()
+        mapToSend["page"] = 1
+        
+        //
+        //Act
+        //
+        let materializedSequenceResult = self.serviceApi?.nowPlaying(apiKey: API_TOKEN, query: mapToSend).toBlocking().materialize()
+        
+        //
+        //Assert
+        //
+        var serviceResponse:ServiceResponse?
+        
+        //Assert comnplete, no errors,&  1 value
+        switch materializedSequenceResult {
+        case .completed(let elements)?:
+            XCTAssertEqual(elements.count, 1)
+            serviceResponse = elements[0]
+        case .failed(let elements, let error)?:
+            XCTFail("Expected result to complete with no errors. Error: " + error.localizedDescription + ". Element Count:" + elements.count.description)
+            break
+        case .none: break
+            //no-op
+        }
+        
+        //Note - only way to access the elements is by switch or getter. There is no getter on the blocker class. Fun right?
+        if serviceResponse == nil {
+            XCTFail("Nil")
         }
     }
-    
 }
