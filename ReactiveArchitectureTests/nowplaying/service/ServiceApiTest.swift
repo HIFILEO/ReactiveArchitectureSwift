@@ -11,6 +11,7 @@ import XCTest
 import RxTest
 import RxSwift
 import RxBlocking
+import Hamcrest
 
 class ServiceApiTest: XCTestCase {
     let API_TOKEN:String = "6efc30f1fdcbe7425ab08503f07e2762"
@@ -55,8 +56,11 @@ class ServiceApiTest: XCTestCase {
         }
         
         //Note - only way to access the elements is by switch or getter. There is no getter on the blocker class. Fun right?
-        if serviceResponse == nil {
-            XCTFail("Nil")
-        }
+        assertThat(serviceResponse, not(nilValue()))
+        assertThat((serviceResponse?.page)!, equalTo(1))
+        assertThat((serviceResponse?.results)!, not(nilValue()))
+        assertThat((serviceResponse?.dates)!, not(nilValue()))
+        assertThat((serviceResponse?.total_pages)!, greaterThan(0))
+        assertThat((serviceResponse?.total_results)!, greaterThan(0))
     }
 }

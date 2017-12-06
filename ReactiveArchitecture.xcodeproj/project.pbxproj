@@ -27,7 +27,6 @@
 		85DC74111FBA87CD00BACD4D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85DC740F1FBA87CD00BACD4D /* Main.storyboard */; };
 		85DC74131FBA87CD00BACD4D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85DC74121FBA87CD00BACD4D /* Assets.xcassets */; };
 		85DC74161FBA87CD00BACD4D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85DC74141FBA87CD00BACD4D /* LaunchScreen.storyboard */; };
-		85DC74211FBA87CD00BACD4D /* ReactiveArchitectureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DC74201FBA87CD00BACD4D /* ReactiveArchitectureTests.swift */; };
 		85DC742C1FBA87CD00BACD4D /* ReactiveArchitectureUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DC742B1FBA87CD00BACD4D /* ReactiveArchitectureUITests.swift */; };
 		85DC74411FBA8ABB00BACD4D /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 85DC74401FBA8ABB00BACD4D /* README.md */; };
 		85DC74441FBA8FE900BACD4D /* AUTHORS.md in Resources */ = {isa = PBXBuildFile; fileRef = 85DC74431FBA8FE900BACD4D /* AUTHORS.md */; };
@@ -75,7 +74,6 @@
 		85DC74151FBA87CD00BACD4D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		85DC74171FBA87CD00BACD4D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		85DC741C1FBA87CD00BACD4D /* ReactiveArchitectureTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReactiveArchitectureTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		85DC74201FBA87CD00BACD4D /* ReactiveArchitectureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactiveArchitectureTests.swift; sourceTree = "<group>"; };
 		85DC74221FBA87CD00BACD4D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		85DC74271FBA87CD00BACD4D /* ReactiveArchitectureUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReactiveArchitectureUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		85DC742B1FBA87CD00BACD4D /* ReactiveArchitectureUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactiveArchitectureUITests.swift; sourceTree = "<group>"; };
@@ -170,7 +168,6 @@
 			isa = PBXGroup;
 			children = (
 				85ED0DE21FD043DD00793B91 /* nowplaying */,
-				85DC74201FBA87CD00BACD4D /* ReactiveArchitectureTests.swift */,
 				85DC74221FBA87CD00BACD4D /* Info.plist */,
 			);
 			path = ReactiveArchitectureTests;
@@ -614,7 +611,6 @@
 				8534CF6A1FD6DCF900A7C7F5 /* APIError.swift in Sources */,
 				8534CF651FD6DAD100A7C7F5 /* Dates.swift in Sources */,
 				8534CF641FD6CA9300A7C7F5 /* ServiceApiTest.swift in Sources */,
-				85DC74211FBA87CD00BACD4D /* ReactiveArchitectureTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

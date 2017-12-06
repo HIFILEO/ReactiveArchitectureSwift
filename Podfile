@@ -32,6 +32,7 @@ target 'ReactiveArchitecture' do
     # Pods for testing
     pod 'RxBlocking', '~> 4.0'
     pod 'RxTest', '~> 4.0'
+    pod 'SwiftHamcrest', '~> 1.0.0'
   end
 
   target 'ReactiveArchitectureUITests' do
