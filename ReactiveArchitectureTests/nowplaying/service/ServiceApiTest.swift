@@ -38,6 +38,7 @@ class ServiceApiTest: XCTestCase {
         //
         let materializedSequenceResult = self.serviceApi?.nowPlaying(apiKey: API_TOKEN, query: mapToSend).toBlocking().materialize()
         
+        
         //
         //Assert
         //

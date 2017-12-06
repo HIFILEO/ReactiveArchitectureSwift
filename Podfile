@@ -9,6 +9,7 @@ target 'ReactiveArchitecture' do
   
   ##Dependency Injection
   pod 'Dip'
+  pod 'Dip-UI'
 
   ##Rx
   pod 'RxSwift', '~> 4.0'

@@ -9,10 +9,15 @@
 import UIKit
 
 class NowPlayingViewController: UIViewController {
-
+    //
+    //Injected Variables
+    //
+    var serviceApi: ServiceApi?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+
     }
 
     override func didReceiveMemoryWarning() {

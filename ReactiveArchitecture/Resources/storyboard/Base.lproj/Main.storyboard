@@ -45,6 +45,9 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="dipTag" value="NowPlayingVC"/>
+                    </userDefinedRuntimeAttributes>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -80,6 +83,7 @@
                             <constraint firstItem="2L2-aR-8WV" firstAttribute="leading" secondItem="ZzQ-tF-so3" secondAttribute="leading" id="uEU-qg-64p"/>
                             <constraint firstAttribute="trailing" secondItem="2L2-aR-8WV" secondAttribute="trailing" id="uKl-u0-JCz"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="G77-VE-qft"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="unG-UI-tR9" userLabel="First Responder" sceneMemberID="firstResponder"/>

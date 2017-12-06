@@ -22,6 +22,7 @@
 		8534CF681FD6DCF900A7C7F5 /* ServiceApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852655391FBD095F0049C0C2 /* ServiceApi.swift */; };
 		8534CF691FD6DCF900A7C7F5 /* ServiceApiImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8526553B1FBDB4050049C0C2 /* ServiceApiImpl.swift */; };
 		8534CF6A1FD6DCF900A7C7F5 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85ED0DE01FCF3A0A00793B91 /* APIError.swift */; };
+		859282481FD77D64004B7046 /* AppDelegateModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859282471FD77D64004B7046 /* AppDelegateModule.swift */; };
 		85DC740C1FBA87CD00BACD4D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DC740B1FBA87CD00BACD4D /* AppDelegate.swift */; };
 		85DC740E1FBA87CD00BACD4D /* NowPlayingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DC740D1FBA87CD00BACD4D /* NowPlayingViewController.swift */; };
 		85DC74111FBA87CD00BACD4D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85DC740F1FBA87CD00BACD4D /* Main.storyboard */; };
@@ -66,6 +67,7 @@
 		852655391FBD095F0049C0C2 /* ServiceApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceApi.swift; sourceTree = "<group>"; };
 		8526553B1FBDB4050049C0C2 /* ServiceApiImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceApiImpl.swift; sourceTree = "<group>"; };
 		8534CF631FD6CA9300A7C7F5 /* ServiceApiTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceApiTest.swift; sourceTree = "<group>"; };
+		859282471FD77D64004B7046 /* AppDelegateModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegateModule.swift; sourceTree = "<group>"; };
 		85DC74081FBA87CD00BACD4D /* ReactiveArchitecture.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReactiveArchitecture.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		85DC740B1FBA87CD00BACD4D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		85DC740D1FBA87CD00BACD4D /* NowPlayingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingViewController.swift; sourceTree = "<group>"; };
@@ -129,6 +131,14 @@
 				8526553B1FBDB4050049C0C2 /* ServiceApiImpl.swift */,
 			);
 			path = service;
+			sourceTree = "<group>";
+		};
+		859282461FD77D2C004B7046 /* dip */ = {
+			isa = PBXGroup;
+			children = (
+				859282471FD77D64004B7046 /* AppDelegateModule.swift */,
+			);
+			path = dip;
 			sourceTree = "<group>";
 		};
 		85DC73FF1FBA87CD00BACD4D = {
@@ -204,6 +214,7 @@
 		85DC743B1FBA88DE00BACD4D /* core */ = {
 			isa = PBXGroup;
 			children = (
+				859282461FD77D2C004B7046 /* dip */,
 				85ED0DDF1FCF39D800793B91 /* error */,
 				85DC743D1FBA88FB00BACD4D /* AppDelegate */,
 			);
@@ -592,6 +603,7 @@
 				85DC740E1FBA87CD00BACD4D /* NowPlayingViewController.swift in Sources */,
 				8526553A1FBD095F0049C0C2 /* ServiceApi.swift in Sources */,
 				85DC740C1FBA87CD00BACD4D /* AppDelegate.swift in Sources */,
+				859282481FD77D64004B7046 /* AppDelegateModule.swift in Sources */,
 				8526553C1FBDB4050049C0C2 /* ServiceApiImpl.swift in Sources */,
 				852655311FBBAA340049C0C2 /* NowPlayingTableViewController.swift in Sources */,
 				852655341FBCFDFC0049C0C2 /* Dates.swift in Sources */,
