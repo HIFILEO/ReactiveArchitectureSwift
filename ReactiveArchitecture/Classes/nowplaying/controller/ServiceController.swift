@@ -1,8 +1,8 @@
 //
-//  ServiceApi.swift
+//  ServiceController.swift
 //  ReactiveArchitecture
 //
-//  Created by leonardis on 11/15/17.
+//  Created by leonardis on 12/6/17.
 //  Copyright 2017 LEO LLC
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
@@ -20,24 +20,11 @@
 //  CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-
-import Foundation
 import RxSwift
 
 /**
- Service Protocal for IMDB.
+Controller that fetches movie information from a RESTFUL api service.
  */
-protocol ServiceApi {
-    
-    /**
-     Load "Now Playing" movies.
-     
-     -Parameter apiKey: API Key for accessing IMDB
-     -Parameter query: Map of optional data to send.
-     
-     -Returns: Observble<ServiceResponse>
-     */
-    func nowPlaying(apiKey: String, query:Dictionary<String, Int>) -> Observable<ServiceResponse>    
+protocol ServiceController {
+    func getNowPlaying(pageNumber: Int) -> Observable<NowPlayingInfo>
 }
-
-

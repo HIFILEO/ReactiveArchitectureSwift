@@ -1,8 +1,8 @@
 //
-//  ServiceApi.swift
+//  NowPlayingInfoImpl.swift
 //  ReactiveArchitecture
 //
-//  Created by leonardis on 11/15/17.
+//  Created by leonardis on 12/7/17.
 //  Copyright 2017 LEO LLC
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
@@ -22,22 +22,33 @@
 //
 
 import Foundation
-import RxSwift
 
-/**
- Service Protocal for IMDB.
- */
-protocol ServiceApi {
+class NowPlayingInfoImpl: NowPlayingInfo {
+    private var movieInfoList: Array<MovieInfo>
+    private var pageNumber: Int
+    private var totalPageNumber: Int
     
     /**
-     Load "Now Playing" movies.
-     
-     -Parameter apiKey: API Key for accessing IMDB
-     -Parameter query: Map of optional data to send.
-     
-     -Returns: Observble<ServiceResponse>
+     * Constructor.
+     * - parameter movieInfoList:
+     * - parameter pageNumber:
+     * - parameter totalPageNumber:
      */
-    func nowPlaying(apiKey: String, query:Dictionary<String, Int>) -> Observable<ServiceResponse>    
+    init(movieInfoList: Array<MovieInfo>, pageNumber: Int, totalPageNumber: Int) {
+        self.movieInfoList = movieInfoList
+        self.pageNumber = pageNumber
+        self.totalPageNumber = totalPageNumber
+    }
+    
+    func getMovies() -> Array<MovieInfo> {
+        return movieInfoList
+    }
+    
+    func getPageNumber() -> Int {
+        return pageNumber
+    }
+    
+    func getTotalPageNumber() -> Int {
+        return totalPageNumber
+    }
 }
-
-

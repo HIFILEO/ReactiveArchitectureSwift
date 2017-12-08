@@ -1,8 +1,8 @@
 //
-//  ReactiveArchitectureUITests.swift
-//  ReactiveArchitectureUITests
+//  RxSwiftTest.swift
+//  ReactiveArchitectureTests
 //
-//  Created by leonardis on 11/13/17.
+//  Created by leonardis on 12/8/17.
 //  Copyright 2017 LEO LLC
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
@@ -22,30 +22,39 @@
 //
 
 import XCTest
+import RxTest
+import RxSwift
+import RxBlocking
+import Hamcrest
+import AlamofireObjectMapper
+import ObjectMapper
+import CocoaLumberjack
 
-class ReactiveArchitectureUITests: XCTestCase {
-        
-    override func setUp() {
+/**
+ * Common base class for all RxSwift tests.
+ */
+public class RxSwiftTest : XCTestCase {
+    public var testScheduler:TestScheduler?
+    public var disboseBag:DisposeBag?
+    
+    override public func setUp() {
         super.setUp()
+        self.testScheduler = TestScheduler(initialClock: 0)
+        self.disboseBag = DisposeBag()
         
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        //Setup Logging
+        DDLog.add(DDTTYLogger.sharedInstance) // TTY = Xcode console
+        DDLog.add(DDASLLogger.sharedInstance) // ASL = Apple System Logs
         
-        // In UI tests it is usually best to stop immediately when a failure occurs.
-        continueAfterFailure = false
-        // UI tests must launch the application that they test. Doing this in setup will make sure it happens for each test method.
-        XCUIApplication().launch()
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
+        let fileLogger: DDFileLogger = DDFileLogger() // File Logger
+        fileLogger.rollingFrequency = TimeInterval(60*60*24)  // 24 hours
+        fileLogger.logFileManager.maximumNumberOfLogFiles = 7
+        DDLog.add(fileLogger)
     }
     
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    override public func tearDown() {
         super.tearDown()
-    }
-    
-    func testExample() {
-        // Use recording to get started writing UI tests.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        self.disboseBag = nil//by assigning to nil, we are forcing ARC to dispose of everything in the sack
     }
     
 }

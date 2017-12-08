@@ -1,8 +1,8 @@
 //
-//  ServiceApi.swift
+//  NowPlayingViewModel.swift
 //  ReactiveArchitecture
 //
-//  Created by leonardis on 11/15/17.
+//  Created by leonardis on 12/6/17.
 //  Copyright 2017 LEO LLC
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
@@ -22,22 +22,19 @@
 //
 
 import Foundation
-import RxSwift
 
 /**
- Service Protocal for IMDB.
+ * View interface to be implemented by the forward facing UI.
  */
-protocol ServiceApi {
+class NowPlayingViewModel {
+    var serviceController:ServiceController?
     
     /**
-     Load "Now Playing" movies.
-     
-     -Parameter apiKey: API Key for accessing IMDB
-     -Parameter query: Map of optional data to send.
-     
-     -Returns: Observble<ServiceResponse>
+     Constructor.
+     -Parameter baseUrl: Base url for requests from service.
      */
-    func nowPlaying(apiKey: String, query:Dictionary<String, Int>) -> Observable<ServiceResponse>    
+    init(serviceController: ServiceController) {
+        self.serviceController = serviceController
+    }
+    
 }
-
-

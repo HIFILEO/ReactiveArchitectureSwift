@@ -29,6 +29,7 @@ target 'ReactiveArchitecture' do
     pod 'Alamofire', '~> 4.5.1'
     pod 'RxAlamofire'
     pod 'AlamofireObjectMapper', '~> 5.0'
+    pod 'CocoaLumberjack/Swift' 
     
     # Pods for testing
     pod 'RxBlocking', '~> 4.0'

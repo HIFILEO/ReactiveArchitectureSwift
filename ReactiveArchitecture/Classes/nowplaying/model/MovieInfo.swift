@@ -1,8 +1,8 @@
 //
-//  ServiceApi.swift
+//  MovieInfo.swift
 //  ReactiveArchitecture
 //
-//  Created by leonardis on 11/15/17.
+//  Created by leonardis on 12/6/17.
 //  Copyright 2017 LEO LLC
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
@@ -20,24 +20,14 @@
 //  CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-
 import Foundation
-import RxSwift
 
-/**
- Service Protocal for IMDB.
- */
-protocol ServiceApi {
+protocol MovieInfo {
+    func getPictureUrl() -> String
     
-    /**
-     Load "Now Playing" movies.
-     
-     -Parameter apiKey: API Key for accessing IMDB
-     -Parameter query: Map of optional data to send.
-     
-     -Returns: Observble<ServiceResponse>
-     */
-    func nowPlaying(apiKey: String, query:Dictionary<String, Int>) -> Observable<ServiceResponse>    
+    func getTitle() -> String
+    
+    func getReleaseDate() -> Date
+    
+    func getRating() -> Double
 }
-
-
