@@ -1,8 +1,8 @@
 //
-//  NowPlayingViewModel.swift
+//  File.swift
 //  ReactiveArchitecture
 //
-//  Created by leonardis on 12/6/17.
+//  Created by leonardis on 12/14/17.
 //  Copyright 2017 LEO LLC
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
@@ -19,31 +19,12 @@
 //  PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
 //  CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
 
 import Foundation
-import CocoaLumberjack
 
 /**
- * View interface to be implemented by the forward facing UI.
+ Custom Error
  */
-class NowPlayingViewModel {
-    var serviceController:ServiceController?
-    
-    /**
-     Constructor.
-     -Parameter baseUrl: Base url for requests from service.
-     */
-    init(serviceController: ServiceController) {
-        self.serviceController = serviceController
-    }
-    
-    /**
-     * Process events from the UI.
-     * @param uiEvent - {@link UiEvent}
-     */
-    func processUiEvent(uiEvent:UiEvent) -> Void {
-        DDLogInfo("Thread name: " + Thread.current.name! + " Process UiEvent");
-    }
-    
+enum RunTimeError : Error {
+    case RuntimeError(String)
 }

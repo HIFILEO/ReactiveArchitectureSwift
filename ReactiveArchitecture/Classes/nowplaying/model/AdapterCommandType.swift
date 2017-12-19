@@ -1,8 +1,8 @@
 //
-//  NowPlayingViewModel.swift
+//  AdapterCommandType.swift
 //  ReactiveArchitecture
 //
-//  Created by leonardis on 12/6/17.
+//  Created by leonardis on 12/14/17.
 //  Copyright 2017 LEO LLC
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
@@ -22,28 +22,12 @@
 //
 
 import Foundation
-import CocoaLumberjack
 
 /**
- * View interface to be implemented by the forward facing UI.
+ * Command Types.
  */
-class NowPlayingViewModel {
-    var serviceController:ServiceController?
-    
-    /**
-     Constructor.
-     -Parameter baseUrl: Base url for requests from service.
-     */
-    init(serviceController: ServiceController) {
-        self.serviceController = serviceController
-    }
-    
-    /**
-     * Process events from the UI.
-     * @param uiEvent - {@link UiEvent}
-     */
-    func processUiEvent(uiEvent:UiEvent) -> Void {
-        DDLogInfo("Thread name: " + Thread.current.name! + " Process UiEvent");
-    }
-    
+enum AdapterCommandType {
+    case DO_NOTHING
+    case ADD_DATA
+    case SHOW_IN_PROGRESS
 }

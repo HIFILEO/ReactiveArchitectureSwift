@@ -22,15 +22,19 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class NowPlayingTableViewController: UITableViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+       
+
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-
+        
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
@@ -40,6 +44,45 @@ class NowPlayingTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    // MARK: - Public Methods
+    
+    /**
+     Add passed in list to table view
+     Parameters: listToAdd - list to add
+    */
+    func addAll(listToAdd: Array<MovieViewInfo>) -> Void {
+        
+    }
+
+    /**
+     Add passed in value to table view
+     Parameters: listToAdd - list to add
+     */
+    func add(listToAdd: Array<MovieViewInfo>?) -> Void {
+        
+    }
+    
+    /**
+     * Add a list of {@link MovieViewInfo} to the current adapter.
+     *
+     * Parameters: movieViewInfoList - list to add
+     */
+    func addList(listToAdd: Array<MovieViewInfo>) -> Void {
+        
+    }
+    
+    func getItemCount() -> Int {
+        return 0
+    }
+    
+    func getItem(position: Int) -> MovieViewInfo? {
+        return nil
+    }
+    
+    func remove(remove: MovieViewInfo) -> Void {
+        
+    }
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -107,4 +150,8 @@ class NowPlayingTableViewController: UITableViewController {
     }
     */
 
+}
+
+protocol LoadMoreListener {
+    func loadMore() -> Void
 }

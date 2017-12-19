@@ -31,7 +31,7 @@ class TestResourceFileHelper {
     Custom Error
     */
     enum TestError : Error {
-        case RuntimeError(String)
+        case TestRuntimeError(String)
     }
     
     /**
@@ -45,7 +45,7 @@ class TestResourceFileHelper {
     static func getFileContentsAsString(testClass: XCTestCase, fileName: String, fileType: String) throws -> String {
         let testBundle = Bundle(for: type(of: testClass))
         guard let path = testBundle.path(forResource: fileName, ofType: fileType) else {
-            throw TestError.RuntimeError("Failed to get JSON path for unit test")
+            throw TestError.TestRuntimeError("Failed to get JSON path for unit test")
         }
         
         return try String(contentsOfFile:path, encoding: String.Encoding.utf8)

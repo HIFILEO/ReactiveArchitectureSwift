@@ -1,8 +1,8 @@
 //
-//  NowPlayingViewModel.swift
+//  MovieCell.swift
 //  ReactiveArchitecture
 //
-//  Created by leonardis on 12/6/17.
+//  Created by leonardis on 12/14/17.
 //  Copyright 2017 LEO LLC
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
@@ -20,30 +20,26 @@
 //  CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+import UIKit
 
-import Foundation
-import CocoaLumberjack
+class MovieCell: UITableViewCell {
 
-/**
- * View interface to be implemented by the forward facing UI.
- */
-class NowPlayingViewModel {
-    var serviceController:ServiceController?
+    @IBOutlet weak var moviePosterImageView: UIImageView!
+    @IBOutlet weak var highRatingImageView: UIImageView!
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var releaseDateLabel: UILabel!
+    @IBOutlet weak var ratingLabel: UILabel!
     
-    /**
-     Constructor.
-     -Parameter baseUrl: Base url for requests from service.
-     */
-    init(serviceController: ServiceController) {
-        self.serviceController = serviceController
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
     }
-    
-    /**
-     * Process events from the UI.
-     * @param uiEvent - {@link UiEvent}
-     */
-    func processUiEvent(uiEvent:UiEvent) -> Void {
-        DDLogInfo("Thread name: " + Thread.current.name! + " Process UiEvent");
+
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+
+        // Configure the view for the selected state
     }
-    
+
 }

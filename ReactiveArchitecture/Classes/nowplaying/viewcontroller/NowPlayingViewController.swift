@@ -22,8 +22,23 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
+import CocoaLumberjack
 
 class NowPlayingViewController: UIViewController {
+    private var nowPlayingTableViewController: NowPlayingTableViewController?
+    private var tableView: UITableView?
+    private let disboseBag = DisposeBag()
+    private var scrollDisposable: Disposable?
+    private var pageNumber: Int?
+    
+    //
+    //UI Variables
+    //
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var containerView: UIView!
+    
     //
     //Injected Variables
     //
@@ -39,7 +54,143 @@ class NowPlayingViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    // MARK: - Navigation
+    
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let segueName = segue.identifier
+        if (segueName?.caseInsensitiveCompare("EmbedSegueContainer") == ComparisonResult.orderedSame) {
+            nowPlayingTableViewController = (segue.destination as! NowPlayingTableViewController)
+            tableView = nowPlayingTableViewController!.tableView
+        }
+     }
+    
+    // MARK: - Private Methods
+    
+    /**
+     * Bind to scroll events.
+     */
+    private func bindToScrollEvent() -> Void {
+        //
+        //Guard
+        //
+        if (scrollDisposable != nil) {
+            return;
+        }
+        
+        //
+        //Bind
+        //
+        scrollDisposable = self.tableView!.rx.didScroll
+            .flatMap{ scrollView -> Observable<ScrollEvent> in
+                let scrollEventCalculator:ScrollEventCalculator = ScrollEventCalculator.init(scrollView: self.tableView!)
 
+                //Only handle 'is at end' of list scroll events
+                if (scrollEventCalculator.isAtScrollEnd()) {
+                    let scrollEvent: ScrollEvent = ScrollEvent.init(pageNumber: 0)
 
+                    return Observable.just(scrollEvent)
+                } else {
+                    return Observable.empty()
+                }
+            }
+            //Filter any multiple events before 250MS
+            .throttle(0.250, scheduler: MainScheduler.instance)
+            .subscribe(onNext: { scrollEvent in
+                self.nowPlayingViewModel?.processUiEvent(uiEvent: scrollEvent)
+            }, onError: {(error) in
+                let errorMsg: String = "Errors in scroll event unsupported. Crash app:" + error.localizedDescription
+                
+                //Note - you can't throw another error in swift. You have to 'terminate' app. Meh
+                DDLogError(errorMsg)
+                fatalError(errorMsg)
+            })
+        disboseBag.insert(scrollDisposable!)
+    }
+    
+    /**
+     * Unbind from scroll events.
+     */
+    private func unbindFromScrollEvent() -> Void {
+        if (scrollDisposable != nil) {
+            scrollDisposable?.dispose()
+        }
+        scrollDisposable = nil
+    }
+    
+    /**
+     * Bind to {@link UiModel}.
+     * Parameter: uiModel - the {@link UiModel} from {@link NowPlayingViewModel} that backs the UI.
+     */
+    private func processUiModel(uiModel: UiModel) -> Void {
+        /*
+         Note - Keep the logic here as SIMPLE as possible.
+         */
+        DDLogInfo("Thread name: " + Thread.current.name! + "  Update UI based on UiModel")
+        
+        //
+        //Update progressBar
+        //
+        activityIndicator.stopAnimating()
+        
+        //
+        //Update page number
+        //
+        pageNumber = uiModel.pageNumber
+        
+        //
+        //Scroll Listener
+        //
+        if (uiModel.enableScrollListener) {
+            bindToScrollEvent()
+        } else {
+            unbindFromScrollEvent()
+        }
+        
+        //
+        //Update adapter
+        //
+        if (self.nowPlayingTableViewController!.tableView.isHidden) {
+            
+            //Process last adapter command
+            if (uiModel.adapterCommandType == AdapterCommandType.ADD_DATA) {
+                nowPlayingTableViewController!.addAll(listToAdd: uiModel.resultList!)
+            } else if (uiModel.adapterCommandType == AdapterCommandType.SHOW_IN_PROGRESS) {
+                nowPlayingTableViewController?.add(listToAdd: nil)
+            }
+            
+            //make table visible
+            self.nowPlayingTableViewController!.tableView.isHidden = false
+            
+            //Trigger first load
+            let scrollEvent: ScrollEvent = ScrollEvent.init(pageNumber: self.pageNumber! + 1)
+            nowPlayingViewModel?.processUiEvent(uiEvent: scrollEvent)
+        } else {
+            if (uiModel.adapterCommandType == AdapterCommandType.ADD_DATA) {
+                DDLogInfo("Thread name: " + Thread.current.name! + "  Add adapter data on UiModel")
+                //Remove Nill Spinner
+                if (nowPlayingTableViewController!.getItemCount() > 0) {
+                    nowPlayingTableViewController?.remove(remove:
+                        nowPlayingTableViewController!.getItem(position: nowPlayingTableViewController!.getItemCount() - 1)!)
+                }
+                
+                //Add Data
+                nowPlayingTableViewController!.addList(listToAdd: uiModel.resultList!)
+            } else if (uiModel.adapterCommandType == AdapterCommandType.SHOW_IN_PROGRESS) {
+                //Add null to adapter. Null shows spinner in Adapter logic.
+                nowPlayingTableViewController?.add(listToAdd: nil)
+                
+                let indexPath = IndexPath.init(row: nowPlayingTableViewController!.getItemCount() - 1, section: 0)
+                self.tableView!.scrollToRow(at: indexPath, at: .top, animated: true)
+            }
+        }
+        
+        //
+        //Error Messages
+        //
+//        if (uiModel.getFailureMsg() != null && !uiModel.getFailureMsg().isEmpty()) {
+//            Toast.makeText(NowPlayingActivity.this, R.string.error_msg, Toast.LENGTH_LONG).show();
+//        }
+    }
 }
 

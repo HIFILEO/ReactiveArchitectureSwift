@@ -25,21 +25,27 @@
                                     <navigationItem title="Now Playing" id="hg0-Tu-VSG"/>
                                 </items>
                             </navigationBar>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jZ0-Mq-n4Y">
+                            <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jZ0-Mq-n4Y">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <connections>
                                     <segue destination="Qtx-SR-S0Z" kind="embed" id="XkS-bn-ZsN"/>
                                 </connections>
                             </containerView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="tst-xe-AUe">
+                                <rect key="frame" x="169" y="315" width="37" height="37"/>
+                                <color key="color" red="0.18823529410000001" green="0.2470588235" blue="0.62352941179999999" alpha="1" colorSpace="calibratedRGB"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="tst-xe-AUe" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="Lhg-AN-jYx"/>
                             <constraint firstItem="5iV-NA-GwE" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="Tzt-cu-OyH"/>
                             <constraint firstItem="jZ0-Mq-n4Y" firstAttribute="top" secondItem="5iV-NA-GwE" secondAttribute="bottom" id="YHV-aX-kNt"/>
                             <constraint firstItem="5iV-NA-GwE" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Zcg-eB-Hac"/>
                             <constraint firstItem="jZ0-Mq-n4Y" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="fsY-HP-Say"/>
                             <constraint firstItem="jZ0-Mq-n4Y" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="jYF-XY-vf7"/>
                             <constraint firstItem="5iV-NA-GwE" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="laa-rQ-M9L"/>
+                            <constraint firstItem="tst-xe-AUe" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="leg-UT-EM5"/>
                             <constraint firstItem="jZ0-Mq-n4Y" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="zlb-9y-bPO"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -48,6 +54,10 @@
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="dipTag" value="NowPlayingVC"/>
                     </userDefinedRuntimeAttributes>
+                    <connections>
+                        <outlet property="activityIndicator" destination="tst-xe-AUe" id="X0C-xy-Uhf"/>
+                        <outlet property="containerView" destination="jZ0-Mq-n4Y" id="zD3-1I-Rtu"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

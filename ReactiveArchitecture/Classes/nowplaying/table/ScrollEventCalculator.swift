@@ -1,8 +1,8 @@
 //
-//  NowPlayingViewModel.swift
+//  ScrollEventCalculator.swift
 //  ReactiveArchitecture
 //
-//  Created by leonardis on 12/6/17.
+//  Created by leonardis on 12/14/17.
 //  Copyright 2017 LEO LLC
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
@@ -22,28 +22,38 @@
 //
 
 import Foundation
-import CocoaLumberjack
+import UIKit
+
 
 /**
- * View interface to be implemented by the forward facing UI.
+ * Class for handling when {@link RecyclerView} hits the bottom of a scroll. Only works
+ * for {@link LinearLayoutManager}.
  */
-class NowPlayingViewModel {
-    var serviceController:ServiceController?
+class ScrollEventCalculator {
+    private let  scrollView: UIScrollView
     
-    /**
-     Constructor.
-     -Parameter baseUrl: Base url for requests from service.
-     */
-    init(serviceController: ServiceController) {
-        self.serviceController = serviceController
+    init(scrollView: UIScrollView) {
+        self.scrollView = scrollView
     }
     
     /**
-     * Process events from the UI.
-     * @param uiEvent - {@link UiEvent}
+     * Determine if the scroll event at the end of the recycler view.
+     * -Returns: true if at end of linear list recycler view, false otherwise.
      */
-    func processUiEvent(uiEvent:UiEvent) -> Void {
-        DDLogInfo("Thread name: " + Thread.current.name! + " Process UiEvent");
+    func isAtScrollEnd() -> Bool {
+        let offset = scrollView.contentOffset
+        let bounds = scrollView.bounds
+        let size = scrollView.contentSize
+        let inset = scrollView.contentInset
+        let y: Float = Float(offset.y) + Float(bounds.size.height) + Float(inset.bottom)
+        let height: Float = Float(size.height)
+        let distance: Float = 10
+        
+        if y > height + distance {
+            return true
+        }
+        
+        return false
     }
-    
+
 }
