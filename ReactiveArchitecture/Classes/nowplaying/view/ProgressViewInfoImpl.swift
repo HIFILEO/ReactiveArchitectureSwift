@@ -1,9 +1,9 @@
 //
-//  ScrollEvent.swift
+//  ProgressViewInfoImpl.swift
 //  ReactiveArchitecture
 //
-//  Created by leonardis on 12/14/17.
-//  Copyright 2017 LEO LLC
+//  Created by leonardis on 1/2/18.
+//  Copyright 2018 LEO LLC
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
 //  associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -21,13 +21,32 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import Foundation
+import UIKit
 
-class ScrollEvent : UiEvent {
-    public private(set) var pageNumber:Int
+/**
+ You cannot insert nil into generics. Therefore this class is used when tableivew should show
+ */
+class ProgressViewInfoImpl: MovieViewInfo {
     
-    init(pageNumber: Int) {
-        self.pageNumber = pageNumber
+    func getPictureUrl() -> String {
+        return ""
     }
     
+    func getTitle() -> String {
+        return ""
+    }
+    
+    func getReleaseDate() -> String {
+        return ""
+    }
+    
+    func getRating() -> String {
+        return ""
+    }
+    
+    func isHighRating() -> Bool {
+        return false
+    }
+    
+
 }

@@ -1,9 +1,9 @@
 //
-//  MovieViewInfo.swift
+//  AtomicInteger.swift
 //  ReactiveArchitecture
 //
-//  Created by leonardis on 12/14/17.
-//  Copyright 2017 LEO LLC
+//  Created by leonardis on 1/9/18.
+//  Copyright 2018 LEO LLC
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
 //  associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -24,12 +24,34 @@
 import Foundation
 
 /**
- * View representation of movie information. Used in tableview.
+ AtomicInteger based on:
+ https://stackoverflow.com/questions/30851339/how-do-i-atomically-increment-a-variable-in-swift
  */
-protocol MovieViewInfo {
-    func getPictureUrl() -> String
-    func getTitle() -> String
-    func getReleaseDate() -> String
-    func getRating() -> String
-    func isHighRating() -> String
+public class AtomicInteger {
+    private let lock = DispatchSemaphore(value: 1)
+    private var value = 0
+    
+    // You need to lock on the value when reading it too since
+    // there are no volatile variables in Swift as of today.
+    public func get() -> Int {
+        
+        lock.wait()
+        defer { lock.signal() }
+        return value
+    }
+    
+    public func set(_ newValue: Int) {
+        
+        lock.wait()
+        defer { lock.signal() }
+        value = newValue
+    }
+    
+    public func incrementAndGet() -> Int {
+        
+        lock.wait()
+        defer { lock.signal() }
+        value += 1
+        return value
+    }
 }

@@ -25,11 +25,12 @@ import UIKit
 import RxSwift
 import RxCocoa
 import CocoaLumberjack
+import Toast_Swift
 
 class NowPlayingViewController: UIViewController {
     private var nowPlayingTableViewController: NowPlayingTableViewController?
     private var tableView: UITableView?
-    private let disboseBag = DisposeBag()
+    private let compositeDisposable = CompositeDisposable()
     private var scrollDisposable: Disposable?
     private var pageNumber: Int?
     
@@ -47,9 +48,21 @@ class NowPlayingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        bind()
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        //Note - I'm manually unbinding when there is no visible screen. Need to use CompositeDisposable
+        //https://stackoverflow.com/questions/38969328/manually-disposing-a-disposebag-in-rxswift
+        compositeDisposable.dispose()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -67,6 +80,26 @@ class NowPlayingViewController: UIViewController {
     
     // MARK: - Private Methods
     
+    /**
+     * Bind to all data in {@link NowPlayingViewModel}.
+     */
+    private func bind() {
+        //
+        //Bind to UiModel
+        //
+       _ = compositeDisposable.insert(nowPlayingViewModel!.getUiModels()
+            .subscribe(onNext: { uiModel in
+                self.processUiModel(uiModel: uiModel)
+            }, onError: {(error) in
+                let errorMsg: String = "rrors from Model Unsupported:" + error.localizedDescription
+                
+                //Note - you can't throw another error in swift. You have to 'terminate' app. Meh
+                DDLogError(errorMsg)
+                fatalError(errorMsg)
+            })
+        )
+    }
+   
     /**
      * Bind to scroll events.
      */
@@ -105,7 +138,9 @@ class NowPlayingViewController: UIViewController {
                 DDLogError(errorMsg)
                 fatalError(errorMsg)
             })
-        disboseBag.insert(scrollDisposable!)
+        
+        //Note - ignore the returned result. I don't need to keep track of keys
+        _ = compositeDisposable.insert(scrollDisposable!)
     }
     
     /**
@@ -156,7 +191,7 @@ class NowPlayingViewController: UIViewController {
             if (uiModel.adapterCommandType == AdapterCommandType.ADD_DATA) {
                 nowPlayingTableViewController!.addAll(listToAdd: uiModel.resultList!)
             } else if (uiModel.adapterCommandType == AdapterCommandType.SHOW_IN_PROGRESS) {
-                nowPlayingTableViewController?.add(listToAdd: nil)
+                nowPlayingTableViewController?.add(itemToAdd: nil)
             }
             
             //make table visible
@@ -170,15 +205,15 @@ class NowPlayingViewController: UIViewController {
                 DDLogInfo("Thread name: " + Thread.current.name! + "  Add adapter data on UiModel")
                 //Remove Nill Spinner
                 if (nowPlayingTableViewController!.getItemCount() > 0) {
-                    nowPlayingTableViewController?.remove(remove:
+                    nowPlayingTableViewController?.remove(objectToRemove:
                         nowPlayingTableViewController!.getItem(position: nowPlayingTableViewController!.getItemCount() - 1)!)
                 }
                 
                 //Add Data
-                nowPlayingTableViewController!.addList(listToAdd: uiModel.resultList!)
+                nowPlayingTableViewController?.addAll(listToAdd: uiModel.resultList!)
             } else if (uiModel.adapterCommandType == AdapterCommandType.SHOW_IN_PROGRESS) {
-                //Add null to adapter. Null shows spinner in Adapter logic.
-                nowPlayingTableViewController?.add(listToAdd: nil)
+                //Add ProgressViewInfoImpl to table. ProgressViewInfoImpl shows spinner in table logic.
+                nowPlayingTableViewController?.add(itemToAdd: ProgressViewInfoImpl())
                 
                 let indexPath = IndexPath.init(row: nowPlayingTableViewController!.getItemCount() - 1, section: 0)
                 self.tableView!.scrollToRow(at: indexPath, at: .top, animated: true)
@@ -188,9 +223,10 @@ class NowPlayingViewController: UIViewController {
         //
         //Error Messages
         //
-//        if (uiModel.getFailureMsg() != null && !uiModel.getFailureMsg().isEmpty()) {
-//            Toast.makeText(NowPlayingActivity.this, R.string.error_msg, Toast.LENGTH_LONG).show();
-//        }
+        if (uiModel.failureMsg != nil && !uiModel.failureMsg!.isEmpty) {
+            self.view.makeToast(NSLocalizedString("error_msg", comment: ""))
+        }
     }
 }
+
 

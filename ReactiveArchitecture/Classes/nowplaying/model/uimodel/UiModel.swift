@@ -27,10 +27,10 @@ import Foundation
   * The model the UI will bind to.
   * Note - fields in this class should be immutable for "Scan" safety.
   */
-public class UiModel {
-    private(set) var firstTimeLoad:Bool?
+class UiModel {
+    private(set) var firstTimeLoad:Bool
     private(set) var failureMsg:String?
-    private(set) var pageNumber:Int?
+    private(set) var pageNumber:Int
     private(set) var enableScrollListener:Bool
     private var currentList:Array<MovieViewInfo>?
     private(set) var resultList:Array<MovieViewInfo>?
@@ -41,7 +41,7 @@ public class UiModel {
      * Note - this can't be a static final becuase you write espresso tests and you'll end up duplicating data.
      * Returns: - new UiModel in init state.
      */
-    static func initState() -> UiModel? {
+    static func initState() -> UiModel {
         return UiModel.init(firstTimeLoad: true,
                             failureMsg: nil,
                             pageNumber: 0,
@@ -92,7 +92,7 @@ public class UiModel {
      * @param fullList - latest full list that backs the adapter.
      * @return new UiModel
      */
-    static func inProgressState(firstTimeLoad:Bool, pageNumber:Int, fullList:Array<MovieViewInfo>) -> UiModel {
+    static func inProgressState(firstTimeLoad:Bool, pageNumber:Int, fullList:Array<MovieViewInfo>?) -> UiModel {
         return UiModel.init(firstTimeLoad: firstTimeLoad,
                             failureMsg: nil,
                             pageNumber: pageNumber,
@@ -112,7 +112,7 @@ public class UiModel {
         return arrayCopy
     }
 
-    private init(firstTimeLoad:Bool, failureMsg:String?, pageNumber:Int, enableScrollListener:Bool, currentList:Array<MovieViewInfo>?, resultList:Array<MovieViewInfo>?, adapterCommandType:AdapterCommandType) {
+    fileprivate init(firstTimeLoad:Bool, failureMsg:String?, pageNumber:Int, enableScrollListener:Bool, currentList:Array<MovieViewInfo>?, resultList:Array<MovieViewInfo>?, adapterCommandType:AdapterCommandType) {
         self.firstTimeLoad = firstTimeLoad
         self.failureMsg = failureMsg
         self.pageNumber = pageNumber
@@ -120,6 +120,106 @@ public class UiModel {
         self.currentList = currentList
         self.resultList = resultList
         self.adapterCommandType = adapterCommandType
+    }
+    
+    /**
+     * Too many state? Too many params in constructors? Call on the builder pattern to Save The Day!.
+     */
+    public class UiModelBuilder {
+        private let uiModel: UiModel?
+        
+        private var firstTimeLoad: Bool
+        private var failureMsg: String?
+        private var pageNumber: Int
+        private var enableScrollListener: Bool
+        private var currentList: Array<MovieViewInfo>?
+        private var resultList: Array<MovieViewInfo>?
+        private var adapterCommandType: AdapterCommandType
+        
+        /**
+         * Construct Builder using defaults from previous {@link UiModel}.
+         * @param uiModel - model for builder to use.
+         */
+        init(uiModel: UiModel) {
+            self.uiModel = uiModel
+            
+            self.firstTimeLoad = uiModel.firstTimeLoad
+            self.failureMsg = uiModel.failureMsg;
+            self.pageNumber = uiModel.pageNumber;
+            self.enableScrollListener = uiModel.enableScrollListener;
+            self.currentList = uiModel.getCurrentList();
+            self.resultList = uiModel.resultList;
+            self.adapterCommandType = uiModel.adapterCommandType;
+        }
+        
+        init() {
+            self.uiModel = nil
+            
+            //Note - annyoing but in Swfit you don't get primitive type defaults.
+            self.firstTimeLoad = false
+            self.pageNumber = 0
+            self.enableScrollListener = false
+            self.adapterCommandType = AdapterCommandType.DO_NOTHING
+        }
+        
+        /**
+         * Create the {@link UiModel} using the types in {@link UiModelBuilder}.
+         * @return new {@link UiModel}.
+         */
+        func createUiModel() -> UiModel {
+            if (currentList == nil) {
+                if (uiModel == nil) {
+                    currentList = Array<MovieViewInfo>()
+                } else {
+                    //shallow copy
+                    currentList = uiModel?.getCurrentList();
+                }
+            }
+            
+            return UiModel.init(
+                firstTimeLoad: self.firstTimeLoad,
+                failureMsg: self.failureMsg,
+                pageNumber: self.pageNumber,
+                enableScrollListener: self.enableScrollListener,
+                currentList: self.currentList,
+                resultList: self.resultList,
+                adapterCommandType: self.adapterCommandType)
+        }
+        
+        func setFirstTimeLoad(firstTimeLoad: Bool) -> UiModelBuilder {
+            self.firstTimeLoad = firstTimeLoad
+            return self
+        }
+        
+        func setFailureMsg(failureMsg: String) -> UiModelBuilder {
+            self.failureMsg = failureMsg
+            return self
+        }
+        
+        func setPageNumber(pageNumber: Int) -> UiModelBuilder {
+            self.pageNumber = pageNumber
+            return self
+        }
+
+        func setEnableScrollListener(enableScrollListener: Bool) -> UiModelBuilder {
+            self.enableScrollListener = enableScrollListener
+            return self
+        }
+        
+        func setCurrentList(currentList: Array<MovieViewInfo>) -> UiModelBuilder {
+            self.currentList = currentList
+            return self
+        }
+        
+        func setResultList(resultList: Array<MovieViewInfo>) -> UiModelBuilder {
+            self.resultList = resultList
+            return self
+        }
+        
+        func setAdapterCommandType(adapterCommandType: AdapterCommandType) -> UiModelBuilder {
+            self.adapterCommandType = adapterCommandType
+            return self
+        }
     }
 }
 

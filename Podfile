@@ -19,9 +19,13 @@ target 'ReactiveArchitecture' do
   pod 'Alamofire', '~> 4.5.1'
   pod 'RxAlamofire'
   pod 'AlamofireObjectMapper', '~> 5.0'
+  pod 'AlamofireImage', '~> 3.3'
 
   #Logging
-  pod 'CocoaLumberjack/Swift' 
+  pod 'CocoaLumberjack/Swift'
+  
+  #Toast (Android ability)
+  pod 'Toast-Swift', '~> 3.0.1'
 
   target 'ReactiveArchitectureTests' do
     inherit! :search_paths

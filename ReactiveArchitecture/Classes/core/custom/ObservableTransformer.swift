@@ -1,9 +1,9 @@
 //
-//  File.swift
+//  ObservableTransformer.swift
 //  ReactiveArchitecture
 //
-//  Created by leonardis on 12/14/17.
-//  Copyright 2017 LEO LLC
+//  Created by leonardis on 1/10/18.
+//  Copyright 2018 LEO LLC
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
 //  associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -19,12 +19,30 @@
 //  PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
 //  CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
+//https://gist.github.com/sgr-ksmt/c05cc1cf41a32b8b77e277394c29509a
 
 import Foundation
+import RxSwift
 
 /**
- Custom Error
+ RxSwift does not have a compose. They can easily create their own extension for streaming one type into another.
+ So this is a custom compose that allows for our ObservableTransformer to be reuseable in a file and not
+ a bunch of extensions
  */
-enum RunTimeError : Error {
-    case RuntimeError(String)
+struct ObservableTransformer<UpStream, Downstream> {
+    let transformer: (Observable<UpStream>) -> Observable<Downstream>
+    init(transformer: @escaping (Observable<UpStream>) -> Observable<Downstream>) {
+        self.transformer = transformer
+    }
+    
+    func call(_ observable: Observable<UpStream>) -> Observable<Downstream> {
+        return transformer(observable)
+    }
+}
+
+extension ObservableType {
+    func compose<T>(_ transformer: ObservableTransformer<E, T>) -> Observable<T> {
+        return transformer.call(self.asObservable())
+    }
 }

@@ -1,8 +1,8 @@
 //
-//  ScrollEvent.swift
+//  ArrayExtension.swift
 //  ReactiveArchitecture
 //
-//  Created by leonardis on 12/14/17.
+//  Created by leonardis on 12/19/17.
 //  Copyright 2017 LEO LLC
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
@@ -20,14 +20,26 @@
 //  CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-
 import Foundation
 
-class ScrollEvent : UiEvent {
-    public private(set) var pageNumber:Int
+extension Array {
     
-    init(pageNumber: Int) {
-        self.pageNumber = pageNumber
+    /**
+     Remove an {@linke:Element} from the array.
+     
+     Note - make sure the Element works with AnyObject otherwise the remove won't work. Ever. https://stackoverflow.com/questions/47897028/how-to-remove-a-protocol-from-array/47915561#47915561
+     
+     Parameters: element - element to remove
+     Returns: true when deleted, false otherwise.
+     */
+    mutating func removeObject(element: Element) {
+        guard let index = index(where: { $0 as AnyObject === element as AnyObject}) else { return }
+        remove(at: index)
     }
     
+    func indexOf(element: Element) -> Int {
+        guard let index = index(where: { $0 as AnyObject === element as AnyObject}) else { return -1 }
+        return index
+    }
 }
+

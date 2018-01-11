@@ -1,9 +1,9 @@
 //
-//  ScrollEvent.swift
+//  ScrollAction.swift
 //  ReactiveArchitecture
 //
-//  Created by leonardis on 12/14/17.
-//  Copyright 2017 LEO LLC
+//  Created by leonardis on 1/3/18.
+//  Copyright 2018 LEO LLC
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
 //  associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -23,11 +23,17 @@
 
 import Foundation
 
-class ScrollEvent : UiEvent {
-    public private(set) var pageNumber:Int
+/**
+ * Internal representation of {@link com.example.reactivearchitecture.model.event.ScrollEvent}.
+ */
+class ScrollAction : Action {
+    private var pageNumber:Int
     
     init(pageNumber: Int) {
         self.pageNumber = pageNumber
     }
     
+    func getPageNumber() -> Int {
+        return self.pageNumber
+    }
 }

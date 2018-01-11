@@ -23,12 +23,16 @@
 
 import Foundation
 import CocoaLumberjack
+import RxSwift
 
 /**
  * View interface to be implemented by the forward facing UI.
  */
 class NowPlayingViewModel {
-    var serviceController:ServiceController?
+    private var uiModelObservable:Observable<UiModel>?
+    private let serviceController:ServiceController
+    private let publishSubject:PublishSubject<UiEvent> = PublishSubject.init()
+    private var nowPlayingInteractor:NowPlayingInteractor?
     
     /**
      Constructor.
@@ -39,11 +43,100 @@ class NowPlayingViewModel {
     }
     
     /**
-     * Process events from the UI.
-     * @param uiEvent - {@link UiEvent}
+     Process events from the UI.
+     parameter uiEvent - 
      */
     func processUiEvent(uiEvent:UiEvent) -> Void {
         DDLogInfo("Thread name: " + Thread.current.name! + " Process UiEvent");
     }
     
+    /**
+     Get the observable holding the {@link UiModel}
+     returns: Observable<UiModel>
+    */
+    func getUiModels() -> Observable<UiModel> {
+        return uiModelObservable!
+    }
+    
+    /**
+     Initialize the ViewModel. Visible for testing.
+     */
+    func initialize() {
+        nowPlayingInteractor = NowPlayingInteractor.init(serviceController: self.serviceController)
+        bind()
+    }
+    
+    /**
+     Bind to {@link PublishRelay}
+    */
+    func bind() {
+        uiModelObservable = publishSubject
+            //Note - unlike android, there is no io or computation scheduler. Each must be redefined with a specific queue as per GCD.
+            .observeOn(ConcurrentDispatchQueueScheduler(queue: DispatchQueue.global()))
+            //Translate UiEvents into Actions
+            .flatMap{uiEvent -> Observable<Action> in
+                DDLogInfo("Thread name: " + Thread.current.name! + " Translate UiEvents into Actions");
+                let scrollAction:ScrollAction = ScrollAction.init(pageNumber: (uiEvent as! ScrollEvent).pageNumber)
+                return Observable.just(scrollAction)
+            }
+            //Asynchronous Actions To Interactor (Syntax: https://github.com/ReactiveX/RxSwift/issues/876)
+            .multicast({ () -> PublishSubject<Action> in
+                return PublishSubject<Action>()
+            }, selector: { actions -> Observable<Result> in
+                return (self.nowPlayingInteractor?.processAction(actions: actions))!
+            })
+            .scan(UiModel.initState()) { (uiModel: UiModel!, result: Result!) in
+                DDLogInfo("Thread name: " + Thread.current.name! + ". Scan Results to UiModel")
+
+                let scrollResult: ScrollResult = result as! ScrollResult
+
+                switch result.getType() {
+                case ResultType.IN_FLIGHT:
+                    return UiModel.inProgressState(firstTimeLoad: scrollResult.pageNumber == 1,
+                                                   pageNumber: scrollResult.pageNumber,
+                                                   fullList: uiModel.getCurrentList())
+                case ResultType.SUCCESS:
+                    let listToAdd: Array<MovieViewInfo>  = self.translateResultsForUi(movieInfoList: scrollResult.result!)
+                    var currentList: Array<MovieViewInfo> = uiModel.getCurrentList()!
+                    currentList.append(contentsOf: listToAdd)
+                case ResultType.FAILURE:
+                    DDLogError(scrollResult.error!.localizedDescription)
+                    return UiModel.failureState(
+                        pageNumber: scrollResult.pageNumber - 1,
+                        fullList: uiModel.getCurrentList()!,
+                        failureMsg: NSLocalizedString("R.string.error_msg", comment: ""))
+                }
+
+                throw AppError.RuntimeError("Unknown Result: " + String.init(describing: result.getType()))
+            }
+            //Publish results to main thread.
+            .observeOn(MainScheduler())
+            //Save history for late subscribers.
+            .replay(1)
+            /*
+             Refcount vs Autoconnect
+             Refcount unsubscribes from source when there are no active subscribers, while autoconnect remains connected. There is no
+             autoconnect in RxSwift so I created my own.
+             */
+            //http://akarnokd.blogspot.com/2015/10/operator-internals-autoconnect.html
+            .autoconnect()
+    }
+
+    // MARK: - Private Methods
+    
+    /**
+     * Translate internal business logic to presenter logic.
+     * @param movieInfoList - business list.
+     * @return - translated list ready for UI
+     */
+    private func translateResultsForUi(movieInfoList: Array<MovieInfo>) -> Array<MovieViewInfo> {
+        var movieViewInfoList = Array<MovieViewInfo>()
+        for movieInfo: MovieInfo in movieInfoList {
+            movieViewInfoList.append(MovieViewInfoImpl.init(movieInfo: movieInfo))
+        }
+        
+        return movieViewInfoList
+    }
 }
+
+

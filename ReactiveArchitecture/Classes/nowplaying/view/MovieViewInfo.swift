@@ -1,5 +1,5 @@
 //
-//  ScrollEvent.swift
+//  MovieViewInfo.swift
 //  ReactiveArchitecture
 //
 //  Created by leonardis on 12/14/17.
@@ -23,11 +23,13 @@
 
 import Foundation
 
-class ScrollEvent : UiEvent {
-    public private(set) var pageNumber:Int
-    
-    init(pageNumber: Int) {
-        self.pageNumber = pageNumber
-    }
-    
+/**
+ * View representation of movie information. Used in tableview.
+ */
+protocol MovieViewInfo: class {
+    func getPictureUrl() -> String
+    func getTitle() -> String
+    func getReleaseDate() -> String
+    func getRating() -> String
+    func isHighRating() -> Bool
 }
