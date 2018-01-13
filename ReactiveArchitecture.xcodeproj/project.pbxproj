@@ -29,6 +29,8 @@
 		850073AA200809F800E56A70 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8500738B1FFD1F3500E56A70 /* Action.swift */; };
 		850073AB200809FE00E56A70 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8500738F20001BED00E56A70 /* Result.swift */; };
 		850073AF2009571F00E56A70 /* TestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850073AE2009571F00E56A70 /* TestError.swift */; };
+		850073B4200A85AF00E56A70 /* ScrollEventCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EC961D1FE31903002B9B42 /* ScrollEventCalculator.swift */; };
+		850073B6200A87D700E56A70 /* ScrollEventCalculatorTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850073B5200A87D700E56A70 /* ScrollEventCalculatorTest.swift */; };
 		8521CE5E1FD82CAB002A01A2 /* NowPlayingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8521CE5D1FD82CAB002A01A2 /* NowPlayingViewModel.swift */; };
 		8521CE611FD8324E002A01A2 /* ServiceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8521CE601FD8324E002A01A2 /* ServiceController.swift */; };
 		8521CE641FD83571002A01A2 /* NowPlayingInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8521CE631FD83571002A01A2 /* NowPlayingInfo.swift */; };
@@ -123,6 +125,7 @@
 		8500739F2006DE0700E56A70 /* ObservableTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableTransformer.swift; sourceTree = "<group>"; };
 		850073A42007EF1B00E56A70 /* NowPlayingInteractorTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingInteractorTest.swift; sourceTree = "<group>"; };
 		850073AE2009571F00E56A70 /* TestError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestError.swift; sourceTree = "<group>"; };
+		850073B5200A87D700E56A70 /* ScrollEventCalculatorTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollEventCalculatorTest.swift; sourceTree = "<group>"; };
 		8521CE5D1FD82CAB002A01A2 /* NowPlayingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingViewModel.swift; sourceTree = "<group>"; };
 		8521CE601FD8324E002A01A2 /* ServiceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceController.swift; sourceTree = "<group>"; };
 		8521CE631FD83571002A01A2 /* NowPlayingInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingInfo.swift; sourceTree = "<group>"; };
@@ -238,6 +241,14 @@
 				850073A42007EF1B00E56A70 /* NowPlayingInteractorTest.swift */,
 			);
 			path = interactor;
+			sourceTree = "<group>";
+		};
+		850073B0200A63C300E56A70 /* table */ = {
+			isa = PBXGroup;
+			children = (
+				850073B5200A87D700E56A70 /* ScrollEventCalculatorTest.swift */,
+			);
+			path = table;
 			sourceTree = "<group>";
 		};
 		8521CE5C1FD82C49002A01A2 /* viewmodel */ = {
@@ -533,6 +544,7 @@
 				850073A32007EEC700E56A70 /* interactor */,
 				85EC960F1FDB1876002B9B42 /* rx */,
 				85ED0DE31FD043EA00793B91 /* service */,
+				850073B0200A63C300E56A70 /* table */,
 				8521CE761FD9E7DC002A01A2 /* util */,
 			);
 			path = nowplaying;
@@ -900,6 +912,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				850073B4200A85AF00E56A70 /* ScrollEventCalculator.swift in Sources */,
 				850073AB200809FE00E56A70 /* Result.swift in Sources */,
 				850073AA200809F800E56A70 /* Action.swift in Sources */,
 				850073A9200809E800E56A70 /* ScrollAction.swift in Sources */,
@@ -923,6 +936,7 @@
 				8534CF671FD6DCF900A7C7F5 /* ServiceResponse.swift in Sources */,
 				8534CF681FD6DCF900A7C7F5 /* ServiceApi.swift in Sources */,
 				85EC96111FDB1898002B9B42 /* RxSwiftTest.swift in Sources */,
+				850073B6200A87D700E56A70 /* ScrollEventCalculatorTest.swift in Sources */,
 				8534CF691FD6DCF900A7C7F5 /* ServiceApiImpl.swift in Sources */,
 				8534CF6A1FD6DCF900A7C7F5 /* APIError.swift in Sources */,
 				8534CF651FD6DAD100A7C7F5 /* Dates.swift in Sources */,

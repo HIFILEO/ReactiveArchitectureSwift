@@ -60,11 +60,6 @@ class NowPlayingInteractor {
                 
                 let sedrviceControllerObservable : Observable<Array<MovieInfo>> =
                     self.serviceController.getNowPlaying(pageNumber: scrollAction.getPageNumber())
-//                        .map{ data in
-//                            var scheduler = self.delayScheduler
-//                            DDLogInfo("Thread name: " + Thread.current.description + " About to sleep on thread:")
-//                            return data
-//                        }
                         //Delay for 3 seconds to show spinner on screen.
                         .delay(3, scheduler: self.delayScheduler)
                         //translate external to internal business logic (Example if we wanted to save to prefs)
