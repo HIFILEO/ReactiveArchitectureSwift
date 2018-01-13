@@ -29,10 +29,22 @@ import CocoaLumberjack
  * Interactor for Now Playing movies. Handles internal business logic interactions.
  */
 class NowPlayingInteractor {
+    fileprivate var delayScheduler: SchedulerType = ConcurrentDispatchQueueScheduler(queue: DispatchQueue.global())
     private let serviceController:ServiceController
     //becuase we init a self in a closure this can't be a let or w/o?
     private var transformActionToResult: ObservableTransformer<ScrollAction, ScrollResult>?
 
+    /**
+     Create class for test.
+     @param serviceController - Controller to fetch data from.
+     @param delayScheduler - test Scheduler
+     */
+    static func initForTest(serviceController: ServiceController, delayScheduler: SchedulerType) -> NowPlayingInteractor {
+        let nowPlayingInteractorForTest = NowPlayingInteractor.init(serviceController: serviceController)
+        nowPlayingInteractorForTest.delayScheduler = delayScheduler//MainScheduler.instance
+        return nowPlayingInteractorForTest
+    }
+    
     /**
      * Constructor.
      * @param serviceController - Controller to fetch data from.
@@ -41,18 +53,23 @@ class NowPlayingInteractor {
         self.serviceController = serviceController
         
         transformActionToResult = ObservableTransformer<ScrollAction, ScrollResult> { observable in
-            return observable.flatMap{ (scrollAction: ScrollAction) -> Observable<ScrollResult> in
-                DDLogInfo("Thread name: " + Thread.current.name! + " Load Data, return ScrollResult.")
+            return observable.flatMap{ (scrollAction: ScrollAction) -> Observable<ScrollResult> in                            
+                DDLogInfo("Thread name: " + Thread.current.description + " Load Data, return ScrollResult.")
                 
                 let pageNumberObservable : Observable<Int> = Observable.just(scrollAction.getPageNumber());
                 
                 let sedrviceControllerObservable : Observable<Array<MovieInfo>> =
                     self.serviceController.getNowPlaying(pageNumber: scrollAction.getPageNumber())
+//                        .map{ data in
+//                            var scheduler = self.delayScheduler
+//                            DDLogInfo("Thread name: " + Thread.current.description + " About to sleep on thread:")
+//                            return data
+//                        }
                         //Delay for 3 seconds to show spinner on screen.
-                        .delay(3, scheduler: ConcurrentDispatchQueueScheduler(queue: DispatchQueue.global()))
+                        .delay(3, scheduler: self.delayScheduler)
                         //translate external to internal business logic (Example if we wanted to save to prefs)
                         .flatMap { (nowPlayingInfo: NowPlayingInfo) -> Observable<Array<MovieInfo>> in
-                            DDLogInfo("Thread name: " + Thread.current.name! + " ranslate External Api Data into Business Internal Business Logic Data.")
+                            DDLogInfo("Thread name: " + Thread.current.description + " translate External Api Data into Business Internal Business Logic Data.")
                             return Observable.just(nowPlayingInfo.getMovies())
                         }
                 
@@ -79,7 +96,7 @@ class NowPlayingInteractor {
     func processAction(actions: Observable<Action>) -> Observable<Result> {
         return actions
             .flatMap{ (action: Action) -> Observable<ScrollAction> in
-                DDLogInfo("Thread name: " + Thread.current.name! + " Translate Actions into ScrollActions.")
+                DDLogInfo("Thread name: " + Thread.current.description + " Translate Actions into ScrollActions.")
                 return Observable.just(action as! ScrollAction);
             }
             .compose(self.transformActionToResult!)
