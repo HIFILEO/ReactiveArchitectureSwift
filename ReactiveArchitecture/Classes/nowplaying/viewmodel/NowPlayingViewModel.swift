@@ -53,7 +53,8 @@ class NowPlayingViewModel {
      parameter uiEvent - 
      */
     func processUiEvent(uiEvent:UiEvent) -> Void {
-        DDLogInfo("Thread name: " + Thread.current.name! + " Process UiEvent");
+        DDLogInfo("Thread name: " + Thread.current.name! + " Process UiEvent");        
+        publishSubject.onNext(uiEvent)
     }
     
     /**
@@ -108,9 +109,6 @@ class NowPlayingViewModel {
             }, selector: { actions -> Observable<Result> in
                 return (self.nowPlayingInteractor?.processAction(actions: actions))!
             })
-            .flatMap{ action -> Observable<Result> in
-                return Observable.empty()
-            }
             .scan(initialUiModel) { (uiModel: UiModel!, result: Result!) in
                 DDLogInfo("Thread name: " + Thread.current.name! + ". Scan Results to UiModel")
 
