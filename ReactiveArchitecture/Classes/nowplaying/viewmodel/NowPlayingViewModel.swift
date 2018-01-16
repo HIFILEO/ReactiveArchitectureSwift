@@ -123,6 +123,11 @@ class NowPlayingViewModel {
                     let listToAdd: Array<MovieViewInfo>  = self.translateResultsForUi(movieInfoList: scrollResult.result!)
                     var currentList: Array<MovieViewInfo> = uiModel.getCurrentList()!
                     currentList.append(contentsOf: listToAdd)
+                    
+                    return UiModel.successState(pageNumber: scrollResult.pageNumber,
+                                                fullList: currentList,
+                                                valuesToAdd: listToAdd)
+                    
                 case ResultType.FAILURE:
                     DDLogError(scrollResult.error!.localizedDescription)
                     return UiModel.failureState(
