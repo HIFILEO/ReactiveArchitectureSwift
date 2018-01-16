@@ -29,10 +29,13 @@ import RxSwift
  * View interface to be implemented by the forward facing UI.
  */
 class NowPlayingViewModel {
+    private let initialUiModel: UiModel = UiModel.initState()
     private var uiModelObservable:Observable<UiModel>?
     private let serviceController:ServiceController
     private let publishSubject:PublishSubject<UiEvent> = PublishSubject.init()
     private var nowPlayingInteractor:NowPlayingInteractor?
+    private var backgroundScheduler: SchedulerType?
+    private var mainScheduler: SchedulerType?
     
     /**
      Constructor.
@@ -40,6 +43,9 @@ class NowPlayingViewModel {
      */
     init(serviceController: ServiceController) {
         self.serviceController = serviceController
+        self.mainScheduler = self.createMainScheduler()
+        self.backgroundScheduler = self.createBackgroundScheduler()
+        initialize()
     }
     
     /**
@@ -62,8 +68,25 @@ class NowPlayingViewModel {
      Initialize the ViewModel. Visible for testing.
      */
     func initialize() {
-        nowPlayingInteractor = NowPlayingInteractor.init(serviceController: self.serviceController)
+        nowPlayingInteractor = createNowPlayingInteractor()
         bind()
+    }
+    
+    /**
+    * Creates now playing interactor 
+    * Visible for testing.
+    * Returns: NowPlayingInteractor
+    */
+    func createNowPlayingInteractor() -> NowPlayingInteractor {
+        return NowPlayingInteractorImpl.init(serviceController: self.serviceController)
+    }
+    
+    func createMainScheduler() -> SchedulerType {
+        return MainScheduler.instance
+    }
+    
+    func createBackgroundScheduler() -> SchedulerType {
+        return ConcurrentDispatchQueueScheduler(queue: DispatchQueue.global())
     }
     
     /**
@@ -72,7 +95,7 @@ class NowPlayingViewModel {
     func bind() {
         uiModelObservable = publishSubject
             //Note - unlike android, there is no io or computation scheduler. Each must be redefined with a specific queue as per GCD.
-            .observeOn(ConcurrentDispatchQueueScheduler(queue: DispatchQueue.global()))
+            .observeOn(backgroundScheduler!)
             //Translate UiEvents into Actions
             .flatMap{uiEvent -> Observable<Action> in
                 DDLogInfo("Thread name: " + Thread.current.name! + " Translate UiEvents into Actions");
@@ -85,7 +108,10 @@ class NowPlayingViewModel {
             }, selector: { actions -> Observable<Result> in
                 return (self.nowPlayingInteractor?.processAction(actions: actions))!
             })
-            .scan(UiModel.initState()) { (uiModel: UiModel!, result: Result!) in
+            .flatMap{ action -> Observable<Result> in
+                return Observable.empty()
+            }
+            .scan(initialUiModel) { (uiModel: UiModel!, result: Result!) in
                 DDLogInfo("Thread name: " + Thread.current.name! + ". Scan Results to UiModel")
 
                 let scrollResult: ScrollResult = result as! ScrollResult
@@ -109,8 +135,11 @@ class NowPlayingViewModel {
 
                 throw AppError.RuntimeError("Unknown Result: " + String.init(describing: result.getType()))
             }
+            //Note - scan in RxSwift does not emit the original seed like RxJava. Since we are using an autoconnect, it's suffice to
+            //start with the initial value. 
+            .startWith(initialUiModel)
             //Publish results to main thread.
-            .observeOn(MainScheduler())
+            .observeOn(mainScheduler!)
             //Save history for late subscribers.
             .replay(1)
             /*

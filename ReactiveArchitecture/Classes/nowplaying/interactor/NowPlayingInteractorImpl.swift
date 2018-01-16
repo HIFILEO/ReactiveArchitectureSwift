@@ -28,7 +28,7 @@ import CocoaLumberjack
 /**
  * Interactor for Now Playing movies. Handles internal business logic interactions.
  */
-class NowPlayingInteractor {
+class NowPlayingInteractorImpl: NowPlayingInteractor {
     fileprivate var delayScheduler: SchedulerType = ConcurrentDispatchQueueScheduler(queue: DispatchQueue.global())
     private let serviceController:ServiceController
     //becuase we init a self in a closure this can't be a let or w/o?
@@ -40,7 +40,7 @@ class NowPlayingInteractor {
      @param delayScheduler - test Scheduler
      */
     static func initForTest(serviceController: ServiceController, delayScheduler: SchedulerType) -> NowPlayingInteractor {
-        let nowPlayingInteractorForTest = NowPlayingInteractor.init(serviceController: serviceController)
+        let nowPlayingInteractorForTest = NowPlayingInteractorImpl.init(serviceController: serviceController)
         nowPlayingInteractorForTest.delayScheduler = delayScheduler//MainScheduler.instance
         return nowPlayingInteractorForTest
     }

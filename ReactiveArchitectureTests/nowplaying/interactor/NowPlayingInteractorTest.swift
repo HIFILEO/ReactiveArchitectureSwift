@@ -51,7 +51,9 @@ class NowPlayingInteractorTest: RxSwiftTest {
 
         mockServiceController = MockServiceController.init(returnValue: Observable.just(nowPlayingInfo))
         
-        let nowPlayingInteractor: NowPlayingInteractor = NowPlayingInteractor.initForTest(serviceController: mockServiceController!, delayScheduler: testScheduler!)
+        let nowPlayingInteractor: NowPlayingInteractor = NowPlayingInteractorImpl.initForTest(
+            serviceController: mockServiceController!,
+            delayScheduler: testScheduler!)
         
         //
         //Act
@@ -112,7 +114,9 @@ class NowPlayingInteractorTest: RxSwiftTest {
         
         mockServiceController = MockServiceController.init(returnValue: Observable.error(testError))
         
-        let nowPlayingInteractor: NowPlayingInteractor = NowPlayingInteractor.initForTest(serviceController: mockServiceController!, delayScheduler: testScheduler!)
+        let nowPlayingInteractor: NowPlayingInteractor = NowPlayingInteractorImpl.initForTest(
+            serviceController: mockServiceController!,
+            delayScheduler: testScheduler!)
         
         //
         //Act

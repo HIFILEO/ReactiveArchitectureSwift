@@ -45,9 +45,9 @@ class UiModel {
         return UiModel.init(firstTimeLoad: true,
                             failureMsg: nil,
                             pageNumber: 0,
-                            enableScrollListener: true,
+                            enableScrollListener: false,
                             currentList: Array(),
-                            resultList: Array(),
+                            resultList: nil,
                             adapterCommandType: AdapterCommandType.DO_NOTHING)
     }
     
