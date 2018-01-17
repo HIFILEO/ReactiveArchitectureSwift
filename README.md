@@ -20,7 +20,7 @@ The requirements for the app:
 4. As a user, while scrolling, keep loading "Now Playing" movies until you hit the last page.
 
 ### Demo
-<img align="center" src="doc/demo_single_scroll.gif" alt="Demo of the app."/>
+<img align="center" src="Doc/demo_single_scroll.gif" alt="Demo of the app."/>
 
 ### Rainy Day Scenario (Failure + Restore - Filter)
 <img align="center" src="doc/error_restore.gif" alt="Rainy Day Scenario"/>
@@ -41,7 +41,7 @@ Please review all documentation in **docs/**. The following summaries describe t
 
 | Name                                                                                          | Summary                                                     |
 | :--------------------------------------------------------------------------------------------:|:------------------------------------------------------------|
-| [AUTHORS.md](https://github.com/HIFILEO/ReactiveArchitectureSwift/blob/master/doc/AUTHORS.md)                | History of past and present contributors                    |
+| [AUTHORS.md](https://github.com/HIFILEO/ReactiveArchitectureSwift/blob/master/Doc/AUTHORS.md)                | History of past and present contributors                    |
 | [BUILDS.md](https://github.com/HIFILEO/ReactiveArchitectureSwift/blob/master/doc/BUILDS.md)                  | Description of official builds                              |
 | [DEPENDENCIES.md](https://github.com/HIFILEO/ReactiveArchitectureSwift/blob/master/doc/DEPENDENCIES.md)      | How to generate a list of all major third party dependencies|
 | [STYLE.md](https://github.com/HIFILEO/ReactiveArchitectureSwift/blob/master/doc/STYLE.md)                    | Description of Code Style and Static Analysis tools         |
