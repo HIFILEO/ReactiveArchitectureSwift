@@ -20,7 +20,7 @@ The requirements for the app:
 4. As a user, while scrolling, keep loading "Now Playing" movies until you hit the last page.
 
 ### Demo
-<img align="center" src="doc/demo_with_filter.gif" alt="Demo of the app."/>
+<img align="center" src="doc/demo_single_scroll.gif" alt="Demo of the app."/>
 
 ### Rainy Day Scenario (Failure + Restore - Filter)
 <img align="center" src="doc/error_restore.gif" alt="Rainy Day Scenario"/>
@@ -55,7 +55,7 @@ not an app for the google play store. There are no flavors.
 
 This project supports the following type of tests:
 
-TBD
+Unit Tests
 
 
 ### Standards
@@ -64,12 +64,12 @@ There are style standards in this app as examples of how to maintain clean code.
 
 #### Checkstyle
 
-TBD
+None
 
 
 #### Run All
 
-The following command works for
+N/A
 
 ## Resources
 
