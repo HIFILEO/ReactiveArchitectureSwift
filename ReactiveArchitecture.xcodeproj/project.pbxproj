@@ -81,6 +81,7 @@
 		8539ECB51FE331DE001D6295 /* AdapterCommandType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8539ECB41FE331DE001D6295 /* AdapterCommandType.swift */; };
 		8539ECC01FE9D6A1001D6295 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8539ECBD1FE9C4B5001D6295 /* ArrayExtension.swift */; };
 		854833C1200FC5660018CF21 /* demo_single_scroll.gif in Resources */ = {isa = PBXBuildFile; fileRef = 854833C0200FC5660018CF21 /* demo_single_scroll.gif */; };
+		854833C3200FCD780018CF21 /* mvvm_reactive_redux_architecture.png in Resources */ = {isa = PBXBuildFile; fileRef = 854833C2200FCD780018CF21 /* mvvm_reactive_redux_architecture.png */; };
 		859282481FD77D64004B7046 /* AppDelegateModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859282471FD77D64004B7046 /* AppDelegateModule.swift */; };
 		85DC740C1FBA87CD00BACD4D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DC740B1FBA87CD00BACD4D /* AppDelegate.swift */; };
 		85DC740E1FBA87CD00BACD4D /* NowPlayingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DC740D1FBA87CD00BACD4D /* NowPlayingViewController.swift */; };
@@ -167,6 +168,7 @@
 		8539ECB41FE331DE001D6295 /* AdapterCommandType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdapterCommandType.swift; sourceTree = "<group>"; };
 		8539ECBD1FE9C4B5001D6295 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		854833C0200FC5660018CF21 /* demo_single_scroll.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = demo_single_scroll.gif; sourceTree = "<group>"; };
+		854833C2200FCD780018CF21 /* mvvm_reactive_redux_architecture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mvvm_reactive_redux_architecture.png; sourceTree = "<group>"; };
 		859282471FD77D64004B7046 /* AppDelegateModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegateModule.swift; sourceTree = "<group>"; };
 		85DC74081FBA87CD00BACD4D /* ReactiveArchitecture.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReactiveArchitecture.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		85DC740B1FBA87CD00BACD4D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -496,6 +498,7 @@
 		85DC74421FBA8FC300BACD4D /* Doc */ = {
 			isa = PBXGroup;
 			children = (
+				854833C2200FCD780018CF21 /* mvvm_reactive_redux_architecture.png */,
 				854833C0200FC5660018CF21 /* demo_single_scroll.gif */,
 				85DC74431FBA8FE900BACD4D /* AUTHORS.md */,
 				85DC74451FBA8FFA00BACD4D /* BUILDS.md */,
@@ -733,6 +736,7 @@
 				85DC74441FBA8FE900BACD4D /* AUTHORS.md in Resources */,
 				85DC74481FBA908100BACD4D /* DEPENDENCIES in Resources */,
 				8521CE681FD8AD23002A01A2 /* Localizable.strings in Resources */,
+				854833C3200FCD780018CF21 /* mvvm_reactive_redux_architecture.png in Resources */,
 				85DC744A1FBA90AB00BACD4D /* STYLES.md in Resources */,
 				85DC74131FBA87CD00BACD4D /* Assets.xcassets in Resources */,
 				85DC74411FBA8ABB00BACD4D /* README.md in Resources */,
