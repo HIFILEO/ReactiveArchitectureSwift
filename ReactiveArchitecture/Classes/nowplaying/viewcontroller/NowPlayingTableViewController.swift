@@ -34,15 +34,11 @@ class NowPlayingTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-    
     }
-
-    // MARK: - Public Methods
     
     /**
      Add passed in list to table view with animation for each entry to add
@@ -54,7 +50,8 @@ class NowPlayingTableViewController: UITableViewController {
             
             let indexPath = IndexPath.init(row: self.objectList.count - 1, section: 0)
             let indexPathArray : [IndexPath] = [indexPath]
-            tableView.reloadRows(at:indexPathArray, with: UITableViewRowAnimation.left)
+            
+            tableView.insertRows(at: indexPathArray, with: UITableViewRowAnimation.left)
         }
     }
 
@@ -67,7 +64,7 @@ class NowPlayingTableViewController: UITableViewController {
         
         let indexPath = IndexPath.init(row: self.objectList.count - 1, section: 0)
         let indexPathArray : [IndexPath] = [indexPath]
-        tableView.reloadRows(at:indexPathArray, with: UITableViewRowAnimation.left)
+        tableView.insertRows(at: indexPathArray, with: UITableViewRowAnimation.left)
     }
     
     /**
@@ -84,7 +81,7 @@ class NowPlayingTableViewController: UITableViewController {
     Returns: MovieViewInfo at given position or nil
     */
     func getItem(position: Int) -> MovieViewInfo? {
-        if (objectList.count - 1 > position) {
+        if (objectList.count > position) {
             return objectList[position]
         } else {
             return nil
@@ -100,7 +97,7 @@ class NowPlayingTableViewController: UITableViewController {
         
         let indexPath = IndexPath.init(row: index, section: 0)
         let indexPathArray : [IndexPath] = [indexPath]
-        tableView.reloadRows(at:indexPathArray, with: UITableViewRowAnimation.left)
+        tableView.deleteRows(at: indexPathArray, with: UITableViewRowAnimation.left)
     }
     
     // MARK: - Table view data source
@@ -138,7 +135,8 @@ class NowPlayingTableViewController: UITableViewController {
             
             return movieCell
         } else {
-            let progressCell: ProgressCell = tableView.dequeueReusableCell(withIdentifier: "MovieCellIdentifier", for: indexPath) as! ProgressCell
+            let progressCell: ProgressCell = tableView.dequeueReusableCell(withIdentifier: "ProgressCellIdentifier", for: indexPath) as! ProgressCell
+            progressCell.progressActivityIndicatorView.startAnimating()
             return progressCell
         }
     }

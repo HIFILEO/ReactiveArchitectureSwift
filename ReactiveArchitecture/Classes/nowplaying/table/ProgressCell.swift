@@ -24,7 +24,8 @@
 import UIKit
 
 class ProgressCell: UITableViewCell {
-
+    @IBOutlet weak var progressActivityIndicatorView: UIActivityIndicatorView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

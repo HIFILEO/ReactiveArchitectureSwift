@@ -45,10 +45,10 @@ class ServiceControllerImpl : ServiceController {
     }
 
     func getNowPlaying(pageNumber: Int) -> Observable<NowPlayingInfo> {
-        DDLogInfo("Thread name: " + Thread.current.name! + " Get NowPlaying for Page #" + pageNumber.description);
+        DDLogInfo("Thread name: " + Thread.current.debugDescription + " Get NowPlaying for Page #" + pageNumber.description);
        
         var mapToSend:Dictionary<String, Int> = [String: Int]()
-        mapToSend["page"] = 1
+        mapToSend["page"] = pageNumber
         
         /*
          Notes - Load data from web on scheduler thread. Translate the web response to our
@@ -87,7 +87,7 @@ class ServiceControllerImpl : ServiceController {
         }
         
         func apply(serviceResonse: ServiceResponse) -> Observable<NowPlayingInfo> {
-            DDLogInfo("Thread name: " + Thread.current.name! + " for class" + String(describing: TranslateNowPlayingSubscriptionFunc.self))
+            DDLogInfo("Thread name: " + Thread.current.debugDescription + " for class" + String(describing: TranslateNowPlayingSubscriptionFunc.self))
             
             var movieInfoList = Array<MovieInfo>()
             

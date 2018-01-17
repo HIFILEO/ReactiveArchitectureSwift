@@ -14,7 +14,7 @@ There are two types of signing, build types, and product environments inside the
 
 **Debug** builds are intended to be used by the developers.
 They have debug enabled while signing with the standard debug keystore.
-They also have test coverage enabled for JACOCO reports. TODO
+
 These builds will also have developer tools integrated whenever possible.
 
 **Release** builds are intended to be published in the Android stores.

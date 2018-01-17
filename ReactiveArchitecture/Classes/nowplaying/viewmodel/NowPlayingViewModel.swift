@@ -53,7 +53,7 @@ class NowPlayingViewModel {
      parameter uiEvent - 
      */
     func processUiEvent(uiEvent:UiEvent) -> Void {
-        DDLogInfo("Thread name: " + Thread.current.name! + " Process UiEvent");        
+        DDLogInfo("Thread name: " + Thread.current.debugDescription + " Process UiEvent");
         publishSubject.onNext(uiEvent)
     }
     
@@ -99,7 +99,7 @@ class NowPlayingViewModel {
             .observeOn(backgroundScheduler!)
             //Translate UiEvents into Actions
             .flatMap{uiEvent -> Observable<Action> in
-                DDLogInfo("Thread name: " + Thread.current.name! + " Translate UiEvents into Actions");
+                DDLogInfo("Thread name: " + Thread.current.debugDescription + " Translate UiEvents into Actions");
                 let scrollAction:ScrollAction = ScrollAction.init(pageNumber: (uiEvent as! ScrollEvent).pageNumber)
                 return Observable.just(scrollAction)
             }
@@ -110,7 +110,7 @@ class NowPlayingViewModel {
                 return (self.nowPlayingInteractor?.processAction(actions: actions))!
             })
             .scan(initialUiModel) { (uiModel: UiModel!, result: Result!) in
-                DDLogInfo("Thread name: " + Thread.current.name! + ". Scan Results to UiModel")
+                DDLogInfo("Thread name: " + Thread.current.debugDescription + ". Scan Results to UiModel")
 
                 let scrollResult: ScrollResult = result as! ScrollResult
 

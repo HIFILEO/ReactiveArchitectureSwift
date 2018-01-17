@@ -54,7 +54,7 @@ class NowPlayingInteractorImpl: NowPlayingInteractor {
         
         transformActionToResult = ObservableTransformer<ScrollAction, ScrollResult> { observable in
             return observable.flatMap{ (scrollAction: ScrollAction) -> Observable<ScrollResult> in                            
-                DDLogInfo("Thread name: " + Thread.current.description + " Load Data, return ScrollResult.")
+                DDLogInfo("Thread name: " + Thread.current.debugDescription + " Load Data, return ScrollResult.")
                 
                 let pageNumberObservable : Observable<Int> = Observable.just(scrollAction.getPageNumber());
                 

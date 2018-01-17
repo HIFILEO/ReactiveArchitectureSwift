@@ -75,6 +75,7 @@ class NowPlayingViewController: UIViewController {
         if (segueName?.caseInsensitiveCompare("EmbedSegueContainer") == ComparisonResult.orderedSame) {
             nowPlayingTableViewController = (segue.destination as! NowPlayingTableViewController)
             tableView = nowPlayingTableViewController!.tableView
+            nowPlayingTableViewController!.tableView.isHidden = true
         }
      }
     
@@ -120,7 +121,7 @@ class NowPlayingViewController: UIViewController {
 
                 //Only handle 'is at end' of list scroll events
                 if (scrollEventCalculator.isAtScrollEnd()) {
-                    let scrollEvent: ScrollEvent = ScrollEvent.init(pageNumber: 0)
+                    let scrollEvent: ScrollEvent = ScrollEvent.init(pageNumber: self.pageNumber! + 1)
 
                     return Observable.just(scrollEvent)
                 } else {
@@ -161,26 +162,19 @@ class NowPlayingViewController: UIViewController {
         /*
          Note - Keep the logic here as SIMPLE as possible.
          */
-        DDLogInfo("Thread name: " + Thread.current.name! + "  Update UI based on UiModel")
+        DDLogInfo("Thread name: " + Thread.current.debugDescription + "  Update UI based on UiModel")
         
         //
         //Update progressBar
         //
-        activityIndicator.stopAnimating()
+        if (!uiModel.firstTimeLoad) {
+            activityIndicator.stopAnimating()
+        }
         
         //
         //Update page number
         //
         pageNumber = uiModel.pageNumber
-        
-        //
-        //Scroll Listener
-        //
-        if (uiModel.enableScrollListener) {
-            bindToScrollEvent()
-        } else {
-            unbindFromScrollEvent()
-        }
         
         //
         //Update adapter
@@ -202,11 +196,12 @@ class NowPlayingViewController: UIViewController {
             nowPlayingViewModel?.processUiEvent(uiEvent: scrollEvent)
         } else {
             if (uiModel.adapterCommandType == AdapterCommandType.ADD_DATA) {
-                DDLogInfo("Thread name: " + Thread.current.name! + "  Add adapter data on UiModel")
-                //Remove Nill Spinner
+                DDLogInfo("Thread name: " + Thread.current.debugDescription + "  Add adapter data on UiModel")
+                //Remove Spinner
                 if (nowPlayingTableViewController!.getItemCount() > 0) {
-                    nowPlayingTableViewController?.remove(objectToRemove:
-                        nowPlayingTableViewController!.getItem(position: nowPlayingTableViewController!.getItemCount() - 1)!)
+                    let positionToRemove: Int = nowPlayingTableViewController!.getItemCount() - 1
+                    let objectToRemove: MovieViewInfo = nowPlayingTableViewController!.getItem(position: positionToRemove)!
+                    nowPlayingTableViewController?.remove(objectToRemove:objectToRemove)
                 }
                 
                 //Add Data
@@ -225,6 +220,15 @@ class NowPlayingViewController: UIViewController {
         //
         if (uiModel.failureMsg != nil && !uiModel.failureMsg!.isEmpty) {
             self.view.makeToast(NSLocalizedString("error_msg", comment: ""))
+        }
+        
+        //
+        //Scroll Listener (iOS has to be done last so we don't trigger continuous loads)
+        //
+        if (uiModel.enableScrollListener) {
+            bindToScrollEvent()
+        } else {
+            unbindFromScrollEvent()
         }
     }
 }
