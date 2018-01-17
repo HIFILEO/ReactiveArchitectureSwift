@@ -22,12 +22,9 @@ The requirements for the app:
 ### Demo
 <img align="center" src="Doc/demo_single_scroll.gif" alt="Demo of the app."/>
 
-### Rainy Day Scenario (Failure + Restore - Filter)
-<img align="center" src="doc/error_restore.gif" alt="Rainy Day Scenario"/>
-
 The application architecture is as followed:
 
-![Alt text](/doc/mvvm_reactive_redux_architecture.png?raw=true "App MVVM Architecture")
+![Alt text](/Doc/mvvm_reactive_redux_architecture.png?raw=true "App MVVM Architecture")
 
 Note - the application packages are TYPE defined for ease of learning.
 
@@ -43,8 +40,8 @@ Please review all documentation in **docs/**. The following summaries describe t
 | :--------------------------------------------------------------------------------------------:|:------------------------------------------------------------|
 | [AUTHORS.md](https://github.com/HIFILEO/ReactiveArchitectureSwift/blob/master/Doc/AUTHORS.md)                | History of past and present contributors                    |
 | [BUILDS.md](https://github.com/HIFILEO/ReactiveArchitectureSwift/blob/master/Doc/BUILDS.md)                  | Description of official builds                              |
-| [DEPENDENCIES.md](https://github.com/HIFILEO/ReactiveArchitectureSwift/blob/master/Doc/DEPENDENCIES.md)      | How to generate a list of all major third party dependencies|
-| [STYLE.md](https://github.com/HIFILEO/ReactiveArchitectureSwift/blob/master/Doc/STYLE.md)                    | Description of Code Style and Static Analysis tools         |
+| [DEPENDENCIES.md](https://github.com/HIFILEO/ReactiveArchitectureSwift/blob/master/Doc/DEPENDENCIES)      | How to generate a list of all major third party dependencies|
+| [STYLE.md](https://github.com/HIFILEO/ReactiveArchitectureSwift/blob/master/Doc/STYLES.md)                    | Description of Code Style and Static Analysis tools         |
 
 ### Build Types and Flavors
 
