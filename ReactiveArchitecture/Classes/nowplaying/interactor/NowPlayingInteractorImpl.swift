@@ -30,7 +30,7 @@ import CocoaLumberjack
  */
 class NowPlayingInteractorImpl: NowPlayingInteractor {
     fileprivate var delayScheduler: SchedulerType = ConcurrentDispatchQueueScheduler(queue: DispatchQueue.global())
-    private let serviceController:ServiceController
+    private let serviceController: ServiceController
     //becuase we init a self in a closure this can't be a let or w/o?
     private var transformActionToResult: ObservableTransformer<ScrollAction, ScrollResult>?
 
@@ -53,12 +53,12 @@ class NowPlayingInteractorImpl: NowPlayingInteractor {
         self.serviceController = serviceController
         
         transformActionToResult = ObservableTransformer<ScrollAction, ScrollResult> { observable in
-            return observable.flatMap{ (scrollAction: ScrollAction) -> Observable<ScrollResult> in                            
+            observable.flatMap { (scrollAction: ScrollAction) -> Observable<ScrollResult> in                            
                 DDLogInfo("Thread name: " + Thread.current.debugDescription + " Load Data, return ScrollResult.")
                 
-                let pageNumberObservable : Observable<Int> = Observable.just(scrollAction.getPageNumber());
+                let pageNumberObservable: Observable<Int> = Observable.just(scrollAction.getPageNumber())
                 
-                let sedrviceControllerObservable : Observable<Array<MovieInfo>> =
+                let sedrviceControllerObservable: Observable<Array<MovieInfo>> =
                     self.serviceController.getNowPlaying(pageNumber: scrollAction.getPageNumber())
                         //Delay for 3 seconds to show spinner on screen.
                         .delay(3, scheduler: self.delayScheduler)
@@ -75,8 +75,8 @@ class NowPlayingInteractorImpl: NowPlayingInteractor {
                         return ScrollResult.sucess(pageNumber: pageNumber, result: movieInfos)
                     }
                     //RxJava - onErrorReturn
-                    .catchError{ (error: Error) -> Observable<ScrollResult> in
-                        return Observable.just(ScrollResult.failure(pageNumber: scrollAction.getPageNumber(), error: error))
+                    .catchError { (error: Error) -> Observable<ScrollResult> in
+                        Observable.just(ScrollResult.failure(pageNumber: scrollAction.getPageNumber(), error: error))
                     }
                     .startWith(ScrollResult.inFlight(pageNumber: scrollAction.getPageNumber()))
                 }
@@ -90,13 +90,13 @@ class NowPlayingInteractorImpl: NowPlayingInteractor {
      */
     func processAction(actions: Observable<Action>) -> Observable<Result> {
         return actions
-            .flatMap{ (action: Action) -> Observable<ScrollAction> in
+            .flatMap { (action: Action) -> Observable<ScrollAction> in
                 DDLogInfo("Thread name: " + Thread.current.description + " Translate Actions into ScrollActions.")
-                return Observable.just(action as! ScrollAction);
+                return Observable.just(action as! ScrollAction)
             }
             .compose(self.transformActionToResult!)
-            .flatMap{ (scrollResult: ScrollResult) -> Observable<Result> in
-                return Observable.just(scrollResult as Result)
+            .flatMap { (scrollResult: ScrollResult) -> Observable<Result> in
+                Observable.just(scrollResult as Result)
             }
     }
 

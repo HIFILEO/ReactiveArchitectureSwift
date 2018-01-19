@@ -1,4 +1,4 @@
- //
+//
 //  UiModel.swift
 //  ReactiveArchitecture
 //
@@ -28,13 +28,13 @@ import Foundation
   * Note - fields in this class should be immutable for "Scan" safety.
   */
 class UiModel {
-    private(set) var firstTimeLoad:Bool
-    private(set) var failureMsg:String?
-    private(set) var pageNumber:Int
-    private(set) var enableScrollListener:Bool
-    private var currentList:Array<MovieViewInfo>?
-    private(set) var resultList:Array<MovieViewInfo>?
-    private(set) var adapterCommandType:AdapterCommandType
+    private(set) var firstTimeLoad: Bool
+    private(set) var failureMsg: String?
+    private(set) var pageNumber: Int
+    private(set) var enableScrollListener: Bool
+    private var currentList: Array<MovieViewInfo>?
+    private(set) var resultList: Array<MovieViewInfo>?
+    private(set) var adapterCommandType: AdapterCommandType
 
     /**
      * Create init state.
@@ -58,7 +58,7 @@ class UiModel {
      * Parameters: valuesToAdd - values to add to adapter.
      * Returns: new UiModel
      */
-    static func successState(pageNumber:Int, fullList:Array<MovieViewInfo>, valuesToAdd:Array<MovieViewInfo>) -> UiModel {
+    static func successState(pageNumber: Int, fullList: Array<MovieViewInfo>, valuesToAdd: Array<MovieViewInfo>) -> UiModel {
         return UiModel.init(firstTimeLoad: false,
                             failureMsg: nil,
                             pageNumber: pageNumber,
@@ -75,7 +75,7 @@ class UiModel {
      * Parameters: failureMsg - failure message to show
      * Returns: new UiModel
      */
-    static func failureState(pageNumber:Int, fullList:Array<MovieViewInfo>, failureMsg:String) -> UiModel {
+    static func failureState(pageNumber: Int, fullList: Array<MovieViewInfo>, failureMsg: String) -> UiModel {
         return UiModel.init(firstTimeLoad: false,
                             failureMsg: failureMsg,
                             pageNumber: pageNumber,
@@ -92,7 +92,7 @@ class UiModel {
      * @param fullList - latest full list that backs the adapter.
      * @return new UiModel
      */
-    static func inProgressState(firstTimeLoad:Bool, pageNumber:Int, fullList:Array<MovieViewInfo>?) -> UiModel {
+    static func inProgressState(firstTimeLoad: Bool, pageNumber: Int, fullList: Array<MovieViewInfo>?) -> UiModel {
         return UiModel.init(firstTimeLoad: firstTimeLoad,
                             failureMsg: nil,
                             pageNumber: pageNumber,
@@ -112,7 +112,7 @@ class UiModel {
         return arrayCopy
     }
 
-    fileprivate init(firstTimeLoad:Bool, failureMsg:String?, pageNumber:Int, enableScrollListener:Bool, currentList:Array<MovieViewInfo>?, resultList:Array<MovieViewInfo>?, adapterCommandType:AdapterCommandType) {
+    fileprivate init(firstTimeLoad: Bool, failureMsg: String?, pageNumber: Int, enableScrollListener: Bool, currentList: Array<MovieViewInfo>?, resultList: Array<MovieViewInfo>?, adapterCommandType: AdapterCommandType) {
         self.firstTimeLoad = firstTimeLoad
         self.failureMsg = failureMsg
         self.pageNumber = pageNumber
@@ -144,12 +144,12 @@ class UiModel {
             self.uiModel = uiModel
             
             self.firstTimeLoad = uiModel.firstTimeLoad
-            self.failureMsg = uiModel.failureMsg;
-            self.pageNumber = uiModel.pageNumber;
-            self.enableScrollListener = uiModel.enableScrollListener;
-            self.currentList = uiModel.getCurrentList();
-            self.resultList = uiModel.resultList;
-            self.adapterCommandType = uiModel.adapterCommandType;
+            self.failureMsg = uiModel.failureMsg
+            self.pageNumber = uiModel.pageNumber
+            self.enableScrollListener = uiModel.enableScrollListener
+            self.currentList = uiModel.getCurrentList()
+            self.resultList = uiModel.resultList
+            self.adapterCommandType = uiModel.adapterCommandType
         }
         
         init() {
@@ -172,7 +172,7 @@ class UiModel {
                     currentList = Array<MovieViewInfo>()
                 } else {
                     //shallow copy
-                    currentList = uiModel?.getCurrentList();
+                    currentList = uiModel?.getCurrentList()
                 }
             }
             
@@ -222,4 +222,3 @@ class UiModel {
         }
     }
 }
-

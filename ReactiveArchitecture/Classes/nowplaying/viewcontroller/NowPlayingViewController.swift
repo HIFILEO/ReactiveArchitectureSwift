@@ -104,20 +104,20 @@ class NowPlayingViewController: UIViewController {
     /**
      * Bind to scroll events.
      */
-    private func bindToScrollEvent() -> Void {
+    private func bindToScrollEvent() {
         //
         //Guard
         //
         if (scrollDisposable != nil) {
-            return;
+            return
         }
         
         //
         //Bind
         //
         scrollDisposable = self.tableView!.rx.didScroll
-            .flatMap{ scrollView -> Observable<ScrollEvent> in
-                let scrollEventCalculator:ScrollEventCalculator = ScrollEventCalculator.init(scrollView: self.tableView!)
+            .flatMap { scrollView -> Observable<ScrollEvent> in
+                let scrollEventCalculator: ScrollEventCalculator = ScrollEventCalculator.init(scrollView: self.tableView!)
 
                 //Only handle 'is at end' of list scroll events
                 if (scrollEventCalculator.isAtScrollEnd()) {
@@ -147,7 +147,7 @@ class NowPlayingViewController: UIViewController {
     /**
      * Unbind from scroll events.
      */
-    private func unbindFromScrollEvent() -> Void {
+    private func unbindFromScrollEvent() {
         if (scrollDisposable != nil) {
             scrollDisposable?.dispose()
         }
@@ -158,7 +158,7 @@ class NowPlayingViewController: UIViewController {
      * Bind to {@link UiModel}.
      * Parameter: uiModel - the {@link UiModel} from {@link NowPlayingViewModel} that backs the UI.
      */
-    private func processUiModel(uiModel: UiModel) -> Void {
+    private func processUiModel(uiModel: UiModel) {
         /*
          Note - Keep the logic here as SIMPLE as possible.
          */
@@ -232,5 +232,3 @@ class NowPlayingViewController: UIViewController {
         }
     }
 }
-
-

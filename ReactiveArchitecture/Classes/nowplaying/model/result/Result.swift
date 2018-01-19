@@ -11,7 +11,7 @@ import Foundation
 /**
  * Base class for results from asynchronous actions.
  */
-protocol Result : class {
+protocol Result: class {
     
     func getType() -> ResultType
     

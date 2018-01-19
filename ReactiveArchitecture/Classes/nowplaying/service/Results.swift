@@ -39,7 +39,7 @@ class Results: Mappable {
     var video: Bool?
     var vote_average: Double?
     
-    required init?(map: Map){
+    required init?(map: Map) {
         
     }
     

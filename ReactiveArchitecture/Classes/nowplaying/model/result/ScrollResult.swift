@@ -40,7 +40,7 @@ class ScrollResult: Result {
                                  error: nil)
     }
 
-    public static func sucess(pageNumber: Int, result : Array<MovieInfo>) -> ScrollResult {
+    public static func sucess(pageNumber: Int, result: Array<MovieInfo>) -> ScrollResult {
         return ScrollResult.init(resultType: ResultType.SUCCESS,
                                  isSuccessful: true,
                                  isLoading: false,

@@ -30,10 +30,10 @@ import RxSwift
  */
 class NowPlayingViewModel {
     private let initialUiModel: UiModel = UiModel.initState()
-    private var uiModelObservable:Observable<UiModel>?
-    private let serviceController:ServiceController
-    private let publishSubject:PublishSubject<UiEvent> = PublishSubject.init()
-    private var nowPlayingInteractor:NowPlayingInteractor?
+    private var uiModelObservable: Observable<UiModel>?
+    private let serviceController: ServiceController
+    private let publishSubject: PublishSubject<UiEvent> = PublishSubject.init()
+    private var nowPlayingInteractor: NowPlayingInteractor?
     private var backgroundScheduler: SchedulerType?
     private var mainScheduler: SchedulerType?
     
@@ -52,8 +52,8 @@ class NowPlayingViewModel {
      Process events from the UI.
      parameter uiEvent - 
      */
-    func processUiEvent(uiEvent:UiEvent) -> Void {
-        DDLogInfo("Thread name: " + Thread.current.debugDescription + " Process UiEvent");
+    func processUiEvent(uiEvent: UiEvent) {
+        DDLogInfo("Thread name: " + Thread.current.debugDescription + " Process UiEvent")
         publishSubject.onNext(uiEvent)
     }
     
@@ -98,9 +98,9 @@ class NowPlayingViewModel {
             //Note - unlike android, there is no io or computation scheduler. Each must be redefined with a specific queue as per GCD.
             .observeOn(backgroundScheduler!)
             //Translate UiEvents into Actions
-            .flatMap{uiEvent -> Observable<Action> in
-                DDLogInfo("Thread name: " + Thread.current.debugDescription + " Translate UiEvents into Actions");
-                let scrollAction:ScrollAction = ScrollAction.init(pageNumber: (uiEvent as! ScrollEvent).pageNumber)
+            .flatMap {uiEvent -> Observable<Action> in
+                DDLogInfo("Thread name: " + Thread.current.debugDescription + " Translate UiEvents into Actions")
+                let scrollAction: ScrollAction = ScrollAction.init(pageNumber: (uiEvent as! ScrollEvent).pageNumber)
                 return Observable.just(scrollAction)
             }
             //Asynchronous Actions To Interactor (Syntax: https://github.com/ReactiveX/RxSwift/issues/876)
@@ -170,5 +170,3 @@ class NowPlayingViewModel {
         return movieViewInfoList
     }
 }
-
-

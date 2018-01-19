@@ -26,6 +26,6 @@ import Foundation
 /**
  * Internal representation of {@link com.example.reactivearchitecture.model.event.UiEvent}.
  */
-protocol Action : class {
+protocol Action: class {
     
 }

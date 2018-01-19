@@ -31,7 +31,7 @@ class ServiceResponse: Mappable {
     var total_pages: Int?
     var total_results: Int?
     
-    required init?(map: Map){
+    required init?(map: Map) {
         
     }
     

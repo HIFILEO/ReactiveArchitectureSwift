@@ -67,10 +67,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //DDLog.add(DDASLLogger.sharedInstance) // ASL = Apple System Logs
         
         let fileLogger: DDFileLogger = DDFileLogger() // File Logger
-        fileLogger.rollingFrequency = TimeInterval(60*60*24)  // 24 hours
+        fileLogger.rollingFrequency = TimeInterval(60 * 60 * 24)  // 24 hours
         fileLogger.logFileManager.maximumNumberOfLogFiles = 7
         DDLog.add(fileLogger)
     }
 
 }
-

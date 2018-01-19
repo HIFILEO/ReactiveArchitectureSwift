@@ -37,7 +37,5 @@ protocol ServiceApi {
      
      -Returns: Observble<ServiceResponse>
      */
-    func nowPlaying(apiKey: String, query:Dictionary<String, Int>) -> Observable<ServiceResponse>    
+    func nowPlaying(apiKey: String, query: Dictionary<String, Int>) -> Observable<ServiceResponse>    
 }
-
-

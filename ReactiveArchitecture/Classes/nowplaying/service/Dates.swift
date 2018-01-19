@@ -29,10 +29,10 @@ import ObjectMapper
  * https://developers.themoviedb.org/3/movies/get-now-playing
  */
 class Dates: Mappable {
-    var maximum:String?
-    var minimum:String?
+    var maximum: String?
+    var minimum: String?
     
-    required init?(map: Map){
+    required init?(map: Map) {
         
     }
     

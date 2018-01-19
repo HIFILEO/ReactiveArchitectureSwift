@@ -44,12 +44,12 @@ class NowPlayingTableViewController: UITableViewController {
      Add passed in list to table view with animation for each entry to add
      Parameters: listToAdd - list to add
     */
-    func addAll(listToAdd: Array<MovieViewInfo>!) -> Void {
+    func addAll(listToAdd: Array<MovieViewInfo>!) {
         for movieViewInfo: MovieViewInfo in listToAdd {
             objectList.append(movieViewInfo)
             
             let indexPath = IndexPath.init(row: self.objectList.count - 1, section: 0)
-            let indexPathArray : [IndexPath] = [indexPath]
+            let indexPathArray: [IndexPath] = [indexPath]
             
             tableView.insertRows(at: indexPathArray, with: UITableViewRowAnimation.left)
         }
@@ -59,11 +59,11 @@ class NowPlayingTableViewController: UITableViewController {
      Add passed in value to table view
      Parameters: listToAdd - list to add
      */
-    func add(itemToAdd: MovieViewInfo!) -> Void {
+    func add(itemToAdd: MovieViewInfo!) {
         objectList.append(itemToAdd!)
         
         let indexPath = IndexPath.init(row: self.objectList.count - 1, section: 0)
-        let indexPathArray : [IndexPath] = [indexPath]
+        let indexPathArray: [IndexPath] = [indexPath]
         tableView.insertRows(at: indexPathArray, with: UITableViewRowAnimation.left)
     }
     
@@ -91,12 +91,12 @@ class NowPlayingTableViewController: UITableViewController {
     /**
     Remove an item at a specific position.
     */
-    func remove(objectToRemove: MovieViewInfo) -> Void {
+    func remove(objectToRemove: MovieViewInfo) {
         let index = objectList.indexOf(element: objectToRemove)
         objectList.removeObject(element: objectToRemove)
         
         let indexPath = IndexPath.init(row: index, section: 0)
-        let indexPathArray : [IndexPath] = [indexPath]
+        let indexPathArray: [IndexPath] = [indexPath]
         tableView.deleteRows(at: indexPathArray, with: UITableViewRowAnimation.left)
     }
     
@@ -143,7 +143,5 @@ class NowPlayingTableViewController: UITableViewController {
 }
 
 protocol LoadMoreListener {
-    func loadMore() -> Void
+    func loadMore()
 }
-
-

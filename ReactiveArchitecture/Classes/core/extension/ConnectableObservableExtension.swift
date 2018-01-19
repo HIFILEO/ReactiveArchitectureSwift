@@ -27,7 +27,7 @@ import RxSwift
 extension ConnectableObservableType {
     func autoconnect() -> Observable<E> {
         return Observable.create { observer in
-            return self.do(onSubscribe: {
+            self.do(onSubscribe: {
                 _ = self.connect()
             }).subscribe { (event: Event<Self.E>) in
                 switch event {

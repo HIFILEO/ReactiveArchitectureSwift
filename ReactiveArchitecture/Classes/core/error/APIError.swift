@@ -26,7 +26,7 @@
 
 import Foundation
 
-public struct APIError : Error {
+public struct APIError: Error {
     
     /// The error code. In most cases, this is an error code returned by the API server. However, if the error code begins with "CLI" then it is a client-side error, e.g. something that prevented even getting a response from the server (such as, 'network not available').
     
@@ -46,7 +46,7 @@ public struct APIError : Error {
     /// Init an error the normal way, for an error condition returned by the API server.
     
     init(code: String?, message: String?) {
-        self.code    = code ?? "UNK0001" // copy what Go SDK does
+        self.code = code ?? "UNK0001" // copy what Go SDK does
         self.message = message ?? "unknown error"
         // FIXME: Mason 2016-03-06: the Go SDK has one more field, messageArgs, which is used to compose the actual message string, but I haven't yet had time to make that work. (See: api_error.go)
         

@@ -24,9 +24,9 @@
 import UIKit
 
 class MovieViewInfoImpl: MovieViewInfo {
-    private static let RATE_NUMBER_TO_STAR = 8;
+    private static let RATE_NUMBER_TO_STAR = 8
     private let dateFormatter = DateFormatter()
-    private let movieInfo:MovieInfo
+    private let movieInfo: MovieInfo
     
     init(movieInfo: MovieInfo) {
         self.movieInfo = movieInfo
