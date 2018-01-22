@@ -72,8 +72,9 @@ class NowPlayingViewController: UIViewController {
     
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let segueName = segue.identifier
-        if (segueName?.caseInsensitiveCompare("EmbedSegueContainer") == ComparisonResult.orderedSame) {
-            nowPlayingTableViewController = (segue.destination as! NowPlayingTableViewController)
+        if segueName?.caseInsensitiveCompare("EmbedSegueContainer") == .orderedSame,
+            let nowPlayingViewController = segue.destination as? NowPlayingTableViewController {
+            nowPlayingTableViewController = nowPlayingViewController
             tableView = nowPlayingTableViewController!.tableView
             nowPlayingTableViewController!.tableView.isHidden = true
         }
@@ -108,7 +109,7 @@ class NowPlayingViewController: UIViewController {
         //
         //Guard
         //
-        if (scrollDisposable != nil) {
+        guard scrollDisposable == nil else {
             return
         }
         
@@ -120,7 +121,7 @@ class NowPlayingViewController: UIViewController {
                 let scrollEventCalculator: ScrollEventCalculator = ScrollEventCalculator.init(scrollView: self.tableView!)
 
                 //Only handle 'is at end' of list scroll events
-                if (scrollEventCalculator.isAtScrollEnd()) {
+                if scrollEventCalculator.isAtScrollEnd() {
                     let scrollEvent: ScrollEvent = ScrollEvent.init(pageNumber: self.pageNumber! + 1)
 
                     return Observable.just(scrollEvent)
@@ -148,7 +149,7 @@ class NowPlayingViewController: UIViewController {
      * Unbind from scroll events.
      */
     private func unbindFromScrollEvent() {
-        if (scrollDisposable != nil) {
+        if scrollDisposable != nil {
             scrollDisposable?.dispose()
         }
         scrollDisposable = nil
@@ -167,7 +168,7 @@ class NowPlayingViewController: UIViewController {
         //
         //Update progressBar
         //
-        if (!uiModel.firstTimeLoad) {
+        if !uiModel.firstTimeLoad {
             activityIndicator.stopAnimating()
         }
         
@@ -179,12 +180,12 @@ class NowPlayingViewController: UIViewController {
         //
         //Update adapter
         //
-        if (self.nowPlayingTableViewController!.tableView.isHidden) {
+        if self.nowPlayingTableViewController!.tableView.isHidden {
             
             //Process last adapter command
-            if (uiModel.adapterCommandType == AdapterCommandType.ADD_DATA) {
+            if uiModel.adapterCommandType == .addData {
                 nowPlayingTableViewController!.addAll(listToAdd: uiModel.resultList!)
-            } else if (uiModel.adapterCommandType == AdapterCommandType.SHOW_IN_PROGRESS) {
+            } else if uiModel.adapterCommandType == .showInProgress {
                 nowPlayingTableViewController?.add(itemToAdd: nil)
             }
             
@@ -195,18 +196,18 @@ class NowPlayingViewController: UIViewController {
             let scrollEvent: ScrollEvent = ScrollEvent.init(pageNumber: self.pageNumber! + 1)
             nowPlayingViewModel?.processUiEvent(uiEvent: scrollEvent)
         } else {
-            if (uiModel.adapterCommandType == AdapterCommandType.ADD_DATA) {
+            if uiModel.adapterCommandType == .addData {
                 DDLogInfo("Thread name: " + Thread.current.debugDescription + "  Add adapter data on UiModel")
                 //Remove Spinner
-                if (nowPlayingTableViewController!.getItemCount() > 0) {
+                if nowPlayingTableViewController!.getItemCount() > 0 {
                     let positionToRemove: Int = nowPlayingTableViewController!.getItemCount() - 1
                     let objectToRemove: MovieViewInfo = nowPlayingTableViewController!.getItem(position: positionToRemove)!
-                    nowPlayingTableViewController?.remove(objectToRemove:objectToRemove)
+                    nowPlayingTableViewController?.remove(objectToRemove: objectToRemove)
                 }
                 
                 //Add Data
                 nowPlayingTableViewController?.addAll(listToAdd: uiModel.resultList!)
-            } else if (uiModel.adapterCommandType == AdapterCommandType.SHOW_IN_PROGRESS) {
+            } else if uiModel.adapterCommandType == .showInProgress {
                 //Add ProgressViewInfoImpl to table. ProgressViewInfoImpl shows spinner in table logic.
                 nowPlayingTableViewController?.add(itemToAdd: ProgressViewInfoImpl())
                 
@@ -218,14 +219,14 @@ class NowPlayingViewController: UIViewController {
         //
         //Error Messages
         //
-        if (uiModel.failureMsg != nil && !uiModel.failureMsg!.isEmpty) {
+        if uiModel.failureMsg != nil && !uiModel.failureMsg!.isEmpty {
             self.view.makeToast(NSLocalizedString("error_msg", comment: ""))
         }
         
         //
         //Scroll Listener (iOS has to be done last so we don't trigger continuous loads)
         //
-        if (uiModel.enableScrollListener) {
+        if uiModel.enableScrollListener {
             bindToScrollEvent()
         } else {
             unbindFromScrollEvent()

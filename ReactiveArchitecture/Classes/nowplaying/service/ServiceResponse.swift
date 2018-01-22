@@ -28,8 +28,8 @@ class ServiceResponse: Mappable {
     var page: Int?
     var results: [Results]?
     var dates: Dates?
-    var total_pages: Int?
-    var total_results: Int?
+    var totalPages: Int?
+    var totalResults: Int?
     
     required init?(map: Map) {
         
@@ -39,8 +39,8 @@ class ServiceResponse: Mappable {
         page <- map["page"]
         results <- map["results"]
         dates <- map["dates"]
-        total_pages <- map["total_pages"]
-        total_results <- map["total_results"]
+        totalPages <- map["total_pages"]
+        totalResults <- map["total_results"]
     }
     
 }

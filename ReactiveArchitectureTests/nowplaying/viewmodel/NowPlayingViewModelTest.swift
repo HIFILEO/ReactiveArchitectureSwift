@@ -79,7 +79,7 @@ class NowPlayingViewModelTest: RxSwiftTest {
         let uiModel: UiModel = testableObserver.events[0].value.element!
         assertThat(uiModel, not(nilValue()))
         assertThat(uiModel.firstTimeLoad == true)
-        assertThat(uiModel.adapterCommandType, equalTo(AdapterCommandType.DO_NOTHING))
+        assertThat(uiModel.adapterCommandType, equalTo(AdapterCommandType.doNothing))
         assertThat(uiModel.getCurrentList()!.count, equalTo(0))
         assertThat(uiModel.resultList, nilValue())
         assertThat(uiModel.failureMsg, nilValue())
@@ -124,7 +124,7 @@ class NowPlayingViewModelTest: RxSwiftTest {
         let uiModel: UiModel = testableObserver.events[1].value.element!
         assertThat(uiModel, not(nilValue()))
         assertThat(uiModel.firstTimeLoad == true)
-        assertThat(uiModel.adapterCommandType, equalTo(AdapterCommandType.DO_NOTHING))
+        assertThat(uiModel.adapterCommandType, equalTo(AdapterCommandType.doNothing))
         assertThat(uiModel.getCurrentList()!.count, equalTo(0))
         assertThat(uiModel.resultList, nilValue())
         assertThat(uiModel.failureMsg, nilValue())
@@ -184,7 +184,7 @@ class NowPlayingViewModelTest: RxSwiftTest {
         let uiModel: UiModel = testableObserver.events[2].value.element!
         assertThat(uiModel, not(nilValue()))
         assertThat(uiModel.firstTimeLoad == false)
-        assertThat(uiModel.adapterCommandType, equalTo(AdapterCommandType.ADD_DATA))
+        assertThat(uiModel.adapterCommandType, equalTo(AdapterCommandType.addData))
         assertThat(uiModel.getCurrentList()!.count, greaterThan(0))
         assertThat(uiModel.getCurrentList()!.count, equalTo(1))
         assertThat(uiModel.resultList!.count, greaterThan(0))

@@ -18,7 +18,7 @@ protocol Result: class {
 }
 
 enum ResultType {
-    case IN_FLIGHT
-    case SUCCESS
-    case FAILURE
+    case inFlight
+    case success
+    case failure
 }

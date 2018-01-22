@@ -93,17 +93,17 @@ class ServiceControllerImpl: ServiceController {
             
             for i: Int in 0 ... (serviceResonse.results!.count - 1) {
                 let movieInfo: MovieInfo = MovieInfoImpl.init(
-                    pictureUrl: imageUrlPath + serviceResonse.results![i].poster_path!,
+                    pictureUrl: imageUrlPath + serviceResonse.results![i].posterPath!,
                     title: serviceResonse.results![i].title!,
-                    releaseDate: dateFormatter.date(from: serviceResonse.results![i].release_date!)!,
-                    rating: serviceResonse.results![i].vote_average!)
+                    releaseDate: dateFormatter.date(from: serviceResonse.results![i].releaseDate!)!,
+                    rating: serviceResonse.results![i].voteAverage!)
                 
                 movieInfoList.append(movieInfo)
             }
     
             return Observable.just(NowPlayingInfoImpl.init(movieInfoList: movieInfoList,
                                                            pageNumber: serviceResonse.page!,
-                                                           totalPageNumber: serviceResonse.total_pages!))
+                                                           totalPageNumber: serviceResonse.totalPages!))
         }
         
     }

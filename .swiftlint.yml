@@ -50,6 +50,7 @@ excluded: # paths to ignore during linting. overridden by `included`.
   - Pods
   - .git
   - ReactiveArchitectureTests
+  - ReactiveArchitectureUITests
 
 line_length:
   - 160

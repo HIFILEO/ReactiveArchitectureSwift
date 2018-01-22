@@ -24,7 +24,7 @@
 import UIKit
 
 class MovieViewInfoImpl: MovieViewInfo {
-    private static let RATE_NUMBER_TO_STAR = 8
+    private static let rateNumberToStar = 8
     private let dateFormatter = DateFormatter()
     private let movieInfo: MovieInfo
     
@@ -50,7 +50,7 @@ class MovieViewInfoImpl: MovieViewInfo {
     }
     
     func isHighRating() -> Bool {
-        return lround(movieInfo.getRating()) >= MovieViewInfoImpl.RATE_NUMBER_TO_STAR
+        return lround(movieInfo.getRating()) >= MovieViewInfoImpl.rateNumberToStar
     }
     
 

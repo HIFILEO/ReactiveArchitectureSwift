@@ -90,9 +90,11 @@ class NowPlayingInteractorImpl: NowPlayingInteractor {
      */
     func processAction(actions: Observable<Action>) -> Observable<Result> {
         return actions
-            .flatMap { (action: Action) -> Observable<ScrollAction> in
+            .map { $0 as? ScrollAction }
+            .ignoreNil()
+            .flatMap { action -> Observable<ScrollAction> in
                 DDLogInfo("Thread name: " + Thread.current.description + " Translate Actions into ScrollActions.")
-                return Observable.just(action as! ScrollAction)
+                return Observable.just(action)
             }
             .compose(self.transformActionToResult!)
             .flatMap { (scrollResult: ScrollResult) -> Observable<Result> in

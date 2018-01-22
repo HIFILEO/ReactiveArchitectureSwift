@@ -87,7 +87,7 @@ class NowPlayingInteractorTest: RxSwiftTest {
         TestableObserverUtil.assertNoErrors(testObserver: testableObserver)
         TestableObserverUtil.assertValueCount(testObserver: testableObserver, count: 2)
         
-        //IN_FLIGHT Test
+        //inFlight Test
         let result: Result = testableObserver.events[0].value.element!
         assertThat(result, not(nilValue()))
         assertThat(result, instanceOf(ScrollResult.self))
@@ -96,9 +96,9 @@ class NowPlayingInteractorTest: RxSwiftTest {
         assertThat(scrollResult.pageNumber, equalTo(pageNumber))
         assertThat(scrollResult.error, nilValue())
         assertThat(scrollResult.result, nilValue())
-        assertThat(scrollResult.getType(), equalTo(ResultType.IN_FLIGHT) )
+        assertThat(scrollResult.getType(), equalTo(ResultType.inFlight) )
         
-        //SUCCESS
+        //success
         let resultSuccess: Result = testableObserver.events[1].value.element!
         assertThat(resultSuccess, not(nilValue()))
         assertThat(resultSuccess, instanceOf(ScrollResult.self))
@@ -108,7 +108,7 @@ class NowPlayingInteractorTest: RxSwiftTest {
         assertThat(scrollResultSuccess.error, nilValue())
         assertThat(scrollResultSuccess.result!.count, greaterThan(0))
         assertThat(scrollResultSuccess.result!, hasCount(5))
-        assertThat(scrollResultSuccess.getType(), equalTo(ResultType.SUCCESS))
+        assertThat(scrollResultSuccess.getType(), equalTo(ResultType.success))
     
         //Note - sadly with generics you have problems doing tests without a concrete class to caast to.
         for i in 0...4 {
@@ -125,7 +125,7 @@ class NowPlayingInteractorTest: RxSwiftTest {
         let testableObserver = testScheduler!.createObserver(Result.self)
         
         let msg: String = "Error Message";
-        let testError: TestError = TestError.RuntimeError(message: msg)
+        let testError: TestError = TestError.runtimeError(message: msg)
         
         mockServiceController = MockServiceController.init(returnValue: Observable.error(testError))
         
@@ -148,7 +148,7 @@ class NowPlayingInteractorTest: RxSwiftTest {
         TestableObserverUtil.assertNoErrors(testObserver: testableObserver)
         TestableObserverUtil.assertValueCount(testObserver: testableObserver, count: 2)
         
-        //IN_FLIGHT Test
+        //inFlight Test
         let result: Result = testableObserver.events[0].value.element!
         assertThat(result, not(nilValue()))
         assertThat(result, instanceOf(ScrollResult.self))
@@ -157,9 +157,9 @@ class NowPlayingInteractorTest: RxSwiftTest {
         assertThat(scrollResult.pageNumber, equalTo(pageNumber))
         assertThat(scrollResult.error, nilValue())
         assertThat(scrollResult.result, nilValue())
-        assertThat(scrollResult.getType(), equalTo(ResultType.IN_FLIGHT) )
+        assertThat(scrollResult.getType(), equalTo(ResultType.inFlight) )
 
-        //FAILURE
+        //failure
         let failureResult: Result = testableObserver.events[1].value.element!
         assertThat(failureResult, not(nilValue()))
         assertThat(failureResult, instanceOf(ScrollResult.self))
@@ -171,7 +171,7 @@ class NowPlayingInteractorTest: RxSwiftTest {
         let testErrorUnderTest : TestError = scrollResultFailure.error! as! TestError
         assertThat(testErrorUnderTest.localizedDescription, equalTo(msg))
         assertThat(scrollResultFailure.result, nilValue())
-        assertThat(scrollResultFailure.getType(), equalTo(ResultType.FAILURE))
+        assertThat(scrollResultFailure.getType(), equalTo(ResultType.failure))
     }
     
     

@@ -48,7 +48,7 @@ class UiModel {
                             enableScrollListener: false,
                             currentList: Array(),
                             resultList: nil,
-                            adapterCommandType: AdapterCommandType.DO_NOTHING)
+                            adapterCommandType: AdapterCommandType.doNothing)
     }
     
     /**
@@ -65,7 +65,7 @@ class UiModel {
                             enableScrollListener: true,
                             currentList: fullList,
                             resultList: valuesToAdd,
-                            adapterCommandType: AdapterCommandType.ADD_DATA)
+                            adapterCommandType: AdapterCommandType.addData)
     }
     
     /**
@@ -82,7 +82,7 @@ class UiModel {
                             enableScrollListener: false,
                             currentList: fullList,
                             resultList: nil,
-                            adapterCommandType: AdapterCommandType.DO_NOTHING)
+                            adapterCommandType: AdapterCommandType.doNothing)
     }
     
     /**
@@ -99,7 +99,7 @@ class UiModel {
                             enableScrollListener: false,
                             currentList: fullList,
                             resultList: nil,
-                            adapterCommandType: firstTimeLoad ? AdapterCommandType.DO_NOTHING : AdapterCommandType.SHOW_IN_PROGRESS)
+                            adapterCommandType: firstTimeLoad ? AdapterCommandType.doNothing : AdapterCommandType.showInProgress)
     }
 
     /**
@@ -112,7 +112,9 @@ class UiModel {
         return arrayCopy
     }
 
-    fileprivate init(firstTimeLoad: Bool, failureMsg: String?, pageNumber: Int, enableScrollListener: Bool, currentList: Array<MovieViewInfo>?, resultList: Array<MovieViewInfo>?, adapterCommandType: AdapterCommandType) {
+    fileprivate init(firstTimeLoad: Bool, failureMsg: String?, pageNumber: Int, enableScrollListener: Bool,
+                     currentList: Array<MovieViewInfo>?, resultList: Array<MovieViewInfo>?,
+                     adapterCommandType: AdapterCommandType) {
         self.firstTimeLoad = firstTimeLoad
         self.failureMsg = failureMsg
         self.pageNumber = pageNumber
@@ -159,7 +161,7 @@ class UiModel {
             self.firstTimeLoad = false
             self.pageNumber = 0
             self.enableScrollListener = false
-            self.adapterCommandType = AdapterCommandType.DO_NOTHING
+            self.adapterCommandType = AdapterCommandType.doNothing
         }
         
         /**
@@ -167,8 +169,8 @@ class UiModel {
          * @return new {@link UiModel}.
          */
         func createUiModel() -> UiModel {
-            if (currentList == nil) {
-                if (uiModel == nil) {
+            if currentList == nil {
+                if uiModel == nil {
                     currentList = Array<MovieViewInfo>()
                 } else {
                     //shallow copy

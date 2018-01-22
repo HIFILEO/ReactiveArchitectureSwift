@@ -81,7 +81,7 @@ class NowPlayingTableViewController: UITableViewController {
     Returns: MovieViewInfo at given position or nil
     */
     func getItem(position: Int) -> MovieViewInfo? {
-        if (objectList.count > position) {
+        if objectList.count > position {
             return objectList[position]
         } else {
             return nil
@@ -116,7 +116,8 @@ class NowPlayingTableViewController: UITableViewController {
         let movieViewInfo: MovieViewInfo = objectList[indexPath.row]
         
         //Load & Address Cell (no longer returns nil when using storyboard)
-        if (movieViewInfo is MovieViewInfoImpl) {
+        if movieViewInfo is MovieViewInfoImpl {
+            // swiftlint:disable:next force_cast
             let movieCell: MovieCell = tableView.dequeueReusableCell(withIdentifier: "MovieCellIdentifier", for: indexPath) as! MovieCell
             
             //Address Cell
@@ -124,17 +125,19 @@ class NowPlayingTableViewController: UITableViewController {
             movieCell.releaseDateLabel.text = movieViewInfo.getReleaseDate()
             movieCell.ratingLabel.text = movieViewInfo.getRating()
             
-            if (movieViewInfo.isHighRating()) {
+            if movieViewInfo.isHighRating() {
                 movieCell.highRatingImageView.isHidden = false
             } else {
                 movieCell.highRatingImageView.isHidden = true
             }
             
-            let url = URL(string: movieViewInfo.getPictureUrl())!
-            movieCell.moviePosterImageView.af_setImage(withURL: url)
+            if let url = URL(string: movieViewInfo.getPictureUrl()) {
+                movieCell.moviePosterImageView.af_setImage(withURL: url)
+            }
             
             return movieCell
         } else {
+            // swiftlint:disable:next force_cast
             let progressCell: ProgressCell = tableView.dequeueReusableCell(withIdentifier: "ProgressCellIdentifier", for: indexPath) as! ProgressCell
             progressCell.progressActivityIndicatorView.startAnimating()
             return progressCell
