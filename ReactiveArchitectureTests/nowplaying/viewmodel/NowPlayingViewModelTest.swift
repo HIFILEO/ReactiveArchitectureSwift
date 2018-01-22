@@ -30,6 +30,8 @@ import AlamofireObjectMapper
 import ObjectMapper
 import CocoaLumberjack
 
+@testable import ReactiveArchitecture
+
 class NowPlayingViewModelTest: RxSwiftTest {
     private var mockServiceController: MockServiceController!
     
@@ -65,7 +67,7 @@ class NowPlayingViewModelTest: RxSwiftTest {
         //
         //Act
         //
-        nowPlayingViewModel.getUiModels()
+        nowPlayingViewModel.getUiModels()!
             .subscribe(testableObserver)
             .disposed(by: self.disboseBag!)
         testScheduler!.start()
@@ -108,7 +110,7 @@ class NowPlayingViewModelTest: RxSwiftTest {
         //
         //Act
         //
-        nowPlayingViewModel.getUiModels()
+        nowPlayingViewModel.getUiModels()!
             .subscribe(testableObserver)
             .disposed(by: self.disboseBag!)
         nowPlayingViewModel.processUiEvent(uiEvent: scrollEvent)
@@ -168,7 +170,7 @@ class NowPlayingViewModelTest: RxSwiftTest {
         //
         //Act
         //
-        nowPlayingViewModel.getUiModels()
+        nowPlayingViewModel.getUiModels()!
             .subscribe(testableObserver)
             .disposed(by: self.disboseBag!)
         nowPlayingViewModel.processUiEvent(uiEvent: scrollEvent)

@@ -34,8 +34,8 @@ class NowPlayingViewModel {
     private let serviceController: ServiceController
     private let publishSubject: PublishSubject<UiEvent> = PublishSubject.init()
     private var nowPlayingInteractor: NowPlayingInteractor?
-    private var backgroundScheduler: SchedulerType?
-    private var mainScheduler: SchedulerType?
+    private var backgroundScheduler: SchedulerType!
+    private var mainScheduler: SchedulerType!
     
     /**
      Constructor.
@@ -96,7 +96,7 @@ class NowPlayingViewModel {
     func bind() {
         uiModelObservable = publishSubject
             //Note - unlike android, there is no io or computation scheduler. Each must be redefined with a specific queue as per GCD.
-            .observeOn(backgroundScheduler!)
+            .observeOn(backgroundScheduler)
             .map { $0 as? ScrollEvent }
             .ignoreNil()
             //Translate UiEvents into Actions
@@ -142,7 +142,7 @@ class NowPlayingViewModel {
             //start with the initial value. 
             .startWith(initialUiModel)
             //Publish results to main thread.
-            .observeOn(mainScheduler!)
+            .observeOn(mainScheduler)
             //Save history for late subscribers.
             .replay(1)
             /*

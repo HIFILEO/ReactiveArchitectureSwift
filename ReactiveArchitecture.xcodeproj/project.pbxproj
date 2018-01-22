@@ -10,6 +10,7 @@
 		1D1334FB3221641EA77D4B2E /* Pods_ReactiveArchitectureUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D1F51331460467339977E99 /* Pods_ReactiveArchitectureUITests.framework */; };
 		2197BE45551A5EB5404C15C7 /* Pods_ReactiveArchitecture.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1901FB5F9B5FB6CD6B54A996 /* Pods_ReactiveArchitecture.framework */; };
 		40D78D1B201617E700015AE8 /* Observable+Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D78D1A201617E700015AE8 /* Observable+Optional.swift */; };
+		40D78D1C2016250B00015AE8 /* Observable+Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D78D1A201617E700015AE8 /* Observable+Optional.swift */; };
 		850073821FFBC5D300E56A70 /* ProgressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850073811FFBC5D300E56A70 /* ProgressCell.swift */; };
 		850073841FFBC81600E56A70 /* MovieViewInfoImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850073831FFBC81600E56A70 /* MovieViewInfoImpl.swift */; };
 		850073871FFBC8B200E56A70 /* ProgressViewInfoImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850073861FFBC8B200E56A70 /* ProgressViewInfoImpl.swift */; };
@@ -1025,6 +1026,7 @@
 				850073C0200A8F3800E56A70 /* UiModel.swift in Sources */,
 				850073C1200A8F3800E56A70 /* MovieViewInfo.swift in Sources */,
 				850073C2200A8F3800E56A70 /* MovieViewInfoImpl.swift in Sources */,
+				40D78D1C2016250B00015AE8 /* Observable+Optional.swift in Sources */,
 				850073C3200A8F3800E56A70 /* ProgressViewInfoImpl.swift in Sources */,
 				850073BD200A8F1700E56A70 /* AdapterCommandType.swift in Sources */,
 				850073BB200A8C2700E56A70 /* UiEvent.swift in Sources */,

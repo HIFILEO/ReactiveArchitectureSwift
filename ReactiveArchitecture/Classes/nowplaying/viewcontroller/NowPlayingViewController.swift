@@ -28,11 +28,11 @@ import CocoaLumberjack
 import Toast_Swift
 
 class NowPlayingViewController: UIViewController {
-    private var nowPlayingTableViewController: NowPlayingTableViewController?
-    private var tableView: UITableView?
+    private var nowPlayingTableViewController: NowPlayingTableViewController!
+    private var tableView: UITableView!
     private let compositeDisposable = CompositeDisposable()
     private var scrollDisposable: Disposable?
-    private var pageNumber: Int?
+    private var pageNumber: Int = 0
     
     //
     //UI Variables
@@ -75,8 +75,8 @@ class NowPlayingViewController: UIViewController {
         if segueName?.caseInsensitiveCompare("EmbedSegueContainer") == .orderedSame,
             let nowPlayingViewController = segue.destination as? NowPlayingTableViewController {
             nowPlayingTableViewController = nowPlayingViewController
-            tableView = nowPlayingTableViewController!.tableView
-            nowPlayingTableViewController!.tableView.isHidden = true
+            tableView = nowPlayingTableViewController.tableView
+            nowPlayingTableViewController.tableView.isHidden = true
         }
      }
     
@@ -111,20 +111,20 @@ class NowPlayingViewController: UIViewController {
         //
         //Guard
         //
-        guard scrollDisposable == nil else {
+        guard self.scrollDisposable == nil else {
             return
         }
         
         //
         //Bind
         //
-        scrollDisposable = self.tableView!.rx.didScroll
+        let scrollDisposable = self.tableView.rx.didScroll
             .flatMap { scrollView -> Observable<ScrollEvent> in
-                let scrollEventCalculator: ScrollEventCalculator = ScrollEventCalculator.init(scrollView: self.tableView!)
+                let scrollEventCalculator: ScrollEventCalculator = ScrollEventCalculator.init(scrollView: self.tableView)
 
                 //Only handle 'is at end' of list scroll events
                 if scrollEventCalculator.isAtScrollEnd() {
-                    let scrollEvent: ScrollEvent = ScrollEvent.init(pageNumber: self.pageNumber! + 1)
+                    let scrollEvent: ScrollEvent = ScrollEvent.init(pageNumber: self.pageNumber + 1)
 
                     return Observable.just(scrollEvent)
                 } else {
@@ -142,9 +142,10 @@ class NowPlayingViewController: UIViewController {
                 DDLogError(errorMsg)
                 fatalError(errorMsg)
             })
+        self.scrollDisposable = scrollDisposable
         
         //Note - ignore the returned result. I don't need to keep track of keys
-        _ = compositeDisposable.insert(scrollDisposable!)
+        _ = compositeDisposable.insert(scrollDisposable)
     }
     
     /**
@@ -179,47 +180,51 @@ class NowPlayingViewController: UIViewController {
         //
         pageNumber = uiModel.pageNumber
         
+        
         //
         //Update adapter
         //
-        if self.nowPlayingTableViewController!.tableView.isHidden {
+        if self.nowPlayingTableViewController.tableView.isHidden {
             
             //Process last adapter command
-            if uiModel.adapterCommandType == .addData {
-                nowPlayingTableViewController!.addAll(listToAdd: uiModel.resultList!)
+            if uiModel.adapterCommandType == .addData, let list = uiModel.resultList {
+                nowPlayingTableViewController.addAll(listToAdd: list)
             }
             
             //make table visible
-            self.nowPlayingTableViewController!.tableView.isHidden = false
+            self.nowPlayingTableViewController.tableView.isHidden = false
             
             //Trigger first load
-            let scrollEvent: ScrollEvent = ScrollEvent.init(pageNumber: self.pageNumber! + 1)
+            let scrollEvent: ScrollEvent = ScrollEvent.init(pageNumber: self.pageNumber + 1)
             nowPlayingViewModel?.processUiEvent(uiEvent: scrollEvent)
         } else {
             if uiModel.adapterCommandType == .addData {
                 DDLogInfo("Thread name: " + Thread.current.debugDescription + "  Add adapter data on UiModel")
                 //Remove Spinner
-                if nowPlayingTableViewController!.getItemCount() > 0 {
-                    let positionToRemove: Int = nowPlayingTableViewController!.getItemCount() - 1
-                    let objectToRemove: MovieViewInfo = nowPlayingTableViewController!.getItem(position: positionToRemove)!
-                    nowPlayingTableViewController?.remove(objectToRemove: objectToRemove)
+                if nowPlayingTableViewController.getItemCount() > 0 {
+                    let positionToRemove: Int = nowPlayingTableViewController.getItemCount() - 1
+                    if let objectToRemove = nowPlayingTableViewController.getItem(position: positionToRemove) {
+                        nowPlayingTableViewController?.remove(objectToRemove: objectToRemove)
+                    }
                 }
                 
                 //Add Data
-                nowPlayingTableViewController?.addAll(listToAdd: uiModel.resultList!)
+                if let list = uiModel.resultList {
+                    nowPlayingTableViewController?.addAll(listToAdd: list)
+                }
             } else if uiModel.adapterCommandType == .showInProgress {
                 //Add ProgressViewInfoImpl to table. ProgressViewInfoImpl shows spinner in table logic.
                 nowPlayingTableViewController?.add(itemToAdd: ProgressViewInfoImpl())
                 
-                let indexPath = IndexPath.init(row: nowPlayingTableViewController!.getItemCount() - 1, section: 0)
-                self.tableView!.scrollToRow(at: indexPath, at: .top, animated: true)
+                let indexPath = IndexPath.init(row: nowPlayingTableViewController.getItemCount() - 1, section: 0)
+                self.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
             }
         }
         
         //
         //Error Messages
         //
-        if uiModel.failureMsg != nil && !uiModel.failureMsg!.isEmpty {
+        if uiModel.failureMsg != nil && uiModel.failureMsg?.isEmpty == false {
             self.view.makeToast(NSLocalizedString("error_msg", comment: ""))
         }
         
