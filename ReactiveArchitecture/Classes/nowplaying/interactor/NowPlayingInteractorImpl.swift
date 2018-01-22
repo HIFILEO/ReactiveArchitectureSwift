@@ -32,7 +32,7 @@ class NowPlayingInteractorImpl: NowPlayingInteractor {
     fileprivate var delayScheduler: SchedulerType = ConcurrentDispatchQueueScheduler(queue: DispatchQueue.global())
     private let serviceController: ServiceController
     //becuase we init a self in a closure this can't be a let or w/o?
-    private var transformActionToResult: ObservableTransformer<ScrollAction, ScrollResult>?
+    private var transformActionToResult: ObservableTransformer<ScrollAction, ScrollResult>!
 
     /**
      Create class for test.
@@ -96,7 +96,7 @@ class NowPlayingInteractorImpl: NowPlayingInteractor {
                 DDLogInfo("Thread name: " + Thread.current.description + " Translate Actions into ScrollActions.")
                 return Observable.just(action)
             }
-            .compose(self.transformActionToResult!)
+            .compose(self.transformActionToResult)
             .flatMap { (scrollResult: ScrollResult) -> Observable<Result> in
                 Observable.just(scrollResult as Result)
             }
