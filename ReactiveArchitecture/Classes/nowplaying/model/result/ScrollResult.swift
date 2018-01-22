@@ -32,7 +32,7 @@ class ScrollResult: Result {
     private(set) var error: Error?
     
     public static func inFlight(pageNumber: Int) -> ScrollResult {
-        return ScrollResult.init(resultType: ResultType.IN_FLIGHT,
+        return ScrollResult.init(resultType: ResultType.inFlight,
                                  isSuccessful: false,
                                  isLoading: true,
                                  pageNumber: pageNumber,
@@ -40,8 +40,8 @@ class ScrollResult: Result {
                                  error: nil)
     }
 
-    public static func sucess(pageNumber: Int, result : Array<MovieInfo>) -> ScrollResult {
-        return ScrollResult.init(resultType: ResultType.SUCCESS,
+    public static func sucess(pageNumber: Int, result: Array<MovieInfo>) -> ScrollResult {
+        return ScrollResult.init(resultType: ResultType.success,
                                  isSuccessful: true,
                                  isLoading: false,
                                  pageNumber: pageNumber,
@@ -50,7 +50,7 @@ class ScrollResult: Result {
     }
     
     public static func failure(pageNumber: Int, error: Error) -> ScrollResult {
-        return ScrollResult.init(resultType: ResultType.FAILURE,
+        return ScrollResult.init(resultType: ResultType.failure,
                                  isSuccessful: false,
                                  isLoading: false,
                                  pageNumber: pageNumber,

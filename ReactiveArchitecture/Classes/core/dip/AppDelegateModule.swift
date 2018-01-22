@@ -36,7 +36,7 @@ extension DependencyContainer {
             //
             //App Singleton
             //
-            container.register(.singleton) { ServiceApiImpl(baseUrl: "https://api.themoviedb.org/3/movie") as ServiceApi}
+            container.register(.singleton) { ServiceApiImpl(baseUrl: "https://api.themoviedb.org/3/movie") as ServiceApi }
             container.register(.singleton) {
                 serviceApi in ServiceControllerImpl(serviceApi: serviceApi,
                                                     apiKey: NSLocalizedString("api_key", comment: ""),
@@ -47,7 +47,7 @@ extension DependencyContainer {
             //
             // VC Singleton
             //
-            container.register {serviceController in NowPlayingViewModel(serviceController: serviceController) as NowPlayingViewModel}
+            container.register { serviceController in NowPlayingViewModel(serviceController: serviceController) as NowPlayingViewModel }
             
             //
             // Inject View Controllers
@@ -63,5 +63,3 @@ extension DependencyContainer {
 }
 
 extension NowPlayingViewController: StoryboardInstantiatable { }
-
-

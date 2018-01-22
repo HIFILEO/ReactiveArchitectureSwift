@@ -40,7 +40,7 @@ class ServiceApiImpl: ServiceApi {
      -Parameter baseUrl: Base url for requests from service.
      */
     init(baseUrl: String) {
-        self.baseUrl = baseUrl;
+        self.baseUrl = baseUrl
         self.fullUrl = baseUrl + nowPlayingUrl
     }
     
@@ -71,7 +71,7 @@ class ServiceApiImpl: ServiceApi {
         let url = urlComps.url!
         
         return RxAlamofire.json(.get, url)
-            .map{json -> ServiceResponse in
+            .map {json -> ServiceResponse in
                 guard let serviceResponse = Mapper<ServiceResponse>().map(JSONObject: json) else {
                     throw APIError(code: "422", message: "ObjectMapper can't mapping")
                 }

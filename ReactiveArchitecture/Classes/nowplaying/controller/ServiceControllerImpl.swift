@@ -26,7 +26,7 @@ import CocoaLumberjack
 /**
  * Implementation of {@link ServiceController}.
  */
-class ServiceControllerImpl : ServiceController {
+class ServiceControllerImpl: ServiceController {
     var serviceApi: ServiceApi
     var apiKey: String
     var imageUrlPath: String
@@ -45,9 +45,9 @@ class ServiceControllerImpl : ServiceController {
     }
 
     func getNowPlaying(pageNumber: Int) -> Observable<NowPlayingInfo> {
-        DDLogInfo("Thread name: " + Thread.current.debugDescription + " Get NowPlaying for Page #" + pageNumber.description);
+        DDLogInfo("Thread name: " + Thread.current.debugDescription + " Get NowPlaying for Page #" + pageNumber.description)
        
-        var mapToSend:Dictionary<String, Int> = [String: Int]()
+        var mapToSend: Dictionary<String, Int> = [String: Int]()
         mapToSend["page"] = pageNumber
         
         /*
@@ -55,8 +55,8 @@ class ServiceControllerImpl : ServiceController {
          internal business response on computation thread. Return observable.
          */
         return serviceApi.nowPlaying(apiKey: apiKey, query: mapToSend)
-            .flatMap{ (serviceResponse: ServiceResponse) -> Observable<NowPlayingInfo> in
-                return TranslateNowPlayingSubscriptionFunc.init(imageUrlPath: self.imageUrlPath).apply(serviceResonse: serviceResponse)
+            .flatMap { (serviceResponse: ServiceResponse) -> Observable<NowPlayingInfo> in
+                TranslateNowPlayingSubscriptionFunc.init(imageUrlPath: self.imageUrlPath).apply(serviceResonse: serviceResponse)
             }
             .do(onError: { (error: Error) in
                 DDLogError("Failed to get data from service. " + error.localizedDescription)
@@ -78,7 +78,7 @@ class ServiceControllerImpl : ServiceController {
     */
     public class TranslateNowPlayingSubscriptionFunc {
         private let dateFormatter = DateFormatter()
-        private let imageUrlPath:String
+        private let imageUrlPath: String
         
         init(imageUrlPath: String) {
             self.imageUrlPath = imageUrlPath
@@ -91,19 +91,23 @@ class ServiceControllerImpl : ServiceController {
             
             var movieInfoList = Array<MovieInfo>()
             
-            for i:Int in 0 ... (serviceResonse.results!.count - 1) {
+            for i: Int in 0 ... (serviceResonse.results.count - 1) {
+                guard let releaseDate = dateFormatter.date(from: serviceResonse.results[i].releaseDate) else {
+                    continue
+                }
+                
                 let movieInfo: MovieInfo = MovieInfoImpl.init(
-                    pictureUrl: imageUrlPath + serviceResonse.results![i].poster_path!,
-                    title: serviceResonse.results![i].title!,
-                    releaseDate: dateFormatter.date(from: serviceResonse.results![i].release_date!)!,
-                    rating: serviceResonse.results![i].vote_average!)
+                    pictureUrl: imageUrlPath + serviceResonse.results[i].posterPath,
+                    title: serviceResonse.results[i].title,
+                    releaseDate: releaseDate,
+                    rating: serviceResonse.results[i].voteAverage)
                 
                 movieInfoList.append(movieInfo)
             }
     
             return Observable.just(NowPlayingInfoImpl.init(movieInfoList: movieInfoList,
-                                                           pageNumber: serviceResonse.page!,
-                                                           totalPageNumber: serviceResonse.total_pages!))
+                                                           pageNumber: serviceResonse.page,
+                                                           totalPageNumber: serviceResonse.totalPages))
         }
         
     }

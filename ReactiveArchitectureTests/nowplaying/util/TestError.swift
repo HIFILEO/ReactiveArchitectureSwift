@@ -26,13 +26,13 @@ import Foundation
  Custom Error
  */
 public enum TestError : Error {
-    case RuntimeError(message: String)
+    case runtimeError(message: String)
 }
 
 extension TestError: LocalizedError {
     var localizedDescription: String {
         switch self {
-        case .RuntimeError(message: let message):
+        case .runtimeError(message: let message):
             return "\(message)"
         }
     }

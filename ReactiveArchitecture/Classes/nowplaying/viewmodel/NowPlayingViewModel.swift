@@ -30,12 +30,12 @@ import RxSwift
  */
 class NowPlayingViewModel {
     private let initialUiModel: UiModel = UiModel.initState()
-    private var uiModelObservable:Observable<UiModel>?
-    private let serviceController:ServiceController
-    private let publishSubject:PublishSubject<UiEvent> = PublishSubject.init()
-    private var nowPlayingInteractor:NowPlayingInteractor?
-    private var backgroundScheduler: SchedulerType?
-    private var mainScheduler: SchedulerType?
+    private var uiModelObservable: Observable<UiModel>?
+    private let serviceController: ServiceController
+    private let publishSubject: PublishSubject<UiEvent> = PublishSubject.init()
+    private var nowPlayingInteractor: NowPlayingInteractor?
+    private var backgroundScheduler: SchedulerType!
+    private var mainScheduler: SchedulerType!
     
     /**
      Constructor.
@@ -52,8 +52,8 @@ class NowPlayingViewModel {
      Process events from the UI.
      parameter uiEvent - 
      */
-    func processUiEvent(uiEvent:UiEvent) -> Void {
-        DDLogInfo("Thread name: " + Thread.current.debugDescription + " Process UiEvent");
+    func processUiEvent(uiEvent: UiEvent) {
+        DDLogInfo("Thread name: " + Thread.current.debugDescription + " Process UiEvent")
         publishSubject.onNext(uiEvent)
     }
     
@@ -61,8 +61,8 @@ class NowPlayingViewModel {
      Get the observable holding the {@link UiModel}
      returns: Observable<UiModel>
     */
-    func getUiModels() -> Observable<UiModel> {
-        return uiModelObservable!
+    func getUiModels() -> Observable<UiModel>? {
+        return uiModelObservable
     }
     
     /**
@@ -96,11 +96,13 @@ class NowPlayingViewModel {
     func bind() {
         uiModelObservable = publishSubject
             //Note - unlike android, there is no io or computation scheduler. Each must be redefined with a specific queue as per GCD.
-            .observeOn(backgroundScheduler!)
+            .observeOn(backgroundScheduler)
+            .map { $0 as? ScrollEvent }
+            .ignoreNil()
             //Translate UiEvents into Actions
-            .flatMap{uiEvent -> Observable<Action> in
-                DDLogInfo("Thread name: " + Thread.current.debugDescription + " Translate UiEvents into Actions");
-                let scrollAction:ScrollAction = ScrollAction.init(pageNumber: (uiEvent as! ScrollEvent).pageNumber)
+            .flatMap {uiEvent -> Observable<Action> in
+                DDLogInfo("Thread name: " + Thread.current.debugDescription + " Translate UiEvents into Actions")
+                let scrollAction: ScrollAction = ScrollAction.init(pageNumber: uiEvent.pageNumber)
                 return Observable.just(scrollAction)
             }
             //Asynchronous Actions To Interactor (Syntax: https://github.com/ReactiveX/RxSwift/issues/876)
@@ -109,40 +111,38 @@ class NowPlayingViewModel {
             }, selector: { actions -> Observable<Result> in
                 return (self.nowPlayingInteractor?.processAction(actions: actions))!
             })
-            .scan(initialUiModel) { (uiModel: UiModel!, result: Result!) in
+            .map { $0 as? ScrollResult }
+            .ignoreNil()
+            .scan(initialUiModel) { (uiModel, result) in
                 DDLogInfo("Thread name: " + Thread.current.debugDescription + ". Scan Results to UiModel")
 
-                let scrollResult: ScrollResult = result as! ScrollResult
-
                 switch result.getType() {
-                case ResultType.IN_FLIGHT:
-                    return UiModel.inProgressState(firstTimeLoad: scrollResult.pageNumber == 1,
-                                                   pageNumber: scrollResult.pageNumber,
+                case .inFlight:
+                    return UiModel.inProgressState(firstTimeLoad: result.pageNumber == 1,
+                                                   pageNumber: result.pageNumber,
                                                    fullList: uiModel.getCurrentList())
-                case ResultType.SUCCESS:
-                    let listToAdd: Array<MovieViewInfo>  = self.translateResultsForUi(movieInfoList: scrollResult.result!)
+                case .success:
+                    let listToAdd: Array<MovieViewInfo>  = self.translateResultsForUi(movieInfoList: result.result!)
                     var currentList: Array<MovieViewInfo> = uiModel.getCurrentList()!
                     currentList.append(contentsOf: listToAdd)
                     
-                    return UiModel.successState(pageNumber: scrollResult.pageNumber,
+                    return UiModel.successState(pageNumber: result.pageNumber,
                                                 fullList: currentList,
                                                 valuesToAdd: listToAdd)
                     
-                case ResultType.FAILURE:
-                    DDLogError(scrollResult.error!.localizedDescription)
+                case .failure:
+                    DDLogError(result.error!.localizedDescription)
                     return UiModel.failureState(
-                        pageNumber: scrollResult.pageNumber - 1,
+                        pageNumber: result.pageNumber - 1,
                         fullList: uiModel.getCurrentList()!,
                         failureMsg: NSLocalizedString("R.string.error_msg", comment: ""))
                 }
-
-                throw AppError.RuntimeError("Unknown Result: " + String.init(describing: result.getType()))
             }
             //Note - scan in RxSwift does not emit the original seed like RxJava. Since we are using an autoconnect, it's suffice to
             //start with the initial value. 
             .startWith(initialUiModel)
             //Publish results to main thread.
-            .observeOn(mainScheduler!)
+            .observeOn(mainScheduler)
             //Save history for late subscribers.
             .replay(1)
             /*
@@ -170,5 +170,3 @@ class NowPlayingViewModel {
         return movieViewInfoList
     }
 }
-
-

@@ -27,7 +27,7 @@ import Foundation
  * Command Types.
  */
 enum AdapterCommandType {
-    case DO_NOTHING
-    case ADD_DATA
-    case SHOW_IN_PROGRESS
+    case doNothing
+    case addData
+    case showInProgress
 }

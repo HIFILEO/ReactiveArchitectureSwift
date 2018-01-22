@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		1D1334FB3221641EA77D4B2E /* Pods_ReactiveArchitectureUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D1F51331460467339977E99 /* Pods_ReactiveArchitectureUITests.framework */; };
 		2197BE45551A5EB5404C15C7 /* Pods_ReactiveArchitecture.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1901FB5F9B5FB6CD6B54A996 /* Pods_ReactiveArchitecture.framework */; };
+		40D78D1B201617E700015AE8 /* Observable+Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D78D1A201617E700015AE8 /* Observable+Optional.swift */; };
+		40D78D1C2016250B00015AE8 /* Observable+Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D78D1A201617E700015AE8 /* Observable+Optional.swift */; };
 		850073821FFBC5D300E56A70 /* ProgressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850073811FFBC5D300E56A70 /* ProgressCell.swift */; };
 		850073841FFBC81600E56A70 /* MovieViewInfoImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850073831FFBC81600E56A70 /* MovieViewInfoImpl.swift */; };
 		850073871FFBC8B200E56A70 /* ProgressViewInfoImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850073861FFBC8B200E56A70 /* ProgressViewInfoImpl.swift */; };
@@ -126,6 +128,7 @@
 		114D9D4883DF26946500BA99 /* Pods-ReactiveArchitectureTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactiveArchitectureTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ReactiveArchitectureTests/Pods-ReactiveArchitectureTests.release.xcconfig"; sourceTree = "<group>"; };
 		1901FB5F9B5FB6CD6B54A996 /* Pods_ReactiveArchitecture.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ReactiveArchitecture.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D1F51331460467339977E99 /* Pods_ReactiveArchitectureUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ReactiveArchitectureUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		40D78D1A201617E700015AE8 /* Observable+Optional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+Optional.swift"; sourceTree = "<group>"; };
 		5E3CB1998B032BDF098F2870 /* Pods-ReactiveArchitectureUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactiveArchitectureUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ReactiveArchitectureUITests/Pods-ReactiveArchitectureUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		850073811FFBC5D300E56A70 /* ProgressCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressCell.swift; sourceTree = "<group>"; };
 		850073831FFBC81600E56A70 /* MovieViewInfoImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieViewInfoImpl.swift; sourceTree = "<group>"; };
@@ -358,6 +361,7 @@
 			children = (
 				8539ECBD1FE9C4B5001D6295 /* ArrayExtension.swift */,
 				8500739720054EB500E56A70 /* ConnectableObservableExtension.swift */,
+				40D78D1A201617E700015AE8 /* Observable+Optional.swift */,
 			);
 			path = extension;
 			sourceTree = "<group>";
@@ -622,6 +626,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 85DC74301FBA87CD00BACD4D /* Build configuration list for PBXNativeTarget "ReactiveArchitecture" */;
 			buildPhases = (
+				40D78D192016168300015AE8 /* Swiftlint */,
 				E5E6C8C85977B36AB051C343 /* [CP] Check Pods Manifest.lock */,
 				85DC74041FBA87CD00BACD4D /* Sources */,
 				85DC74051FBA87CD00BACD4D /* Frameworks */,
@@ -777,15 +782,48 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ReactiveArchitecture/Pods-ReactiveArchitecture-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		422EFA51F8E066DC1270CA60 /* [CP] Embed Pods Frameworks */ = {
+		40D78D192016168300015AE8 /* Swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = Swiftlint;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
+		};
+		422EFA51F8E066DC1270CA60 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-ReactiveArchitectureTests/Pods-ReactiveArchitectureTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/AlamofireObjectMapper/AlamofireObjectMapper.framework",
+				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack/CocoaLumberjack.framework",
+				"${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework",
+				"${BUILT_PRODUCTS_DIR}/RxAlamofire/RxAlamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/RxBlocking/RxBlocking.framework",
+				"${BUILT_PRODUCTS_DIR}/RxTest/RxTest.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftHamcrest/Hamcrest.framework",
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireObjectMapper.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaLumberjack.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectMapper.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxAlamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxBlocking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxTest.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hamcrest.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -798,9 +836,32 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-ReactiveArchitecture/Pods-ReactiveArchitecture-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
+				"${BUILT_PRODUCTS_DIR}/AlamofireObjectMapper/AlamofireObjectMapper.framework",
+				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack/CocoaLumberjack.framework",
+				"${BUILT_PRODUCTS_DIR}/Dip/Dip.framework",
+				"${BUILT_PRODUCTS_DIR}/Dip-UI/Dip_UI.framework",
+				"${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework",
+				"${BUILT_PRODUCTS_DIR}/RxAlamofire/RxAlamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
+				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/Toast-Swift/Toast_Swift.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireObjectMapper.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaLumberjack.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Dip.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Dip_UI.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectMapper.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxAlamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Toast_Swift.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -843,13 +904,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ReactiveArchitectureUITests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		AE5D6D5AB5270BB54948A33C /* [CP] Check Pods Manifest.lock */ = {
@@ -858,13 +922,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ReactiveArchitectureTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		AFBFBF5A463C897D17946769 /* [CP] Copy Pods Resources */ = {
@@ -888,13 +955,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ReactiveArchitecture-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -936,6 +1006,7 @@
 				8500738A1FFD165C00E56A70 /* NowPlayingInteractorImpl.swift in Sources */,
 				85ED0DE11FCF3A0A00793B91 /* APIError.swift in Sources */,
 				85EC961B1FE313CE002B9B42 /* ScrollEvent.swift in Sources */,
+				40D78D1B201617E700015AE8 /* Observable+Optional.swift in Sources */,
 				8500738E1FFD1F5600E56A70 /* ScrollAction.swift in Sources */,
 				850073841FFBC81600E56A70 /* MovieViewInfoImpl.swift in Sources */,
 				8521CE641FD83571002A01A2 /* NowPlayingInfo.swift in Sources */,
@@ -955,6 +1026,7 @@
 				850073C0200A8F3800E56A70 /* UiModel.swift in Sources */,
 				850073C1200A8F3800E56A70 /* MovieViewInfo.swift in Sources */,
 				850073C2200A8F3800E56A70 /* MovieViewInfoImpl.swift in Sources */,
+				40D78D1C2016250B00015AE8 /* Observable+Optional.swift in Sources */,
 				850073C3200A8F3800E56A70 /* ProgressViewInfoImpl.swift in Sources */,
 				850073BD200A8F1700E56A70 /* AdapterCommandType.swift in Sources */,
 				850073BB200A8C2700E56A70 /* UiEvent.swift in Sources */,

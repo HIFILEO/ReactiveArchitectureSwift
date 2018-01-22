@@ -24,10 +24,10 @@
 import Foundation
 
 class MovieInfoImpl: MovieInfo {
-    private var pictureUrl:String
-    private var title:String
-    private var releaseDate:Date
-    private var rating:Double
+    private var pictureUrl: String
+    private var title: String
+    private var releaseDate: Date
+    private var rating: Double
     
     /**
      * Constructor.
@@ -37,7 +37,7 @@ class MovieInfoImpl: MovieInfo {
      * Parameter rating:
      */
     init(pictureUrl: String, title: String, releaseDate: Date, rating: Double) {
-        self.pictureUrl = pictureUrl;
+        self.pictureUrl = pictureUrl
         self.title = title
         self.releaseDate = releaseDate
         self.rating = rating
