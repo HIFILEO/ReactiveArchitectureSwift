@@ -89,6 +89,7 @@ class ServiceControllerImplTest: RxSwiftTest {
         let movieInfo: MovieInfo = nowPlayingInfo.getMovies()[0]
         assertThat(movieInfo.getPictureUrl(), matchesPattern(IMAGE_PATH + "/tnmL0g604PDRJwGJ5fsUSYKFo9.jpg", options: .caseInsensitive))
         assertThat(movieInfo.getRating(), equalTo(7.2))
+        // TODO: This fails outside of US timezones
         assertThat(movieInfo.getReleaseDate().description, equalTo("2017-03-15 04:00:00 +0000"))
         assertThat(movieInfo.getTitle(), equalTo("Beauty and the Beast"))
     }
