@@ -59,8 +59,8 @@ class NowPlayingTableViewController: UITableViewController {
      Add passed in value to table view
      Parameters: listToAdd - list to add
      */
-    func add(itemToAdd: MovieViewInfo!) {
-        objectList.append(itemToAdd!)
+    func add(itemToAdd: MovieViewInfo) {
+        objectList.append(itemToAdd)
         
         let indexPath = IndexPath.init(row: self.objectList.count - 1, section: 0)
         let indexPathArray: [IndexPath] = [indexPath]

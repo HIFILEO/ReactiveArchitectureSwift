@@ -61,8 +61,8 @@ class NowPlayingViewModel {
      Get the observable holding the {@link UiModel}
      returns: Observable<UiModel>
     */
-    func getUiModels() -> Observable<UiModel> {
-        return uiModelObservable!
+    func getUiModels() -> Observable<UiModel>? {
+        return uiModelObservable
     }
     
     /**
@@ -117,11 +117,11 @@ class NowPlayingViewModel {
                 DDLogInfo("Thread name: " + Thread.current.debugDescription + ". Scan Results to UiModel")
 
                 switch result.getType() {
-                case ResultType.inFlight:
+                case .inFlight:
                     return UiModel.inProgressState(firstTimeLoad: result.pageNumber == 1,
                                                    pageNumber: result.pageNumber,
                                                    fullList: uiModel.getCurrentList())
-                case ResultType.success:
+                case .success:
                     let listToAdd: Array<MovieViewInfo>  = self.translateResultsForUi(movieInfoList: result.result!)
                     var currentList: Array<MovieViewInfo> = uiModel.getCurrentList()!
                     currentList.append(contentsOf: listToAdd)
@@ -130,7 +130,7 @@ class NowPlayingViewModel {
                                                 fullList: currentList,
                                                 valuesToAdd: listToAdd)
                     
-                case ResultType.failure:
+                case .failure:
                     DDLogError(result.error!.localizedDescription)
                     return UiModel.failureState(
                         pageNumber: result.pageNumber - 1,

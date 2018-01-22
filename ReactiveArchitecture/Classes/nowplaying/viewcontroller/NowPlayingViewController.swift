@@ -86,10 +86,12 @@ class NowPlayingViewController: UIViewController {
      * Bind to all data in {@link NowPlayingViewModel}.
      */
     private func bind() {
+        guard let uiModels = nowPlayingViewModel?.getUiModels() else { return }
+        
         //
         //Bind to UiModel
         //
-       _ = compositeDisposable.insert(nowPlayingViewModel!.getUiModels()
+        _ = compositeDisposable.insert(uiModels
             .subscribe(onNext: { uiModel in
                 self.processUiModel(uiModel: uiModel)
             }, onError: {(error) in
@@ -185,8 +187,6 @@ class NowPlayingViewController: UIViewController {
             //Process last adapter command
             if uiModel.adapterCommandType == .addData {
                 nowPlayingTableViewController!.addAll(listToAdd: uiModel.resultList!)
-            } else if uiModel.adapterCommandType == .showInProgress {
-                nowPlayingTableViewController?.add(itemToAdd: nil)
             }
             
             //make table visible

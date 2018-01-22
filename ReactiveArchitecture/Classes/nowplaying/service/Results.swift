@@ -25,19 +25,19 @@ import UIKit
 import ObjectMapper
 
 class Results: Mappable {
-    var posterPath: String?
-    var adult: Bool?
-    var overview: String?
-    var releaseDate: String?
-    var genreIds: [Int]?
-    var id: Int?
-    var originalTitle: String?
-    var originalLanguage: String?
-    var title: String?
-    var popularity: Double?
-    var voteCount: Int?
-    var video: Bool?
-    var voteAverage: Double?
+    var posterPath: String!
+    var adult: Bool!
+    var overview: String!
+    var releaseDate: String!
+    var genreIds: [Int]!
+    var id: Int!
+    var originalTitle: String!
+    var originalLanguage: String!
+    var title: String!
+    var popularity: Double!
+    var voteCount: Int!
+    var video: Bool!
+    var voteAverage: Double!
     
     required init?(map: Map) {
         

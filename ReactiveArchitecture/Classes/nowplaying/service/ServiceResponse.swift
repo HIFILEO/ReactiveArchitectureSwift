@@ -25,11 +25,11 @@ import UIKit
 import ObjectMapper
 
 class ServiceResponse: Mappable {
-    var page: Int?
-    var results: [Results]?
-    var dates: Dates?
-    var totalPages: Int?
-    var totalResults: Int?
+    var page: Int!
+    var results: [Results]!
+    var dates: Dates!
+    var totalPages: Int!
+    var totalResults: Int!
     
     required init?(map: Map) {
         
