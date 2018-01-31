@@ -54,15 +54,18 @@ This project supports the following type of tests:
 
 Unit Tests
 
-
 ### Standards
 
-There are style standards in this app as examples of how to maintain clean code.
 
-#### Checkstyle
+#### Checkstyle (SwiftLint) (.swiftlint.yml)
 
-None
+https://github.com/realm/SwiftLint
 
+Run on command line and pipe the information to a html file you can open in a browser.
+
+Pods/SwiftLint/swiftlint lint --reporter html > reporter.html
+
+Then open "reporter.html" in safari
 
 #### Run All
 
