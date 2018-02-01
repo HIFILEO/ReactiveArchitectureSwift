@@ -25,7 +25,6 @@ import Foundation
 /**
  Custom Error
  */
-public enum AppError : Error {
-    case RuntimeError(String)
+public enum AppError: Error {
+    case runtimeError(String)
 }
-

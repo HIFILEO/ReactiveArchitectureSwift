@@ -34,7 +34,6 @@ whitelist_rules:
   - closure_spacing
   - comma
   - empty_parentheses_with_trailing_closure
-  - implicit_return
   - opening_brace
   - operator_usage_whitespace
   - redundant_discardable_let
@@ -53,7 +52,7 @@ excluded: # paths to ignore during linting. overridden by `included`.
   - ReactiveArchitectureUITests
 
 line_length:
-  - 160
+  - 130
   - 200
 type_body_length:
   - 300 # warning
