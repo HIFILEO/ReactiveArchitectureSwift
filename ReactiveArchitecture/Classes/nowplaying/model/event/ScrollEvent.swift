@@ -23,8 +23,8 @@
 
 import Foundation
 
-class ScrollEvent : UiEvent {
-    public private(set) var pageNumber:Int
+class ScrollEvent: UiEvent {
+    public private(set) var pageNumber: Int
     
     init(pageNumber: Int) {
         self.pageNumber = pageNumber
