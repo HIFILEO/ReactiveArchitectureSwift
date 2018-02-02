@@ -63,7 +63,7 @@ class NowPlayingTableViewController: UITableViewController {
         objectList.append(itemToAdd!)
         
         let indexPath = IndexPath.init(row: self.objectList.count - 1, section: 0)
-        let indexPathArray : [IndexPath] = [indexPath]
+        let indexPathArray: [IndexPath] = [indexPath]
         tableView.insertRows(at: indexPathArray, with: UITableViewRowAnimation.left)
     }
     
@@ -96,7 +96,7 @@ class NowPlayingTableViewController: UITableViewController {
         objectList.removeObject(element: objectToRemove)
         
         let indexPath = IndexPath.init(row: index, section: 0)
-        let indexPathArray : [IndexPath] = [indexPath]
+        let indexPathArray: [IndexPath] = [indexPath]
         tableView.deleteRows(at: indexPathArray, with: UITableViewRowAnimation.left)
     }
     
@@ -117,7 +117,8 @@ class NowPlayingTableViewController: UITableViewController {
         
         //Load & Address Cell (no longer returns nil when using storyboard)
         if movieViewInfo is MovieViewInfoImpl {
-            let movieCell: MovieCell = tableView.dequeueReusableCell(withIdentifier: "MovieCellIdentifier", for: indexPath) as! MovieCell
+            let movieCell: MovieCell =
+                tableView.dequeueReusableCell(withIdentifier: "MovieCellIdentifier", for: indexPath) as! MovieCell
             
             //Address Cell
             movieCell.nameLabel.text = movieViewInfo.getTitle()
@@ -135,7 +136,8 @@ class NowPlayingTableViewController: UITableViewController {
             
             return movieCell
         } else {
-            let progressCell: ProgressCell = tableView.dequeueReusableCell(withIdentifier: "ProgressCellIdentifier", for: indexPath) as! ProgressCell
+            let progressCell: ProgressCell = tableView.dequeueReusableCell(
+                withIdentifier: "ProgressCellIdentifier", for: indexPath) as! ProgressCell
             progressCell.progressActivityIndicatorView.startAnimating()
             return progressCell
         }
@@ -145,5 +147,3 @@ class NowPlayingTableViewController: UITableViewController {
 protocol LoadMoreListener {
     func loadMore()
 }
-
-

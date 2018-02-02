@@ -30,10 +30,10 @@ import RxSwift
  */
 class NowPlayingViewModel {
     private let initialUiModel: UiModel = UiModel.initState()
-    private var uiModelObservable:Observable<UiModel>?
-    private let serviceController:ServiceController
-    private let publishSubject:PublishSubject<UiEvent> = PublishSubject.init()
-    private var nowPlayingInteractor:NowPlayingInteractor?
+    private var uiModelObservable: Observable<UiModel>?
+    private let serviceController: ServiceController
+    private let publishSubject: PublishSubject<UiEvent> = PublishSubject.init()
+    private var nowPlayingInteractor: NowPlayingInteractor?
     private var backgroundScheduler: SchedulerType?
     private var mainScheduler: SchedulerType?
     
@@ -52,8 +52,8 @@ class NowPlayingViewModel {
      Process events from the UI.
      parameter uiEvent - 
      */
-    func processUiEvent(uiEvent:UiEvent) -> Void {
-        DDLogInfo("Thread name: " + Thread.current.debugDescription + " Process UiEvent");
+    func processUiEvent(uiEvent: UiEvent) {
+        DDLogInfo("Thread name: " + Thread.current.debugDescription + " Process UiEvent")
         publishSubject.onNext(uiEvent)
     }
     
@@ -95,12 +95,13 @@ class NowPlayingViewModel {
     */
     func bind() {
         uiModelObservable = publishSubject
-            //Note - unlike android, there is no io or computation scheduler. Each must be redefined with a specific queue as per GCD.
+            //Note - unlike android, there is no io or computation scheduler. Each must be redefined with a specific queue as
+            //per GCD.
             .observeOn(backgroundScheduler!)
             //Translate UiEvents into Actions
-            .flatMap{uiEvent -> Observable<Action> in
-                DDLogInfo("Thread name: " + Thread.current.debugDescription + " Translate UiEvents into Actions");
-                let scrollAction:ScrollAction = ScrollAction.init(pageNumber: (uiEvent as! ScrollEvent).pageNumber)
+            .flatMap {uiEvent -> Observable<Action> in
+                DDLogInfo("Thread name: " + Thread.current.debugDescription + " Translate UiEvents into Actions")
+                let scrollAction: ScrollAction = ScrollAction.init(pageNumber: (uiEvent as! ScrollEvent).pageNumber)
                 return Observable.just(scrollAction)
             }
             //Asynchronous Actions To Interactor (Syntax: https://github.com/ReactiveX/RxSwift/issues/876)
@@ -138,8 +139,8 @@ class NowPlayingViewModel {
 
                 throw AppError.runtimeError("Unknown Result: " + String.init(describing: result.getType()))
             }
-            //Note - scan in RxSwift does not emit the original seed like RxJava. Since we are using an autoconnect, it's suffice to
-            //start with the initial value. 
+            //Note - scan in RxSwift does not emit the original seed like RxJava. Since we are using an autoconnect,
+            //it's suffice to start with the initial value.
             .startWith(initialUiModel)
             //Publish results to main thread.
             .observeOn(mainScheduler!)
@@ -147,8 +148,8 @@ class NowPlayingViewModel {
             .replay(1)
             /*
              Refcount vs Autoconnect
-             Refcount unsubscribes from source when there are no active subscribers, while autoconnect remains connected. There is no
-             autoconnect in RxSwift so I created my own.
+             Refcount unsubscribes from source when there are no active subscribers, while autoconnect remains connected.
+             There is no autoconnect in RxSwift so I created my own.
              */
             //http://akarnokd.blogspot.com/2015/10/operator-internals-autoconnect.html
             .autoconnect()
@@ -170,5 +171,3 @@ class NowPlayingViewModel {
         return movieViewInfoList
     }
 }
-
-
