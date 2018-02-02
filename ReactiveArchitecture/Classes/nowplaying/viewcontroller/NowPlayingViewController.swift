@@ -73,7 +73,8 @@ class NowPlayingViewController: UIViewController {
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let segueName = segue.identifier
         if segueName?.caseInsensitiveCompare("EmbedSegueContainer") == ComparisonResult.orderedSame {
-            nowPlayingTableViewController = (segue.destination as! NowPlayingTableViewController)
+            
+            nowPlayingTableViewController = (segue.destination as? NowPlayingTableViewController)
             tableView = nowPlayingTableViewController!.tableView
             nowPlayingTableViewController!.tableView.isHidden = true
         }

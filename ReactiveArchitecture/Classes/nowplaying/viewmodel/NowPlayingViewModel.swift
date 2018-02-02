@@ -101,7 +101,8 @@ class NowPlayingViewModel {
             //Translate UiEvents into Actions
             .flatMap {uiEvent -> Observable<Action> in
                 DDLogInfo("Thread name: " + Thread.current.debugDescription + " Translate UiEvents into Actions")
-                let scrollAction: ScrollAction = ScrollAction.init(pageNumber: (uiEvent as! ScrollEvent).pageNumber)
+                
+                let scrollAction: ScrollAction = ScrollAction.init(pageNumber: (uiEvent as? ScrollEvent)!.pageNumber)
                 return Observable.just(scrollAction)
             }
             //Asynchronous Actions To Interactor (Syntax: https://github.com/ReactiveX/RxSwift/issues/876)
@@ -113,7 +114,7 @@ class NowPlayingViewModel {
             .scan(initialUiModel) { (uiModel: UiModel!, result: Result!) in
                 DDLogInfo("Thread name: " + Thread.current.debugDescription + ". Scan Results to UiModel")
 
-                let scrollResult: ScrollResult = result as! ScrollResult
+                let scrollResult: ScrollResult = (result as? ScrollResult)!
 
                 switch result.getType() {
                 case ResultType.inFlight:

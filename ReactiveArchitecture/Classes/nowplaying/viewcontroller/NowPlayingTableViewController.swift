@@ -117,8 +117,12 @@ class NowPlayingTableViewController: UITableViewController {
         
         //Load & Address Cell (no longer returns nil when using storyboard)
         if movieViewInfo is MovieViewInfoImpl {
-            let movieCell: MovieCell =
-                tableView.dequeueReusableCell(withIdentifier: "MovieCellIdentifier", for: indexPath) as! MovieCell
+            // Note - Disable check because crashing here is acceptable if we don't knwo what type of cell we have.
+            // swiftlint:disable:next force_cast
+            let movieCell: MovieCell = tableView.dequeueReusableCell(withIdentifier:
+                // swiftlint:disable:next force_cast
+                "MovieCellIdentifier", for: indexPath) as!
+            MovieCell
             
             //Address Cell
             movieCell.nameLabel.text = movieViewInfo.getTitle()
@@ -136,7 +140,9 @@ class NowPlayingTableViewController: UITableViewController {
             
             return movieCell
         } else {
+            // swiftlint:disable:next force_cast
             let progressCell: ProgressCell = tableView.dequeueReusableCell(
+                // swiftlint:disable:next force_cast
                 withIdentifier: "ProgressCellIdentifier", for: indexPath) as! ProgressCell
             progressCell.progressActivityIndicatorView.startAnimating()
             return progressCell
