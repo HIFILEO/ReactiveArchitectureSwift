@@ -34,13 +34,12 @@ extension Array {
      Returns: true when deleted, false otherwise.
      */
     mutating func removeObject(element: Element) {
-        guard let index = index(where: { $0 as AnyObject === element as AnyObject}) else { return }
+        guard let index = index(where: { $0 as AnyObject === element as AnyObject }) else { return }
         remove(at: index)
     }
     
     func indexOf(element: Element) -> Int {
-        guard let index = index(where: { $0 as AnyObject === element as AnyObject}) else { return -1 }
+        guard let index = index(where: { $0 as AnyObject === element as AnyObject }) else { return -1 }
         return index
     }
 }
-

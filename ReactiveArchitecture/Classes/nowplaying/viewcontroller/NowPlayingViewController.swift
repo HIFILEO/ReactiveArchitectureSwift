@@ -182,9 +182,9 @@ class NowPlayingViewController: UIViewController {
         if (self.nowPlayingTableViewController!.tableView.isHidden) {
             
             //Process last adapter command
-            if (uiModel.adapterCommandType == AdapterCommandType.ADD_DATA) {
+            if (uiModel.adapterCommandType == AdapterCommandType.addData) {
                 nowPlayingTableViewController!.addAll(listToAdd: uiModel.resultList!)
-            } else if (uiModel.adapterCommandType == AdapterCommandType.SHOW_IN_PROGRESS) {
+            } else if (uiModel.adapterCommandType == AdapterCommandType.showInProgress) {
                 nowPlayingTableViewController?.add(itemToAdd: nil)
             }
             
@@ -195,7 +195,7 @@ class NowPlayingViewController: UIViewController {
             let scrollEvent: ScrollEvent = ScrollEvent.init(pageNumber: self.pageNumber! + 1)
             nowPlayingViewModel?.processUiEvent(uiEvent: scrollEvent)
         } else {
-            if (uiModel.adapterCommandType == AdapterCommandType.ADD_DATA) {
+            if (uiModel.adapterCommandType == AdapterCommandType.addData) {
                 DDLogInfo("Thread name: " + Thread.current.debugDescription + "  Add adapter data on UiModel")
                 //Remove Spinner
                 if (nowPlayingTableViewController!.getItemCount() > 0) {
@@ -206,7 +206,7 @@ class NowPlayingViewController: UIViewController {
                 
                 //Add Data
                 nowPlayingTableViewController?.addAll(listToAdd: uiModel.resultList!)
-            } else if (uiModel.adapterCommandType == AdapterCommandType.SHOW_IN_PROGRESS) {
+            } else if (uiModel.adapterCommandType == AdapterCommandType.showInProgress) {
                 //Add ProgressViewInfoImpl to table. ProgressViewInfoImpl shows spinner in table logic.
                 nowPlayingTableViewController?.add(itemToAdd: ProgressViewInfoImpl())
                 

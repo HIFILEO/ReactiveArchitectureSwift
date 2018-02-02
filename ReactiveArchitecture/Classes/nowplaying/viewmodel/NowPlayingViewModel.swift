@@ -115,11 +115,11 @@ class NowPlayingViewModel {
                 let scrollResult: ScrollResult = result as! ScrollResult
 
                 switch result.getType() {
-                case ResultType.IN_FLIGHT:
+                case ResultType.inFlight:
                     return UiModel.inProgressState(firstTimeLoad: scrollResult.pageNumber == 1,
                                                    pageNumber: scrollResult.pageNumber,
                                                    fullList: uiModel.getCurrentList())
-                case ResultType.SUCCESS:
+                case ResultType.success:
                     let listToAdd: Array<MovieViewInfo>  = self.translateResultsForUi(movieInfoList: scrollResult.result!)
                     var currentList: Array<MovieViewInfo> = uiModel.getCurrentList()!
                     currentList.append(contentsOf: listToAdd)
@@ -128,7 +128,7 @@ class NowPlayingViewModel {
                                                 fullList: currentList,
                                                 valuesToAdd: listToAdd)
                     
-                case ResultType.FAILURE:
+                case ResultType.failure:
                     DDLogError(scrollResult.error!.localizedDescription)
                     return UiModel.failureState(
                         pageNumber: scrollResult.pageNumber - 1,
@@ -136,7 +136,7 @@ class NowPlayingViewModel {
                         failureMsg: NSLocalizedString("R.string.error_msg", comment: ""))
                 }
 
-                throw AppError.RuntimeError("Unknown Result: " + String.init(describing: result.getType()))
+                throw AppError.runtimeError("Unknown Result: " + String.init(describing: result.getType()))
             }
             //Note - scan in RxSwift does not emit the original seed like RxJava. Since we are using an autoconnect, it's suffice to
             //start with the initial value. 
