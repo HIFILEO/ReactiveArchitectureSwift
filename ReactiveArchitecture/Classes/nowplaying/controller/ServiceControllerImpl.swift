@@ -99,11 +99,23 @@ class ServiceControllerImpl: ServiceController {
                     continue
                 }
                 
+                guard let posterPath = serviceResonse.results[i].posterPath else {
+                    continue
+                }
+                
+                guard let title = serviceResonse.results[i].title else {
+                    continue
+                }
+                
+                guard let rating = serviceResonse.results[i].voteAverage else {
+                    continue
+                }
+                
                 let movieInfo: MovieInfo = MovieInfoImpl.init(
-                    pictureUrl: imageUrlPath + serviceResonse.results![i].posterPath,
-                    title: serviceResonse.results![i].title,
+                    pictureUrl: imageUrlPath + posterPath,
+                    title: title,
                     releaseDate: releaseDate,
-                    rating: serviceResonse.results![i].voteAverage)
+                    rating: rating)
                 
                 movieInfoList.append(movieInfo)
             }

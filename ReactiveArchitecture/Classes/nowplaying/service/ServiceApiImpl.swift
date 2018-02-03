@@ -53,8 +53,10 @@ class ServiceApiImpl: ServiceApi {
      -Returns: Observble<ServiceResponse>
      */
     func nowPlaying(apiKey: String, query: Dictionary<String, Int>) -> Observable<ServiceResponse> {
-        //setup base url
-        var urlComps = URLComponents(string: fullUrl)!
+        //setup base url        
+        guard var urlComps = URLComponents(string: fullUrl) else {
+            return Observable.error(AppError.runtimeError("URLComponents returned nil"))
+        }
         
         //create query items
         var queryItemArray = Array<URLQueryItem>()
@@ -68,15 +70,17 @@ class ServiceApiImpl: ServiceApi {
         urlComps.queryItems = queryItemArray
         
         //create string url
-        let url = urlComps.url!
-        
-        return RxAlamofire.json(.get, url)
-            .map {json -> ServiceResponse in
-                guard let serviceResponse = Mapper<ServiceResponse>().map(JSONObject: json) else {
-                    throw APIError(code: "422", message: "ObjectMapper can't mapping")
-                }
-                
-                return serviceResponse
+        if let url = urlComps.url {
+            return RxAlamofire.json(.get, url)
+                .map {json -> ServiceResponse in
+                    guard let serviceResponse = Mapper<ServiceResponse>().map(JSONObject: json) else {
+                        throw APIError(code: "422", message: "ObjectMapper can't mapping")
+                    }
+                    
+                    return serviceResponse
+            }
+        } else {
+           return Observable.error(AppError.runtimeError("urlComps returned nil"))
         }
     }
 }

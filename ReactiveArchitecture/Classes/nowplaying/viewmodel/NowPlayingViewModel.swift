@@ -30,12 +30,12 @@ import RxSwift
  */
 class NowPlayingViewModel {
     private let initialUiModel: UiModel = UiModel.initState()
-    private var uiModelObservable: Observable<UiModel>?
+    private var uiModelObservable: Observable<UiModel>!
     private let serviceController: ServiceController
     private let publishSubject: PublishSubject<UiEvent> = PublishSubject.init()
     private var nowPlayingInteractor: NowPlayingInteractor?
-    private var backgroundScheduler: SchedulerType?
-    private var mainScheduler: SchedulerType?
+    private var backgroundScheduler: SchedulerType!
+    private var mainScheduler: SchedulerType!
     
     /**
      Constructor.
@@ -62,7 +62,7 @@ class NowPlayingViewModel {
      returns: Observable<UiModel>
     */
     func getUiModels() -> Observable<UiModel> {
-        return uiModelObservable!
+        return uiModelObservable
     }
     
     /**
@@ -97,11 +97,12 @@ class NowPlayingViewModel {
         uiModelObservable = publishSubject
             //Note - unlike android, there is no io or computation scheduler. Each must be redefined with a specific queue as
             //per GCD.
-            .observeOn(backgroundScheduler!)
+            .observeOn(backgroundScheduler)
             //Translate UiEvents into Actions
             .flatMap {uiEvent -> Observable<Action> in
                 DDLogInfo("Thread name: " + Thread.current.debugDescription + " Translate UiEvents into Actions")
                 
+                // swiftlint:disable:next force_unwrapping
                 let scrollAction: ScrollAction = ScrollAction.init(pageNumber: (uiEvent as? ScrollEvent)!.pageNumber)
                 return Observable.just(scrollAction)
             }
@@ -109,12 +110,15 @@ class NowPlayingViewModel {
             .multicast({ () -> PublishSubject<Action> in
                 return PublishSubject<Action>()
             }, selector: { actions -> Observable<Result> in
+                // swiftlint:disable:next force_unwrapping
                 return (self.nowPlayingInteractor?.processAction(actions: actions))!
             })
             .scan(initialUiModel) { (uiModel: UiModel!, result: Result!) in
                 DDLogInfo("Thread name: " + Thread.current.debugDescription + ". Scan Results to UiModel")
 
-                let scrollResult: ScrollResult = (result as? ScrollResult)!
+                guard let scrollResult: ScrollResult = (result as? ScrollResult) else {
+                    throw AppError.runtimeError("Unknown Result: nilValue ")
+                }
 
                 switch result.getType() {
                 case ResultType.inFlight:
@@ -122,7 +126,10 @@ class NowPlayingViewModel {
                                                    pageNumber: scrollResult.pageNumber,
                                                    fullList: uiModel.getCurrentList())
                 case ResultType.success:
+                    // swiftlint:disable:next force_unwrapping
                     let listToAdd: Array<MovieViewInfo>  = self.translateResultsForUi(movieInfoList: scrollResult.result!)
+                    
+                    // swiftlint:disable:next force_unwrapping
                     var currentList: Array<MovieViewInfo> = uiModel.getCurrentList()!
                     currentList.append(contentsOf: listToAdd)
                     
@@ -131,10 +138,24 @@ class NowPlayingViewModel {
                                                 valuesToAdd: listToAdd)
                     
                 case ResultType.failure:
-                    DDLogError(scrollResult.error!.localizedDescription)
+                    let errorString: String
+                    if let error = scrollResult.error {
+                        errorString = error.localizedDescription
+                    } else {
+                        errorString = ""
+                    }
+                    DDLogError(errorString)
+                    
+                    let currentList: Array<MovieViewInfo>
+                    if let list = uiModel.getCurrentList() {
+                        currentList = list
+                    } else {
+                        currentList = Array()
+                    }
+                    
                     return UiModel.failureState(
                         pageNumber: scrollResult.pageNumber - 1,
-                        fullList: uiModel.getCurrentList()!,
+                        fullList: currentList,
                         failureMsg: NSLocalizedString("R.string.error_msg", comment: ""))
                 }
 
@@ -144,7 +165,7 @@ class NowPlayingViewModel {
             //it's suffice to start with the initial value.
             .startWith(initialUiModel)
             //Publish results to main thread.
-            .observeOn(mainScheduler!)
+            .observeOn(mainScheduler)
             //Save history for late subscribers.
             .replay(1)
             /*

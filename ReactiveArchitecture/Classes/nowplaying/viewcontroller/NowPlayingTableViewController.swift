@@ -59,7 +59,8 @@ class NowPlayingTableViewController: UITableViewController {
      Add passed in value to table view
      Parameters: listToAdd - list to add
      */
-    func add(itemToAdd: MovieViewInfo!) {
+    func add(itemToAdd: MovieViewInfo?) {
+        // swiftlint:disable:next force_unwrapping
         objectList.append(itemToAdd!)
         
         let indexPath = IndexPath.init(row: self.objectList.count - 1, section: 0)
@@ -135,8 +136,12 @@ class NowPlayingTableViewController: UITableViewController {
                 movieCell.highRatingImageView.isHidden = true
             }
             
-            let url = URL(string: movieViewInfo.getPictureUrl())!
-            movieCell.moviePosterImageView.af_setImage(withURL: url)
+            if let url = URL(string: movieViewInfo.getPictureUrl()) {
+                movieCell.moviePosterImageView.af_setImage(withURL: url)
+                movieCell.moviePosterImageView.isHidden = false
+            } else {
+                movieCell.moviePosterImageView.isHidden = true
+            }
             
             return movieCell
         } else {

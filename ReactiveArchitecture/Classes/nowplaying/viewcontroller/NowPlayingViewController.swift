@@ -28,7 +28,7 @@ import CocoaLumberjack
 import Toast_Swift
 
 class NowPlayingViewController: UIViewController {
-    private var nowPlayingTableViewController: NowPlayingTableViewController?
+    private var nowPlayingTableViewController: NowPlayingTableViewController!
     private var tableView: UITableView?
     private let compositeDisposable = CompositeDisposable()
     private var scrollDisposable: Disposable?
@@ -43,7 +43,7 @@ class NowPlayingViewController: UIViewController {
     //
     //Injected Variables
     //
-    var nowPlayingViewModel: NowPlayingViewModel?
+    var nowPlayingViewModel: NowPlayingViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,8 +75,8 @@ class NowPlayingViewController: UIViewController {
         if segueName?.caseInsensitiveCompare("EmbedSegueContainer") == ComparisonResult.orderedSame {
             
             nowPlayingTableViewController = (segue.destination as? NowPlayingTableViewController)
-            tableView = nowPlayingTableViewController!.tableView
-            nowPlayingTableViewController!.tableView.isHidden = true
+            tableView = nowPlayingTableViewController.tableView
+            nowPlayingTableViewController.tableView.isHidden = true
         }
      }
     
@@ -89,7 +89,7 @@ class NowPlayingViewController: UIViewController {
         //
         //Bind to UiModel
         //
-       _ = compositeDisposable.insert(nowPlayingViewModel!.getUiModels()
+       _ = compositeDisposable.insert(nowPlayingViewModel.getUiModels()
             .subscribe(onNext: { uiModel in
                 self.processUiModel(uiModel: uiModel)
             }, onError: {(error) in
