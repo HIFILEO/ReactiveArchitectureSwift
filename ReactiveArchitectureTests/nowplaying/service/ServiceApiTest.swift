@@ -76,7 +76,7 @@ class ServiceApiTest: XCTestCase {
         assertThat((serviceResponse?.page)!, equalTo(1))
         assertThat((serviceResponse?.results)!, not(nilValue()))
         assertThat((serviceResponse?.dates)!, not(nilValue()))
-        assertThat((serviceResponse?.total_pages)!, greaterThan(0))
-        assertThat((serviceResponse?.total_results)!, greaterThan(0))
+        assertThat((serviceResponse?.totalPages)!, greaterThan(0))
+        assertThat((serviceResponse?.totalResults)!, greaterThan(0))
     }
 }

@@ -25,7 +25,7 @@ import Foundation
 /**
  Custom Error
  */
-public enum TestError : Error {
+public enum TestError: Error {
     case RuntimeError(message: String)
 }
 
