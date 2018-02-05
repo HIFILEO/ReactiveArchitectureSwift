@@ -109,11 +109,17 @@ class NowPlayingViewModel {
             //Asynchronous Actions To Interactor (Syntax: https://github.com/ReactiveX/RxSwift/issues/876)
             .multicast({ () -> PublishSubject<Action> in
                 return PublishSubject<Action>()
-            }, selector: { actions -> Observable<Result> in
+            }, selector: { [weak self] actions -> Observable<Result> in
+                guard let `self` = self else { return Observable.empty() }
+                
                 // swiftlint:disable:next force_unwrapping
                 return (self.nowPlayingInteractor?.processAction(actions: actions))!
             })
-            .scan(initialUiModel) { (uiModel: UiModel!, result: Result!) in
+            .scan(initialUiModel) {[weak self] (uiModel: UiModel!, result: Result!) in
+                guard let `self` = self else {
+                    throw AppError.runtimeError("Throw error when no self in scan")
+                }
+                
                 DDLogInfo("Thread name: " + Thread.current.debugDescription + ". Scan Results to UiModel")
 
                 guard let scrollResult: ScrollResult = (result as? ScrollResult) else {

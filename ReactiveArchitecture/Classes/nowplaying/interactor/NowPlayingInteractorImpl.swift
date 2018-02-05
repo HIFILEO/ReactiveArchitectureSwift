@@ -53,7 +53,11 @@ class NowPlayingInteractorImpl: NowPlayingInteractor {
         self.serviceController = serviceController
         
         transformActionToResult = ObservableTransformer<ScrollAction, ScrollResult> { observable in
-            return observable.flatMap {(scrollAction: ScrollAction ) -> Observable<ScrollResult> in
+            return observable.flatMap {[weak self] (scrollAction: ScrollAction ) -> Observable<ScrollResult> in
+                guard let `self` = self else {
+                    throw AppError.runtimeError("Throw error when no self")
+                }
+                
                 DDLogInfo("Thread name: " + Thread.current.debugDescription + " Load Data, return ScrollResult.")
                 
                 let pageNumberObservable: Observable<Int> = Observable.just(scrollAction.getPageNumber())
