@@ -1,3 +1,15 @@
 # DEPENDENCIES.md
 
-### Usage
+For a list of dependencies, look at the podfile. This dependency readme will document choices.
+
+### AlamofireObjectMapper
+
+AlamofireObjectMapper was chosen as a fast way to ingest API data from the movie database API. However this choice comes at a
+cost in a production app where the app will likely crash when the API is in a format we don't expect. As per a PR from
+
+From "Max Clarke"
+"If data comes back from the API in a format we don't expect, the app will likely crash. The code is force unwrapping deserialised
+API response model vars all over the place. This is a failure of AlamofireObjectMapper where you have to make all vars optional.
+We moved away from this to the built in swift 4 Codable protocol. This is much nicer, you can use immutable non-optionals.
+Your init is throwable, so if something doesn't decode from json as you'd expect an error is thrown for you to handle.
+You can then just filter that model out etc."
