@@ -90,7 +90,8 @@ class NowPlayingViewController: UIViewController {
         //Bind to UiModel
         //
        _ = compositeDisposable.insert(nowPlayingViewModel.getUiModels()
-            .subscribe(onNext: { uiModel in
+            .subscribe(onNext: { [weak self] uiModel in
+                guard let `self` = self else { return }
                 self.processUiModel(uiModel: uiModel)
             }, onError: {(error) in
                 let errorMsg: String = "rrors from Model Unsupported:" + error.localizedDescription
@@ -116,8 +117,11 @@ class NowPlayingViewController: UIViewController {
         //
         //Bind
         //
+        //Note - using weak capture list instead of unowned.
         scrollDisposable = self.tableView.rx.didScroll
-            .flatMap { scrollView -> Observable<ScrollEvent> in
+            .flatMap { [weak self] scrollView -> Observable<ScrollEvent> in
+                guard let `self` = self else { return Observable.empty() }
+                
                 let scrollEventCalculator: ScrollEventCalculator = ScrollEventCalculator.init(scrollView: self.tableView)
 
                 //Only handle 'is at end' of list scroll events
@@ -131,7 +135,9 @@ class NowPlayingViewController: UIViewController {
             }
             //Filter any multiple events before 250MS
             .throttle(0.250, scheduler: MainScheduler.instance)
-            .subscribe(onNext: { scrollEvent in
+            .subscribe(onNext: { [weak self] scrollEvent in
+                guard let `self` = self else { return }
+                
                 self.nowPlayingViewModel?.processUiEvent(uiEvent: scrollEvent)
             }, onError: {(error) in
                 let errorMsg: String = "Errors in scroll event unsupported. Crash app:" + error.localizedDescription
