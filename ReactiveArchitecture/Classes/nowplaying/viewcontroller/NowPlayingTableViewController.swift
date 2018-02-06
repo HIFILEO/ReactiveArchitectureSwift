@@ -44,12 +44,12 @@ class NowPlayingTableViewController: UITableViewController {
      Add passed in list to table view with animation for each entry to add
      Parameters: listToAdd - list to add
     */
-    func addAll(listToAdd: Array<MovieViewInfo>!) -> Void {
+    func addAll(listToAdd: Array<MovieViewInfo>!) {
         for movieViewInfo: MovieViewInfo in listToAdd {
             objectList.append(movieViewInfo)
             
             let indexPath = IndexPath.init(row: self.objectList.count - 1, section: 0)
-            let indexPathArray : [IndexPath] = [indexPath]
+            let indexPathArray: [IndexPath] = [indexPath]
             
             tableView.insertRows(at: indexPathArray, with: UITableViewRowAnimation.left)
         }
@@ -59,11 +59,12 @@ class NowPlayingTableViewController: UITableViewController {
      Add passed in value to table view
      Parameters: listToAdd - list to add
      */
-    func add(itemToAdd: MovieViewInfo!) -> Void {
+    func add(itemToAdd: MovieViewInfo?) {
+        // swiftlint:disable:next force_unwrapping
         objectList.append(itemToAdd!)
         
         let indexPath = IndexPath.init(row: self.objectList.count - 1, section: 0)
-        let indexPathArray : [IndexPath] = [indexPath]
+        let indexPathArray: [IndexPath] = [indexPath]
         tableView.insertRows(at: indexPathArray, with: UITableViewRowAnimation.left)
     }
     
@@ -81,7 +82,7 @@ class NowPlayingTableViewController: UITableViewController {
     Returns: MovieViewInfo at given position or nil
     */
     func getItem(position: Int) -> MovieViewInfo? {
-        if (objectList.count > position) {
+        if objectList.count > position {
             return objectList[position]
         } else {
             return nil
@@ -91,12 +92,12 @@ class NowPlayingTableViewController: UITableViewController {
     /**
     Remove an item at a specific position.
     */
-    func remove(objectToRemove: MovieViewInfo) -> Void {
+    func remove(objectToRemove: MovieViewInfo) {
         let index = objectList.indexOf(element: objectToRemove)
         objectList.removeObject(element: objectToRemove)
         
         let indexPath = IndexPath.init(row: index, section: 0)
-        let indexPathArray : [IndexPath] = [indexPath]
+        let indexPathArray: [IndexPath] = [indexPath]
         tableView.deleteRows(at: indexPathArray, with: UITableViewRowAnimation.left)
     }
     
@@ -116,26 +117,38 @@ class NowPlayingTableViewController: UITableViewController {
         let movieViewInfo: MovieViewInfo = objectList[indexPath.row]
         
         //Load & Address Cell (no longer returns nil when using storyboard)
-        if (movieViewInfo is MovieViewInfoImpl) {
-            let movieCell: MovieCell = tableView.dequeueReusableCell(withIdentifier: "MovieCellIdentifier", for: indexPath) as! MovieCell
+        if movieViewInfo is MovieViewInfoImpl {
+            // Note - Disable check because crashing here is acceptable if we don't knwo what type of cell we have.
+            // swiftlint:disable:next force_cast
+            let movieCell: MovieCell = tableView.dequeueReusableCell(withIdentifier:
+                // swiftlint:disable:next force_cast
+                "MovieCellIdentifier", for: indexPath) as!
+            MovieCell
             
             //Address Cell
             movieCell.nameLabel.text = movieViewInfo.getTitle()
             movieCell.releaseDateLabel.text = movieViewInfo.getReleaseDate()
             movieCell.ratingLabel.text = movieViewInfo.getRating()
             
-            if (movieViewInfo.isHighRating()) {
+            if movieViewInfo.isHighRating() {
                 movieCell.highRatingImageView.isHidden = false
             } else {
                 movieCell.highRatingImageView.isHidden = true
             }
             
-            let url = URL(string: movieViewInfo.getPictureUrl())!
-            movieCell.moviePosterImageView.af_setImage(withURL: url)
+            if let url = URL(string: movieViewInfo.getPictureUrl()) {
+                movieCell.moviePosterImageView.af_setImage(withURL: url)
+                movieCell.moviePosterImageView.isHidden = false
+            } else {
+                movieCell.moviePosterImageView.isHidden = true
+            }
             
             return movieCell
         } else {
-            let progressCell: ProgressCell = tableView.dequeueReusableCell(withIdentifier: "ProgressCellIdentifier", for: indexPath) as! ProgressCell
+            // swiftlint:disable:next force_cast
+            let progressCell: ProgressCell = tableView.dequeueReusableCell(
+                // swiftlint:disable:next force_cast
+                withIdentifier: "ProgressCellIdentifier", for: indexPath) as! ProgressCell
             progressCell.progressActivityIndicatorView.startAnimating()
             return progressCell
         }
@@ -143,7 +156,5 @@ class NowPlayingTableViewController: UITableViewController {
 }
 
 protocol LoadMoreListener {
-    func loadMore() -> Void
+    func loadMore()
 }
-
-

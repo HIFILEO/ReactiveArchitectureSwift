@@ -9,6 +9,6 @@
 import Foundation
 import RxSwift
 
-protocol NowPlayingInteractor : class {
+protocol NowPlayingInteractor: class {
     func processAction(actions: Observable<Action>) -> Observable<Result>
 }

@@ -11,14 +11,14 @@ import Foundation
 /**
  * Base class for results from asynchronous actions.
  */
-protocol Result : class {
+protocol Result: class {
     
     func getType() -> ResultType
     
 }
 
 enum ResultType {
-    case IN_FLIGHT
-    case SUCCESS
-    case FAILURE
+    case inFlight
+    case success
+    case failure
 }

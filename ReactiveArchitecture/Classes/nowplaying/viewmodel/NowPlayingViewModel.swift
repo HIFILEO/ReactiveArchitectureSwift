@@ -30,12 +30,12 @@ import RxSwift
  */
 class NowPlayingViewModel {
     private let initialUiModel: UiModel = UiModel.initState()
-    private var uiModelObservable:Observable<UiModel>?
-    private let serviceController:ServiceController
-    private let publishSubject:PublishSubject<UiEvent> = PublishSubject.init()
-    private var nowPlayingInteractor:NowPlayingInteractor?
-    private var backgroundScheduler: SchedulerType?
-    private var mainScheduler: SchedulerType?
+    private var uiModelObservable: Observable<UiModel>!
+    private let serviceController: ServiceController
+    private let publishSubject: PublishSubject<UiEvent> = PublishSubject.init()
+    private var nowPlayingInteractor: NowPlayingInteractor?
+    private var backgroundScheduler: SchedulerType!
+    private var mainScheduler: SchedulerType!
     
     /**
      Constructor.
@@ -52,8 +52,8 @@ class NowPlayingViewModel {
      Process events from the UI.
      parameter uiEvent - 
      */
-    func processUiEvent(uiEvent:UiEvent) -> Void {
-        DDLogInfo("Thread name: " + Thread.current.debugDescription + " Process UiEvent");
+    func processUiEvent(uiEvent: UiEvent) {
+        DDLogInfo("Thread name: " + Thread.current.debugDescription + " Process UiEvent")
         publishSubject.onNext(uiEvent)
     }
     
@@ -62,7 +62,7 @@ class NowPlayingViewModel {
      returns: Observable<UiModel>
     */
     func getUiModels() -> Observable<UiModel> {
-        return uiModelObservable!
+        return uiModelObservable
     }
     
     /**
@@ -95,32 +95,47 @@ class NowPlayingViewModel {
     */
     func bind() {
         uiModelObservable = publishSubject
-            //Note - unlike android, there is no io or computation scheduler. Each must be redefined with a specific queue as per GCD.
-            .observeOn(backgroundScheduler!)
+            //Note - unlike android, there is no io or computation scheduler. Each must be redefined with a specific queue as
+            //per GCD.
+            .observeOn(backgroundScheduler)
             //Translate UiEvents into Actions
-            .flatMap{uiEvent -> Observable<Action> in
-                DDLogInfo("Thread name: " + Thread.current.debugDescription + " Translate UiEvents into Actions");
-                let scrollAction:ScrollAction = ScrollAction.init(pageNumber: (uiEvent as! ScrollEvent).pageNumber)
+            .flatMap {uiEvent -> Observable<Action> in
+                DDLogInfo("Thread name: " + Thread.current.debugDescription + " Translate UiEvents into Actions")
+                
+                // swiftlint:disable:next force_unwrapping
+                let scrollAction: ScrollAction = ScrollAction.init(pageNumber: (uiEvent as? ScrollEvent)!.pageNumber)
                 return Observable.just(scrollAction)
             }
             //Asynchronous Actions To Interactor (Syntax: https://github.com/ReactiveX/RxSwift/issues/876)
             .multicast({ () -> PublishSubject<Action> in
                 return PublishSubject<Action>()
-            }, selector: { actions -> Observable<Result> in
+            }, selector: { [weak self] actions -> Observable<Result> in
+                guard let `self` = self else { return Observable.empty() }
+                
+                // swiftlint:disable:next force_unwrapping
                 return (self.nowPlayingInteractor?.processAction(actions: actions))!
             })
-            .scan(initialUiModel) { (uiModel: UiModel!, result: Result!) in
+            .scan(initialUiModel) {[weak self] (uiModel: UiModel!, result: Result!) in
+                guard let `self` = self else {
+                    throw AppError.runtimeError("Throw error when no self in scan")
+                }
+                
                 DDLogInfo("Thread name: " + Thread.current.debugDescription + ". Scan Results to UiModel")
 
-                let scrollResult: ScrollResult = result as! ScrollResult
+                guard let scrollResult: ScrollResult = (result as? ScrollResult) else {
+                    throw AppError.runtimeError("Unknown Result: nilValue ")
+                }
 
                 switch result.getType() {
-                case ResultType.IN_FLIGHT:
+                case ResultType.inFlight:
                     return UiModel.inProgressState(firstTimeLoad: scrollResult.pageNumber == 1,
                                                    pageNumber: scrollResult.pageNumber,
                                                    fullList: uiModel.getCurrentList())
-                case ResultType.SUCCESS:
+                case ResultType.success:
+                    // swiftlint:disable:next force_unwrapping
                     let listToAdd: Array<MovieViewInfo>  = self.translateResultsForUi(movieInfoList: scrollResult.result!)
+                    
+                    // swiftlint:disable:next force_unwrapping
                     var currentList: Array<MovieViewInfo> = uiModel.getCurrentList()!
                     currentList.append(contentsOf: listToAdd)
                     
@@ -128,27 +143,41 @@ class NowPlayingViewModel {
                                                 fullList: currentList,
                                                 valuesToAdd: listToAdd)
                     
-                case ResultType.FAILURE:
-                    DDLogError(scrollResult.error!.localizedDescription)
+                case ResultType.failure:
+                    let errorString: String
+                    if let error = scrollResult.error {
+                        errorString = error.localizedDescription
+                    } else {
+                        errorString = ""
+                    }
+                    DDLogError(errorString)
+                    
+                    let currentList: Array<MovieViewInfo>
+                    if let list = uiModel.getCurrentList() {
+                        currentList = list
+                    } else {
+                        currentList = Array()
+                    }
+                    
                     return UiModel.failureState(
                         pageNumber: scrollResult.pageNumber - 1,
-                        fullList: uiModel.getCurrentList()!,
+                        fullList: currentList,
                         failureMsg: NSLocalizedString("R.string.error_msg", comment: ""))
                 }
 
-                throw AppError.RuntimeError("Unknown Result: " + String.init(describing: result.getType()))
+                throw AppError.runtimeError("Unknown Result: " + String.init(describing: result.getType()))
             }
-            //Note - scan in RxSwift does not emit the original seed like RxJava. Since we are using an autoconnect, it's suffice to
-            //start with the initial value. 
+            //Note - scan in RxSwift does not emit the original seed like RxJava. Since we are using an autoconnect,
+            //it's suffice to start with the initial value.
             .startWith(initialUiModel)
             //Publish results to main thread.
-            .observeOn(mainScheduler!)
+            .observeOn(mainScheduler)
             //Save history for late subscribers.
             .replay(1)
             /*
              Refcount vs Autoconnect
-             Refcount unsubscribes from source when there are no active subscribers, while autoconnect remains connected. There is no
-             autoconnect in RxSwift so I created my own.
+             Refcount unsubscribes from source when there are no active subscribers, while autoconnect remains connected.
+             There is no autoconnect in RxSwift so I created my own.
              */
             //http://akarnokd.blogspot.com/2015/10/operator-internals-autoconnect.html
             .autoconnect()
@@ -170,5 +199,3 @@ class NowPlayingViewModel {
         return movieViewInfoList
     }
 }
-
-

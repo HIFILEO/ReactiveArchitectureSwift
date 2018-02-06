@@ -102,6 +102,7 @@
 		85EC961B1FE313CE002B9B42 /* ScrollEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EC961A1FE313CE002B9B42 /* ScrollEvent.swift */; };
 		85EC961E1FE31903002B9B42 /* ScrollEventCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EC961D1FE31903002B9B42 /* ScrollEventCalculator.swift */; };
 		85ED0DE11FCF3A0A00793B91 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85ED0DE01FCF3A0A00793B91 /* APIError.swift */; };
+		85F5094020228AB900FA93DA /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 85F5093F20228AB900FA93DA /* .swiftlint.yml */; };
 		BF0ACAA6EF01519EE56F7939 /* Pods_ReactiveArchitectureTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A92F51E3E63D4BD7BBD2DE39 /* Pods_ReactiveArchitectureTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -194,6 +195,7 @@
 		85EC961A1FE313CE002B9B42 /* ScrollEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollEvent.swift; sourceTree = "<group>"; };
 		85EC961D1FE31903002B9B42 /* ScrollEventCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollEventCalculator.swift; sourceTree = "<group>"; };
 		85ED0DE01FCF3A0A00793B91 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
+		85F5093F20228AB900FA93DA /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .swiftlint.yml; sourceTree = SOURCE_ROOT; };
 		9C220A6E91F9DFD0CA49D4BD /* Pods-ReactiveArchitectureUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactiveArchitectureUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ReactiveArchitectureUITests/Pods-ReactiveArchitectureUITests.release.xcconfig"; sourceTree = "<group>"; };
 		A05FA6D6313341BDBA09B80C /* Pods-ReactiveArchitecture.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactiveArchitecture.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ReactiveArchitecture/Pods-ReactiveArchitecture.debug.xcconfig"; sourceTree = "<group>"; };
 		A92F51E3E63D4BD7BBD2DE39 /* Pods_ReactiveArchitectureTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ReactiveArchitectureTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -374,6 +376,7 @@
 			isa = PBXGroup;
 			children = (
 				85DC74421FBA8FC300BACD4D /* Doc */,
+				85F5093D2022892200FA93DA /* Config */,
 				85DC740A1FBA87CD00BACD4D /* ReactiveArchitecture */,
 				85DC741F1FBA87CD00BACD4D /* ReactiveArchitectureTests */,
 				85DC742A1FBA87CD00BACD4D /* ReactiveArchitectureUITests */,
@@ -592,6 +595,22 @@
 			path = service;
 			sourceTree = "<group>";
 		};
+		85F5093D2022892200FA93DA /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				85F5093E2022893500FA93DA /* swift_lint */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		85F5093E2022893500FA93DA /* swift_lint */ = {
+			isa = PBXGroup;
+			children = (
+				85F5093F20228AB900FA93DA /* .swiftlint.yml */,
+			);
+			name = swift_lint;
+			sourceTree = "<group>";
+		};
 		C79C21BDC85BD71575EE48C0 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -730,6 +749,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85F5094020228AB900FA93DA /* .swiftlint.yml in Resources */,
 				85DC74161FBA87CD00BACD4D /* LaunchScreen.storyboard in Resources */,
 				85DC74461FBA8FFA00BACD4D /* BUILDS.md in Resources */,
 				854833C1200FC5660018CF21 /* demo_single_scroll.gif in Resources */,

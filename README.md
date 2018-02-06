@@ -54,15 +54,18 @@ This project supports the following type of tests:
 
 Unit Tests
 
-
 ### Standards
 
-There are style standards in this app as examples of how to maintain clean code.
 
-#### Checkstyle
+#### Checkstyle (SwiftLint) (.swiftlint.yml)
 
-None
+https://github.com/realm/SwiftLint
 
+Run on command line and pipe the information to a html file you can open in a browser.
+
+Pods/SwiftLint/swiftlint lint --reporter html > reporter.html
+
+Then open "reporter.html" in safari
 
 #### Run All
 
@@ -76,3 +79,4 @@ N/A
 4. [Medium - State propagation in Android with RxJava Subjects](https://proandroiddev.com/state-propagation-in-android-with-rxjava-subjects-81db49a0dd8e)
 5. [Youtube - Managing State with RxJava by Jake Wharton](https://www.youtube.com/watch?v=0IKHxjkgop4&t=1828s&list=PL6LUvCSPzQMbfOQkSLAINzmXQPDdxWv3P&index=6)
 6. [Thoughts on Clean Architecture](https://android.jlelse.eu/thoughts-on-clean-architecture-b8449d9d02df)
+7. [Optionals](https://cocoacasts.com/what-is-an-optional-in-swift/)

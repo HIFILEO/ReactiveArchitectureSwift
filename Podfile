@@ -26,6 +26,9 @@ target 'ReactiveArchitecture' do
   
   #Toast (Android ability)
   pod 'Toast-Swift', '~> 3.0.1'
+  
+  #Swift Style Enforcer
+  pod 'SwiftLint'
 
   target 'ReactiveArchitectureTests' do
     inherit! :search_paths

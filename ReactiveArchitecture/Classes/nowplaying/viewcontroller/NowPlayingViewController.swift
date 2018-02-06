@@ -28,11 +28,11 @@ import CocoaLumberjack
 import Toast_Swift
 
 class NowPlayingViewController: UIViewController {
-    private var nowPlayingTableViewController: NowPlayingTableViewController?
-    private var tableView: UITableView?
+    private var nowPlayingTableViewController: NowPlayingTableViewController!
+    private var tableView: UITableView!
     private let compositeDisposable = CompositeDisposable()
     private var scrollDisposable: Disposable?
-    private var pageNumber: Int?
+    private var pageNumber: Int!
     
     //
     //UI Variables
@@ -43,7 +43,7 @@ class NowPlayingViewController: UIViewController {
     //
     //Injected Variables
     //
-    var nowPlayingViewModel: NowPlayingViewModel?
+    var nowPlayingViewModel: NowPlayingViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,10 +72,11 @@ class NowPlayingViewController: UIViewController {
     
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let segueName = segue.identifier
-        if (segueName?.caseInsensitiveCompare("EmbedSegueContainer") == ComparisonResult.orderedSame) {
-            nowPlayingTableViewController = (segue.destination as! NowPlayingTableViewController)
-            tableView = nowPlayingTableViewController!.tableView
-            nowPlayingTableViewController!.tableView.isHidden = true
+        if segueName?.caseInsensitiveCompare("EmbedSegueContainer") == ComparisonResult.orderedSame {
+            
+            nowPlayingTableViewController = (segue.destination as? NowPlayingTableViewController)
+            tableView = nowPlayingTableViewController.tableView
+            nowPlayingTableViewController.tableView.isHidden = true
         }
      }
     
@@ -88,8 +89,9 @@ class NowPlayingViewController: UIViewController {
         //
         //Bind to UiModel
         //
-       _ = compositeDisposable.insert(nowPlayingViewModel!.getUiModels()
-            .subscribe(onNext: { uiModel in
+       _ = compositeDisposable.insert(nowPlayingViewModel.getUiModels()
+            .subscribe(onNext: { [weak self] uiModel in
+                guard let `self` = self else { return }
                 self.processUiModel(uiModel: uiModel)
             }, onError: {(error) in
                 let errorMsg: String = "rrors from Model Unsupported:" + error.localizedDescription
@@ -104,24 +106,27 @@ class NowPlayingViewController: UIViewController {
     /**
      * Bind to scroll events.
      */
-    private func bindToScrollEvent() -> Void {
+    private func bindToScrollEvent() {
         //
         //Guard
         //
-        if (scrollDisposable != nil) {
-            return;
+        if scrollDisposable != nil {
+            return
         }
         
         //
         //Bind
         //
-        scrollDisposable = self.tableView!.rx.didScroll
-            .flatMap{ scrollView -> Observable<ScrollEvent> in
-                let scrollEventCalculator:ScrollEventCalculator = ScrollEventCalculator.init(scrollView: self.tableView!)
+        //Note - using weak capture list instead of unowned.
+        scrollDisposable = self.tableView.rx.didScroll
+            .flatMap { [weak self] scrollView -> Observable<ScrollEvent> in
+                guard let `self` = self else { return Observable.empty() }
+                
+                let scrollEventCalculator: ScrollEventCalculator = ScrollEventCalculator.init(scrollView: self.tableView)
 
                 //Only handle 'is at end' of list scroll events
-                if (scrollEventCalculator.isAtScrollEnd()) {
-                    let scrollEvent: ScrollEvent = ScrollEvent.init(pageNumber: self.pageNumber! + 1)
+                if scrollEventCalculator.isAtScrollEnd() {
+                    let scrollEvent: ScrollEvent = ScrollEvent.init(pageNumber: self.pageNumber + 1)
 
                     return Observable.just(scrollEvent)
                 } else {
@@ -130,7 +135,9 @@ class NowPlayingViewController: UIViewController {
             }
             //Filter any multiple events before 250MS
             .throttle(0.250, scheduler: MainScheduler.instance)
-            .subscribe(onNext: { scrollEvent in
+            .subscribe(onNext: { [weak self] scrollEvent in
+                guard let `self` = self else { return }
+                
                 self.nowPlayingViewModel?.processUiEvent(uiEvent: scrollEvent)
             }, onError: {(error) in
                 let errorMsg: String = "Errors in scroll event unsupported. Crash app:" + error.localizedDescription
@@ -141,14 +148,17 @@ class NowPlayingViewController: UIViewController {
             })
         
         //Note - ignore the returned result. I don't need to keep track of keys
-        _ = compositeDisposable.insert(scrollDisposable!)
+        //Note - use optional binding to safely unwrap
+        if let scrollDisposable = scrollDisposable {
+            _ = compositeDisposable.insert(scrollDisposable)
+        }
     }
     
     /**
      * Unbind from scroll events.
      */
-    private func unbindFromScrollEvent() -> Void {
-        if (scrollDisposable != nil) {
+    private func unbindFromScrollEvent() {
+        if scrollDisposable != nil {
             scrollDisposable?.dispose()
         }
         scrollDisposable = nil
@@ -158,7 +168,7 @@ class NowPlayingViewController: UIViewController {
      * Bind to {@link UiModel}.
      * Parameter: uiModel - the {@link UiModel} from {@link NowPlayingViewModel} that backs the UI.
      */
-    private func processUiModel(uiModel: UiModel) -> Void {
+    private func processUiModel(uiModel: UiModel) {
         /*
          Note - Keep the logic here as SIMPLE as possible.
          */
@@ -167,7 +177,7 @@ class NowPlayingViewController: UIViewController {
         //
         //Update progressBar
         //
-        if (!uiModel.firstTimeLoad) {
+        if !uiModel.firstTimeLoad {
             activityIndicator.stopAnimating()
         }
         
@@ -179,58 +189,64 @@ class NowPlayingViewController: UIViewController {
         //
         //Update adapter
         //
-        if (self.nowPlayingTableViewController!.tableView.isHidden) {
+        if self.nowPlayingTableViewController.tableView.isHidden {
             
             //Process last adapter command
-            if (uiModel.adapterCommandType == AdapterCommandType.ADD_DATA) {
-                nowPlayingTableViewController!.addAll(listToAdd: uiModel.resultList!)
-            } else if (uiModel.adapterCommandType == AdapterCommandType.SHOW_IN_PROGRESS) {
-                nowPlayingTableViewController?.add(itemToAdd: nil)
+            if uiModel.adapterCommandType == AdapterCommandType.addData {
+                // swiftlint:disable:next force_unwrapping
+                nowPlayingTableViewController.addAll(listToAdd: uiModel.resultList!)
+            } else if uiModel.adapterCommandType == AdapterCommandType.showInProgress {
+                nowPlayingTableViewController.add(itemToAdd: nil)
             }
             
             //make table visible
-            self.nowPlayingTableViewController!.tableView.isHidden = false
+            self.nowPlayingTableViewController.tableView.isHidden = false
             
             //Trigger first load
-            let scrollEvent: ScrollEvent = ScrollEvent.init(pageNumber: self.pageNumber! + 1)
+            let scrollEvent: ScrollEvent = ScrollEvent.init(pageNumber: self.pageNumber + 1)
             nowPlayingViewModel?.processUiEvent(uiEvent: scrollEvent)
         } else {
-            if (uiModel.adapterCommandType == AdapterCommandType.ADD_DATA) {
+            if uiModel.adapterCommandType == AdapterCommandType.addData {
                 DDLogInfo("Thread name: " + Thread.current.debugDescription + "  Add adapter data on UiModel")
                 //Remove Spinner
-                if (nowPlayingTableViewController!.getItemCount() > 0) {
-                    let positionToRemove: Int = nowPlayingTableViewController!.getItemCount() - 1
-                    let objectToRemove: MovieViewInfo = nowPlayingTableViewController!.getItem(position: positionToRemove)!
-                    nowPlayingTableViewController?.remove(objectToRemove:objectToRemove)
+                if nowPlayingTableViewController.getItemCount() > 0 {
+                    let positionToRemove: Int = nowPlayingTableViewController.getItemCount() - 1
+                    
+                    //Note - ok to throw error here if no objects
+                    // swiftlint:disable:next force_unwrapping
+                    let objectToRemove: MovieViewInfo = nowPlayingTableViewController.getItem(position: positionToRemove)!
+                    
+                    nowPlayingTableViewController?.remove(objectToRemove: objectToRemove)
                 }
                 
-                //Add Data
-                nowPlayingTableViewController?.addAll(listToAdd: uiModel.resultList!)
-            } else if (uiModel.adapterCommandType == AdapterCommandType.SHOW_IN_PROGRESS) {
+                //Add Data - better contain data or throw error
+                // swiftlint:disable:next force_unwrapping
+                nowPlayingTableViewController.addAll(listToAdd: uiModel.resultList!)
+            } else if uiModel.adapterCommandType == AdapterCommandType.showInProgress {
                 //Add ProgressViewInfoImpl to table. ProgressViewInfoImpl shows spinner in table logic.
-                nowPlayingTableViewController?.add(itemToAdd: ProgressViewInfoImpl())
+                nowPlayingTableViewController.add(itemToAdd: ProgressViewInfoImpl())
                 
-                let indexPath = IndexPath.init(row: nowPlayingTableViewController!.getItemCount() - 1, section: 0)
-                self.tableView!.scrollToRow(at: indexPath, at: .top, animated: true)
+                let indexPath = IndexPath.init(row: nowPlayingTableViewController.getItemCount() - 1, section: 0)
+                self.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
             }
         }
         
         //
         //Error Messages
         //
-        if (uiModel.failureMsg != nil && !uiModel.failureMsg!.isEmpty) {
-            self.view.makeToast(NSLocalizedString("error_msg", comment: ""))
+        if let failureMsg: String = uiModel.failureMsg {
+            if !failureMsg.isEmpty {
+                self.view.makeToast(NSLocalizedString("error_msg", comment: failureMsg))
+            }
         }
         
         //
         //Scroll Listener (iOS has to be done last so we don't trigger continuous loads)
         //
-        if (uiModel.enableScrollListener) {
+        if uiModel.enableScrollListener {
             bindToScrollEvent()
         } else {
             unbindFromScrollEvent()
         }
     }
 }
-
-

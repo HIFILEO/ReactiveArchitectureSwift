@@ -30,9 +30,9 @@ import CocoaLumberjack
  */
 class NowPlayingInteractorImpl: NowPlayingInteractor {
     fileprivate var delayScheduler: SchedulerType = ConcurrentDispatchQueueScheduler(queue: DispatchQueue.global())
-    private let serviceController:ServiceController
+    private let serviceController: ServiceController
     //becuase we init a self in a closure this can't be a let or w/o?
-    private var transformActionToResult: ObservableTransformer<ScrollAction, ScrollResult>?
+    private var transformActionToResult: ObservableTransformer<ScrollAction, ScrollResult>!
 
     /**
      Create class for test.
@@ -53,18 +53,23 @@ class NowPlayingInteractorImpl: NowPlayingInteractor {
         self.serviceController = serviceController
         
         transformActionToResult = ObservableTransformer<ScrollAction, ScrollResult> { observable in
-            return observable.flatMap{ (scrollAction: ScrollAction) -> Observable<ScrollResult> in                            
+            return observable.flatMap {[weak self] (scrollAction: ScrollAction ) -> Observable<ScrollResult> in
+                guard let `self` = self else {
+                    throw AppError.runtimeError("Throw error when no self")
+                }
+                
                 DDLogInfo("Thread name: " + Thread.current.debugDescription + " Load Data, return ScrollResult.")
                 
-                let pageNumberObservable : Observable<Int> = Observable.just(scrollAction.getPageNumber());
+                let pageNumberObservable: Observable<Int> = Observable.just(scrollAction.getPageNumber())
                 
-                let sedrviceControllerObservable : Observable<Array<MovieInfo>> =
+                let sedrviceControllerObservable: Observable<Array<MovieInfo>> =
                     self.serviceController.getNowPlaying(pageNumber: scrollAction.getPageNumber())
                         //Delay for 3 seconds to show spinner on screen.
                         .delay(3, scheduler: self.delayScheduler)
                         //translate external to internal business logic (Example if we wanted to save to prefs)
                         .flatMap { (nowPlayingInfo: NowPlayingInfo) -> Observable<Array<MovieInfo>> in
-                            DDLogInfo("Thread name: " + Thread.current.description + " translate External Api Data into Business Internal Business Logic Data.")
+                            DDLogInfo("Thread name: " + Thread.current.description +
+                                " translate External Api Data into Business Internal Business Logic Data.")
                             return Observable.just(nowPlayingInfo.getMovies())
                         }
                 
@@ -75,7 +80,7 @@ class NowPlayingInteractorImpl: NowPlayingInteractor {
                         return ScrollResult.sucess(pageNumber: pageNumber, result: movieInfos)
                     }
                     //RxJava - onErrorReturn
-                    .catchError{ (error: Error) -> Observable<ScrollResult> in
+                    .catchError {(error: Error) -> Observable<ScrollResult> in
                         return Observable.just(ScrollResult.failure(pageNumber: scrollAction.getPageNumber(), error: error))
                     }
                     .startWith(ScrollResult.inFlight(pageNumber: scrollAction.getPageNumber()))
@@ -90,12 +95,16 @@ class NowPlayingInteractorImpl: NowPlayingInteractor {
      */
     func processAction(actions: Observable<Action>) -> Observable<Result> {
         return actions
-            .flatMap{ (action: Action) -> Observable<ScrollAction> in
+            .flatMap {(action: Action) -> Observable<ScrollAction> in
                 DDLogInfo("Thread name: " + Thread.current.description + " Translate Actions into ScrollActions.")
-                return Observable.just(action as! ScrollAction);
+ 
+                guard let scrollAction = action as? ScrollAction else {
+                    throw AppError.runtimeError("Unknown type for: " + String.init(describing: action))
+                }
+                return Observable.just(scrollAction)
             }
-            .compose(self.transformActionToResult!)
-            .flatMap{ (scrollResult: ScrollResult) -> Observable<Result> in
+            .compose(self.transformActionToResult)
+            .flatMap {(scrollResult: ScrollResult) -> Observable<Result> in
                 return Observable.just(scrollResult as Result)
             }
     }

@@ -27,19 +27,19 @@ extension Array {
     /**
      Remove an {@linke:Element} from the array.
      
-     Note - make sure the Element works with AnyObject otherwise the remove won't work. Ever. https://stackoverflow.com/questions/47897028/how-to-remove-a-protocol-from-array/47915561#47915561
+     Note - make sure the Element works with AnyObject otherwise the remove won't work. Ever.
+     https://stackoverflow.com/questions/47897028/how-to-remove-a-protocol-from-array/47915561#47915561
      
      Parameters: element - element to remove
      Returns: true when deleted, false otherwise.
      */
     mutating func removeObject(element: Element) {
-        guard let index = index(where: { $0 as AnyObject === element as AnyObject}) else { return }
+        guard let index = index(where: { $0 as AnyObject === element as AnyObject }) else { return }
         remove(at: index)
     }
     
     func indexOf(element: Element) -> Int {
-        guard let index = index(where: { $0 as AnyObject === element as AnyObject}) else { return -1 }
+        guard let index = index(where: { $0 as AnyObject === element as AnyObject }) else { return -1 }
         return index
     }
 }
-

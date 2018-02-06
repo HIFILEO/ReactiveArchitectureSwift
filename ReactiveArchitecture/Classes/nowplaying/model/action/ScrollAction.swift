@@ -26,8 +26,8 @@ import Foundation
 /**
  * Internal representation of {@link com.example.reactivearchitecture.model.event.ScrollEvent}.
  */
-class ScrollAction : Action {
-    private var pageNumber:Int
+class ScrollAction: Action {
+    private var pageNumber: Int
     
     init(pageNumber: Int) {
         self.pageNumber = pageNumber
